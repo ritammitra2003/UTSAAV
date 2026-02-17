@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event Organizer Hub</title>
+
 <style>
 body {font-family: Arial, sans-serif; margin:0; background:#f5f5f5;}
 header {background:#222; color:#fff; padding:15px; text-align:center;}
@@ -17,11 +18,12 @@ img {max-width:100%; border-radius:10px;}
 </style>
 </head>
 <body>
+
 <header>
 <h2>Event Organizer Hub</h2>
 </header>
 
-<!-- LOGIN / REGISTER -->
+<!-- LOGIN -->
 <div class="container" id="auth">
 <h3>Login / Register</h3>
 <form id="authForm">
@@ -59,96 +61,113 @@ img {max-width:100%; border-radius:10px;}
 <button onclick="goHome()">Back</button>
 </div>
 
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
-// USER AUTH SYSTEM
-let users = JSON.parse(localStorage.getItem('users')||'[]');
-let currentUser = localStorage.getItem('currentUser');
 
-if(currentUser){
- document.getElementById('auth').classList.add('hidden');
- document.getElementById('home').classList.remove('hidden');
-}
+// FIREBASE CONFIG
+const firebaseConfig = {
+ apiKey: "AIzaSyBNW3y2zR8xQmhrOWqXzu8dmFRMYdSRSFM",
+ authDomain: "rd-eventsphere.firebaseapp.com",
+ projectId: "rd-eventsphere",
+ storageBucket: "rd-eventsphere.firebasestorage.app",
+ messagingSenderId: "9010232288",
+ appId: "1:9010232288:web:f5e77bb53311acef97c985"
+};
 
-authForm.addEventListener('submit',function(e){
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// AUTH STATE
+const authDiv = document.getElementById('auth');
+const home = document.getElementById('home');
+const organizer = document.getElementById('organizer');
+const customer = document.getElementById('customer');
+
+firebase.auth().onAuthStateChanged(user => {
+ if(user){
+  authDiv.classList.add('hidden');
+  home.classList.remove('hidden');
+ } else {
+  authDiv.classList.remove('hidden');
+  home.classList.add('hidden');
+ }
+});
+
+// LOGIN / REGISTER
+
+document.getElementById('authForm').addEventListener('submit', async e => {
  e.preventDefault();
  const email = authEmail.value;
  const pass = authPass.value;
- const found = users.find(u=>u.email===email && u.pass===pass);
- 
- if(found){
-  localStorage.setItem('currentUser',email);
- }else{
-  users.push({email,pass});
-  localStorage.setItem('users',JSON.stringify(users));
-  localStorage.setItem('currentUser',email);
+ try{
+  await auth.signInWithEmailAndPassword(email, pass);
+ }catch{
+  await auth.createUserWithEmailAndPassword(email, pass);
  }
- location.reload();
+ alert('Login successful');
 });
 
-function logout(){
- localStorage.removeItem('currentUser');
- location.reload();
-}
+function logout(){ auth.signOut(); }
 
+// NAVIGATION
 function goHome(){
- document.getElementById('home').classList.remove('hidden');
- document.getElementById('organizer').classList.add('hidden');
- document.getElementById('customer').classList.add('hidden');
+ home.classList.remove('hidden');
+ organizer.classList.add('hidden');
+ customer.classList.add('hidden');
 }
 
 function showOrganizer(){
- document.getElementById('home').classList.add('hidden');
- document.getElementById('organizer').classList.remove('hidden');
+ home.classList.add('hidden');
+ organizer.classList.remove('hidden');
 }
 
 function showCustomer(){
- document.getElementById('home').classList.add('hidden');
- document.getElementById('customer').classList.remove('hidden');
+ home.classList.add('hidden');
+ customer.classList.remove('hidden');
  loadOrganizers();
 }
 
-// ORGANIZER STORAGE
-let organizers = JSON.parse(localStorage.getItem('organizers')||'[]');
+// UPLOAD ORGANIZER
 
-orgForm.addEventListener('submit', function(e){
+document.getElementById('orgForm').addEventListener('submit', e=>{
  e.preventDefault();
  const reader = new FileReader();
- reader.onload = function(){
-  organizers.push({
+ reader.onload = async ()=>{
+  await db.collection('organizers').add({
    name:name.value,
    phone:phone.value,
    email:email.value,
    photo:reader.result,
-   owner:localStorage.getItem('currentUser')
+   owner:auth.currentUser.email
   });
-  localStorage.setItem('organizers', JSON.stringify(organizers));
   alert('Uploaded Successfully');
-  orgForm.reset();
   goHome();
  };
  reader.readAsDataURL(photo.files[0]);
 });
 
-function deleteOrg(i){
- organizers.splice(i,1);
- localStorage.setItem('organizers', JSON.stringify(organizers));
- loadOrganizers();
-}
-
-function loadOrganizers(){
+// LOAD ORGANIZERS
+async function loadOrganizers(){
  list.innerHTML='';
- const user = localStorage.getItem('currentUser');
- organizers.forEach((o,i)=>{
+ const snap = await db.collection('organizers').get();
+ snap.forEach(doc=>{
+  const o = doc.data();
   list.innerHTML += `
    <div class='card'>
     <img src='${o.photo}'>
     <h4>${o.name}</h4>
-    <p>Phone: ${o.phone}</p>
-    <p>Email: ${o.email}</p>
-    ${o.owner===user ? `<button onclick="deleteOrg(${i})">Delete</button>`:''}
+    <p>${o.phone}</p>
+    <p>${o.email}</p>
    </div>`;
  });
 }
+
 </script>
+
 </body>
 </html>
