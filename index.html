@@ -15,6 +15,8 @@ input {width:100%; padding:8px; margin:6px 0;}
 .card {background:#fff; padding:15px; margin:10px auto; max-width:400px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2);} 
 img {max-width:100%; border-radius:10px;}
 .hidden {display:none;}
+.error{color:red;font-size:14px;margin-top:5px}
+.switch{color:blue;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -23,14 +25,16 @@ img {max-width:100%; border-radius:10px;}
 <h2>Event Organizer Hub</h2>
 </header>
 
-<!-- LOGIN -->
+<!-- AUTH SECTION -->
 <div class="container" id="auth">
-<h3>Login / Register</h3>
+<h3 id="authTitle">Register First</h3>
 <form id="authForm">
 <input type="email" id="authEmail" placeholder="Email" required>
-<input type="password" id="authPass" placeholder="Password" required>
-<button type="submit">Login / Register</button>
+<input type="password" id="authPass" placeholder="Password (Use only 6+ characters)" required>
+<div class="error" id="errorMsg"></div>
+<button type="submit" id="authBtn">Register</button>
 </form>
+<p class="switch" onclick="toggleAuth()" id="switchText">Already registered? Login</p>
 </div>
 
 <!-- HOME -->
@@ -61,14 +65,12 @@ img {max-width:100%; border-radius:10px;}
 <button onclick="goHome()">Back</button>
 </div>
 
-<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
 
-// FIREBASE CONFIG
 const firebaseConfig = {
  apiKey: "AIzaSyBNW3y2zR8xQmhrOWqXzu8dmFRMYdSRSFM",
  authDomain: "rd-eventsphere.firebaseapp.com",
@@ -82,39 +84,61 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// AUTH STATE
 const authDiv = document.getElementById('auth');
 const home = document.getElementById('home');
 const organizer = document.getElementById('organizer');
 const customer = document.getElementById('customer');
 
-firebase.auth().onAuthStateChanged(user => {
+let isLogin=false;
+
+function toggleAuth(){
+ isLogin=!isLogin;
+ document.getElementById('authTitle').innerText=isLogin?"Login":"Register First";
+ document.getElementById('authBtn').innerText=isLogin?"Login":"Register";
+ document.getElementById('switchText').innerText=isLogin?
+ "New user? Register first":"Already registered? Login";
+ document.getElementById('errorMsg').innerText="";
+}
+
+firebase.auth().onAuthStateChanged(user=>{
  if(user){
   authDiv.classList.add('hidden');
   home.classList.remove('hidden');
- } else {
+ }else{
   authDiv.classList.remove('hidden');
   home.classList.add('hidden');
  }
 });
 
-// LOGIN / REGISTER
+// AUTH FORM
 
-document.getElementById('authForm').addEventListener('submit', async e => {
+document.getElementById('authForm').addEventListener('submit',async e=>{
  e.preventDefault();
- const email = authEmail.value;
- const pass = authPass.value;
- try{
-  await auth.signInWithEmailAndPassword(email, pass);
- }catch{
-  await auth.createUserWithEmailAndPassword(email, pass);
+ const email=authEmail.value;
+ const pass=authPass.value;
+ const error=document.getElementById('errorMsg');
+
+ if(pass.length<6){
+  error.innerText="Use minimum 6 characters password";
+  return;
  }
- alert('Login successful');
+
+ try{
+  if(isLogin){
+   await auth.signInWithEmailAndPassword(email,pass);
+   alert("Login successful");
+  }else{
+   await auth.createUserWithEmailAndPassword(email,pass);
+   alert("Registration successful. Now login.");
+   toggleAuth();
+  }
+ }catch(err){
+  error.innerText="Invalid email or password format";
+ }
 });
 
 function logout(){ auth.signOut(); }
 
-// NAVIGATION
 function goHome(){
  home.classList.remove('hidden');
  organizer.classList.add('hidden');
@@ -132,12 +156,12 @@ function showCustomer(){
  loadOrganizers();
 }
 
-// UPLOAD ORGANIZER
+// ORGANIZER UPLOAD
 
-document.getElementById('orgForm').addEventListener('submit', e=>{
+document.getElementById('orgForm').addEventListener('submit',e=>{
  e.preventDefault();
- const reader = new FileReader();
- reader.onload = async ()=>{
+ const reader=new FileReader();
+ reader.onload=async()=>{
   await db.collection('organizers').add({
    name:name.value,
    phone:phone.value,
@@ -154,10 +178,10 @@ document.getElementById('orgForm').addEventListener('submit', e=>{
 // LOAD ORGANIZERS
 async function loadOrganizers(){
  list.innerHTML='';
- const snap = await db.collection('organizers').get();
+ const snap=await db.collection('organizers').get();
  snap.forEach(doc=>{
-  const o = doc.data();
-  list.innerHTML += `
+  const o=doc.data();
+  list.innerHTML+=`
    <div class='card'>
     <img src='${o.photo}'>
     <h4>${o.name}</h4>
