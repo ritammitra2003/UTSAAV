@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Organizer Hub</title>
+<style>
+body {font-family: Arial, sans-serif; margin:0; background:#f5f5f5;}
+header {background:#222; color:#fff; padding:15px; text-align:center;}
+.container {padding:20px; text-align:center;}
+button {padding:12px 20px; margin:10px; font-size:16px; cursor:pointer;}
+form {max-width:400px; margin:auto; text-align:left;}
+input {width:100%; padding:8px; margin:6px 0;}
+.card {background:#fff; padding:15px; margin:10px auto; max-width:400px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2);} 
+img {max-width:100%; border-radius:10px;}
+.hidden {display:none;}
+</style>
+</head>
+<body>
+<header>
+<h2>Event Organizer Hub</h2>
+</header>
+
+<!-- LOGIN / REGISTER -->
+<div class="container" id="auth">
+<h3>Login / Register</h3>
+<form id="authForm">
+<input type="email" id="authEmail" placeholder="Email" required>
+<input type="password" id="authPass" placeholder="Password" required>
+<button type="submit">Login / Register</button>
+</form>
+</div>
+
+<!-- HOME -->
+<div class="container hidden" id="home">
+<h3>Select Option</h3>
+<button onclick="showOrganizer()">Organizer Panel</button>
+<button onclick="showCustomer()">Customer View</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<!-- ORGANIZER PANEL -->
+<div class="container hidden" id="organizer">
+<h3>Organizer Upload</h3>
+<form id="orgForm">
+<input type="text" id="name" placeholder="Organizer Name" required>
+<input type="tel" id="phone" placeholder="Phone Number" required>
+<input type="email" id="email" placeholder="Email" required>
+<input type="file" id="photo" accept="image/*" required>
+<button type="submit">Upload</button>
+</form>
+<button onclick="goHome()">Back</button>
+</div>
+
+<!-- CUSTOMER VIEW -->
+<div class="container hidden" id="customer">
+<h3>Organizers List</h3>
+<div id="list"></div>
+<button onclick="goHome()">Back</button>
+</div>
+
+<script>
+// USER AUTH SYSTEM
+let users = JSON.parse(localStorage.getItem('users')||'[]');
+let currentUser = localStorage.getItem('currentUser');
+
+if(currentUser){
+ document.getElementById('auth').classList.add('hidden');
+ document.getElementById('home').classList.remove('hidden');
+}
+
+authForm.addEventListener('submit',function(e){
+ e.preventDefault();
+ const email = authEmail.value;
+ const pass = authPass.value;
+ const found = users.find(u=>u.email===email && u.pass===pass);
+ 
+ if(found){
+  localStorage.setItem('currentUser',email);
+ }else{
+  users.push({email,pass});
+  localStorage.setItem('users',JSON.stringify(users));
+  localStorage.setItem('currentUser',email);
+ }
+ location.reload();
+});
+
+function logout(){
+ localStorage.removeItem('currentUser');
+ location.reload();
+}
+
+function goHome(){
+ document.getElementById('home').classList.remove('hidden');
+ document.getElementById('organizer').classList.add('hidden');
+ document.getElementById('customer').classList.add('hidden');
+}
+
+function showOrganizer(){
+ document.getElementById('home').classList.add('hidden');
+ document.getElementById('organizer').classList.remove('hidden');
+}
+
+function showCustomer(){
+ document.getElementById('home').classList.add('hidden');
+ document.getElementById('customer').classList.remove('hidden');
+ loadOrganizers();
+}
+
+// ORGANIZER STORAGE
+let organizers = JSON.parse(localStorage.getItem('organizers')||'[]');
+
+orgForm.addEventListener('submit', function(e){
+ e.preventDefault();
+ const reader = new FileReader();
+ reader.onload = function(){
+  organizers.push({
+   name:name.value,
+   phone:phone.value,
+   email:email.value,
+   photo:reader.result,
+   owner:localStorage.getItem('currentUser')
+  });
+  localStorage.setItem('organizers', JSON.stringify(organizers));
+  alert('Uploaded Successfully');
+  orgForm.reset();
+  goHome();
+ };
+ reader.readAsDataURL(photo.files[0]);
+});
+
+function deleteOrg(i){
+ organizers.splice(i,1);
+ localStorage.setItem('organizers', JSON.stringify(organizers));
+ loadOrganizers();
+}
+
+function loadOrganizers(){
+ list.innerHTML='';
+ const user = localStorage.getItem('currentUser');
+ organizers.forEach((o,i)=>{
+  list.innerHTML += `
+   <div class='card'>
+    <img src='${o.photo}'>
+    <h4>${o.name}</h4>
+    <p>Phone: ${o.phone}</p>
+    <p>Email: ${o.email}</p>
+    ${o.owner===user ? `<button onclick="deleteOrg(${i})">Delete</button>`:''}
+   </div>`;
+ });
+}
+</script>
+</body>
+</html>
