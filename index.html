@@ -67,7 +67,7 @@ img {max-width:100%;border-radius:10px}
 <div class="container hidden" id="customer">
 <h3>Organizers List</h3>
 <input class="search" id="search" placeholder="Search organizer..." onkeyup="searchOrganizer()">
-<div id="list"></div>
+<div id="list">Loading organizers...</div>
 <button onclick="goHome()">Back</button>
 </div>
 
@@ -98,7 +98,12 @@ const list=document.getElementById('list');
 
 let isLogin=false;
 
-function toggleDark(){ document.body.classList.toggle('dark'); }
+// DARK MODE SAVE
+if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark');
+function toggleDark(){
+ document.body.classList.toggle('dark');
+ localStorage.setItem('darkMode',document.body.classList.contains('dark'));
+}
 
 function togglePassword(){
  const pass=document.getElementById('authPass');
@@ -130,8 +135,8 @@ document.getElementById('authForm').addEventListener('submit',async e=>{
  if(pass.length<6){ error.innerText="Password must be at least 6 characters"; return; }
 
  try{
-  if(isLogin){ await auth.signInWithEmailAndPassword(email,pass); alert("Login successful"); }
-  else{ await auth.createUserWithEmailAndPassword(email,pass); alert("Registered! Now login."); toggleAuth(); }
+  if(isLogin){ await auth.signInWithEmailAndPassword(email,pass); }
+  else{ await auth.createUserWithEmailAndPassword(email,pass); toggleAuth(); }
  }catch(err){ error.innerText=err.message; }
 });
 
@@ -141,7 +146,7 @@ function goHome(){ home.classList.remove('hidden'); organizer.classList.add('hid
 function showOrganizer(){ home.classList.add('hidden'); organizer.classList.remove('hidden'); }
 function showCustomer(){ home.classList.add('hidden'); customer.classList.remove('hidden'); loadOrganizers(); }
 
-// UPLOAD
+// UPLOAD WITH RESET
 
 document.getElementById('orgForm').addEventListener('submit',e=>{
  e.preventDefault();
@@ -161,13 +166,14 @@ document.getElementById('orgForm').addEventListener('submit',e=>{
    createdAt:new Date()
   });
 
+  document.getElementById('orgForm').reset();
   alert('Uploaded Successfully');
   goHome();
  };
  reader.readAsDataURL(file);
 });
 
-// LOAD ORGANIZERS
+// LOAD ORGANIZERS WITH DELETE OPTION
 
 async function loadOrganizers(){
  list.innerHTML='Loading...';
@@ -175,14 +181,24 @@ async function loadOrganizers(){
  list.innerHTML='';
  snap.forEach(doc=>{
   const o=doc.data();
+  const owner=o.owner===auth.currentUser?.email;
+
   list.innerHTML+=`
   <div class='card'>
    <img src='${o.photo}'>
    <h4>${o.name}</h4>
    <p>${o.phone}</p>
    <p>${o.email}</p>
+   ${owner?`<button onclick="deleteOrganizer('${doc.id}')">Delete</button>`:''}
   </div>`;
  });
+}
+
+async function deleteOrganizer(id){
+ if(confirm('Delete this organizer?')){
+  await db.collection('organizers').doc(id).delete();
+  loadOrganizers();
+ }
 }
 
 function searchOrganizer(){
