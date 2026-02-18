@@ -383,7 +383,7 @@ header {
 .cat-pill.active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); font-weight: 600; }
 
 /* ====== ORG CARDS ====== */
-.org-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 18px; }
+.org-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 16px; }
 .org-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 18px; overflow: hidden;
@@ -601,14 +601,34 @@ body.light header { background: rgba(240,236,228,0.85); }
 /* RESPONSIVE */
 @media(max-width:640px){
   header { padding: 14px 18px; }
-  .home-title { font-size: 38px; }
+  .home-title { font-size: 32px; }
   .option-cards { grid-template-columns: 1fr; }
-  .org-grid { grid-template-columns: 1fr; }
+  .org-grid { grid-template-columns: 1fr !important; }
   .dash-grid { grid-template-columns: repeat(2,1fr); }
-  .form-row { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr !important; }
   .search-sort-row { flex-wrap: wrap; }
   .info-grid { grid-template-columns: 1fr; }
   .modal-actions { flex-direction: column; }
+  .tabs { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .tab { display: inline-block; }
+  .page { padding: 16px 12px !important; }
+  .customer-wrap { width: 100% !important; padding: 0 !important; }
+  .glass-card { padding: 16px !important; }
+  .panel-header { margin-bottom: 16px; }
+  .org-card { width: 100% !important; }
+  .search-bar { width: 100% !important; }
+  .sort-select { width: 100% !important; }
+  .cat-pills { flex-wrap: wrap !important; overflow-x: auto; }
+
+  /* Profile page mobile */
+  #profilePage > div:last-child > div:first-child { display: block !important; }
+  #profilePage [style*="grid-template-columns:1fr 320px"],
+  #profilePage [style*="grid-template-columns: 1fr 320px"] { display: block !important; }
+  #profilePage [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+  #profilePage [style*="position:sticky"] { position: static !important; margin-top: 16px; }
+  #profilePage [style*="height:300px"] { height: 220px !important; }
+  #profilePage [style*="font-size:38px"] { font-size: 26px !important; }
+  #profilePage [style*="max-width:940px"] { padding: 0 12px !important; }
 }
 </style>
 </head>
@@ -706,7 +726,7 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="verify-steps">
         <div class="verify-step">
           <div class="step-num">1</div>
-          <div class="step-text">Open the email we sent you (check spam too)</div>
+          <div class="step-text">Open the email we sent you <strong style="color:var(--accent);">(⚠️ Check your Spam / Junk folder — it usually lands there!)</strong></div>
         </div>
         <div class="verify-step">
           <div class="step-num">2</div>
@@ -750,7 +770,7 @@ body.light header { background: rgba(240,236,228,0.85); }
 </div>
 
 <!-- ===== ORGANIZER PANEL ===== -->
-<div class="page hidden" id="organizer" style="align-items:flex-start;padding-top:40px;">
+<div class="page hidden" id="organizer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="panel-wrap fade-in" style="max-width:720px;width:100%;">
     <div class="panel-header">
       <div class="panel-back" onclick="showSection('home')">←</div>
@@ -816,9 +836,27 @@ body.light header { background: rgba(240,236,228,0.85); }
             <input type="text" id="orgLocation" placeholder="e.g. Mumbai, Delhi..." required>
           </div>
           <div class="form-group">
-            <label>Profile Photo</label>
-            <input type="file" id="orgPhoto" accept="image/*" onchange="previewImg(this,'orgImgPreview')">
-            <img id="orgImgPreview" class="img-preview" alt="Preview">
+            <label>Years of Experience</label>
+            <input type="number" id="orgExp" placeholder="e.g. 5" min="0">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Min Price (₹)</label>
+              <input type="number" id="orgPriceMin" placeholder="e.g. 10000" min="0">
+            </div>
+            <div class="form-group">
+              <label>Max Price (₹)</label>
+              <input type="number" id="orgPriceMax" placeholder="e.g. 100000" min="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="orgWhatsapp" placeholder="+91 WhatsApp number">
+          </div>
+          <div class="form-group">
+            <label>Photos (select multiple)</label>
+            <input type="file" id="orgPhoto" accept="image/*" multiple onchange="previewMultipleImgs(this)">
+            <div id="orgImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
           </div>
           <button type="submit" class="btn-primary">✦ Publish Profile</button>
         </form>
@@ -883,7 +921,7 @@ body.light header { background: rgba(240,236,228,0.85); }
 </div>
 
 <!-- ===== CUSTOMER VIEW ===== -->
-<div class="page hidden" id="customer" style="align-items:flex-start;padding-top:40px;">
+<div class="page hidden" id="customer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="customer-wrap fade-in">
     <div class="panel-header">
       <div class="panel-back" onclick="showSection('home')">←</div>
@@ -911,6 +949,10 @@ body.light header { background: rgba(240,236,228,0.85); }
         </select>
       </div>
       <div class="cat-pills" id="catPills"></div>
+      <div id="seedBanner" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:13px;color:var(--muted);">🎭 Platform abhi naya hai — sample organizers add karo!</span>
+        <button id="seedBtn" onclick="forceSeed()" style="background:var(--accent);color:#0a0a0f;border:none;padding:8px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">+ Add 10 Sample Organizers</button>
+      </div>
       <div class="org-grid" id="list">
         <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
@@ -949,6 +991,71 @@ firebase.initializeApp({
 const auth=firebase.auth();
 const db=firebase.firestore();
 
+/* ============== SEED ORGANIZERS (run once) ============== */
+async function seedOrganizers(){
+  try{
+    const check=await db.collection('organizers').limit(1).get();
+    if(!check.empty){ console.log('Already has organizers, skip seed'); return; }
+    console.log('Seeding 10 organizers...');
+    const organizers=getSeedData();
+
+  const batch=db.batch();
+  organizers.forEach(o=>{
+    const ref=db.collection('organizers').doc();
+    batch.set(ref,o);
+  });
+  await batch.commit();
+  console.log('✅ 10 organizers seeded!');
+  }catch(err){ console.error('Seed error:',err); }
+}
+
+async function forceSeed(){
+  const btn=document.getElementById('seedBtn');
+  if(btn){btn.textContent='⏳ Adding...';btn.disabled=true;}
+  try{
+    const data=getSeedData();
+    const batch=db.batch();
+    data.forEach(o=>{
+      const ref=db.collection('organizers').doc();
+      batch.set(ref,o);
+    });
+    await batch.commit();
+    showToast('✅ 10 organizers added successfully!');
+    const banner=document.getElementById('seedBanner');
+    if(banner) banner.style.display='none';
+    await loadOrganizers();
+  }catch(err){
+    showToast('❌ Error: '+err.message,'error');
+    console.error('Seed error:',err);
+    if(btn){btn.textContent='+ Add 10 Sample Organizers';btn.disabled=false;}
+  }
+}
+
+async function seedOrganizersFresh(){
+  try{
+    const data=getSeedData();
+    const batch=db.batch();
+    data.forEach(o=>{const ref=db.collection('organizers').doc();batch.set(ref,o);});
+    await batch.commit();
+    showToast('✅ 10 organizers added!');
+  }catch(err){showToast('Error: '+err.message,'error');console.error(err);}
+}
+
+function getSeedData(){
+  return [
+    {name:"Sharma Wedding Planners",phone:"9832100001",whatsapp:"9832100001",email:"sharmaweddings@gmail.com",category:"Wedding",bio:"10+ saal ka experience. Midnapore aur West Bengal mein 500+ weddings successfully organize ki hain. Decoration, catering, photography sab ek hi jagah.",location:"Midnapore, West Bengal",experience:"10",priceMin:50000,priceMax:500000,photo:"https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",photos:["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80","https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.5,reviewCount:12,createdAt:new Date()},
+    {name:"Royal Events & Decorators",phone:"9733200002",whatsapp:"9733200002",email:"royalevents.wbg@gmail.com",category:"Wedding",bio:"Royal Events specializes in royal themed weddings and receptions. Best decorator in Kharagpur area with 7 years of expertise.",location:"Kharagpur, West Bengal",experience:"7",priceMin:30000,priceMax:300000,photo:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80",photos:["https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80","https://images.unsplash.com/photo-1478146059778-26028b07395a?w=400&q=80"],owner:"seed@utsaav.com",rating:4.2,reviewCount:8,createdAt:new Date()},
+    {name:"Star Corporate Events",phone:"9434300003",whatsapp:"9434300003",email:"starcorp.events@gmail.com",category:"Corporate",bio:"Corporate seminars, conferences, product launches aur team building events mein specialist. Kolkata se Midnapore tak saare districts mein service available.",location:"Kolkata, West Bengal",experience:"6",priceMin:20000,priceMax:200000,photo:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80",photos:["https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80","https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80"],owner:"seed@utsaav.com",rating:4.7,reviewCount:15,createdAt:new Date()},
+    {name:"Dream Birthday Studio",phone:"9635400004",whatsapp:"9635400004",email:"dreambirthday.wb@gmail.com",category:"Birthday",bio:"Bachon se lekar adults tak — har tarah ke birthday party themes available. Balloon decoration, cake arrangement, DJ, photography sab kuch.",location:"Paschim Medinipur, West Bengal",experience:"4",priceMin:5000,priceMax:50000,photo:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",photos:["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80","https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=400&q=80"],owner:"seed@utsaav.com",rating:4.3,reviewCount:20,createdAt:new Date()},
+    {name:"Beats & Beyond Concert Co.",phone:"9800500005",whatsapp:"9800500005",email:"beatsbeyond.concerts@gmail.com",category:"Concert",bio:"Live concerts, music festivals aur cultural programs ke liye No.1 organizer in West Bengal. Stage setup, sound system, artist booking sab manage karte hain.",location:"Durgapur, West Bengal",experience:"8",priceMin:100000,priceMax:1000000,photo:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80",photos:["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80","https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&q=80"],owner:"seed@utsaav.com",rating:4.8,reviewCount:31,createdAt:new Date()},
+    {name:"Utsav Social Events",phone:"9123600006",whatsapp:"9123600006",email:"utsavsocial.events@gmail.com",category:"Social",bio:"Pujo, cultural programs, annual functions aur community events ke liye trusted name. 15 saal se Midnapore aur surrounding areas mein kaam kar rahe hain.",location:"Midnapore, West Bengal",experience:"15",priceMin:10000,priceMax:150000,photo:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80",photos:["https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80","https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80"],owner:"seed@utsaav.com",rating:4.6,reviewCount:18,createdAt:new Date()},
+    {name:"Elite Conference Solutions",phone:"9876700007",whatsapp:"9876700007",email:"eliteconf.wb@gmail.com",category:"Conference",bio:"Professional conference rooms, AV setup, speaker coordination aur delegate management mein expert. ISO certified event company.",location:"Howrah, West Bengal",experience:"9",priceMin:25000,priceMax:250000,photo:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80",photos:["https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80","https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&q=80"],owner:"seed@utsaav.com",rating:4.4,reviewCount:9,createdAt:new Date()},
+    {name:"Champions Sports Events",phone:"9654800008",whatsapp:"9654800008",email:"championsports.events@gmail.com",category:"Sports",bio:"Cricket tournaments, football matches, kabaddi competitions aur school sports events ke expert organizer. Complete sports event management available.",location:"Medinipur, West Bengal",experience:"5",priceMin:15000,priceMax:100000,photo:"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",photos:["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80","https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80"],owner:"seed@utsaav.com",rating:4.1,reviewCount:6,createdAt:new Date()},
+    {name:"Pink Celebration Studio",phone:"9345900009",whatsapp:"9345900009",email:"pinkcelebration.wb@gmail.com",category:"Birthday",bio:"Themed birthday parties, baby showers, anniversary celebrations — full package mein photography, cake, decoration, entertainment sab.",location:"Bankura, West Bengal",experience:"3",priceMin:8000,priceMax:60000,photo:"https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80",photos:["https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80","https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&q=80"],owner:"seed@utsaav.com",rating:4.0,reviewCount:14,createdAt:new Date()},
+    {name:"Grand Wedding Affairs",phone:"9567000010",whatsapp:"9567000010",email:"grandwedding.affairs@gmail.com",category:"Wedding",bio:"Aapki shaadi ko unforgettable banana hamare haath mein. Full destination wedding packages available. Catering, mehendi, sangeet, reception — ek hi team.",location:"Purulia, West Bengal",experience:"12",priceMin:75000,priceMax:750000,photo:"https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80",photos:["https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80","https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&q=80"],owner:"seed@utsaav.com",rating:4.9,reviewCount:27,createdAt:new Date()}
+  ];
+}
+
 /* ============== STATE ============== */
 let isLogin=true;
 let allOrganizers=[];
@@ -978,6 +1085,23 @@ function previewImg(input, previewId){
     r.onload=e=>{prev.src=e.target.result; prev.style.display='block';};
     r.readAsDataURL(input.files[0]);
   }
+}
+
+function previewMultipleImgs(input){
+  const container=document.getElementById('orgImgsPreview');
+  container.innerHTML='';
+  Array.from(input.files).forEach((file,i)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const wrap=document.createElement('div');
+      wrap.style.cssText='position:relative;display:inline-block;';
+      wrap.innerHTML=`
+        <img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">
+        ${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
+      container.appendChild(wrap);
+    };
+    r.readAsDataURL(file);
+  });
 }
 
 /* ============== AUTH ============== */
@@ -1045,7 +1169,7 @@ auth.onAuthStateChanged(user=>{
 });
 
 function hideAllPages(){
-  ['auth','verifyEmail','home','organizer','customer'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['auth','verifyEmail','home','organizer','customer','profilePage'].forEach(id=>document.getElementById(id).classList.add('hidden'));
 }
 
 function showVerifyScreen(user){
@@ -1112,7 +1236,7 @@ function showSection(id){
   document.getElementById(id).querySelector('[class*="wrap"],[class*="Wrap"]')?.classList.add('fade-in');
 
   if(id==='organizer'){ loadOrgStats(); loadMyEvents(); }
-  if(id==='customer'){ loadOrganizers(); }
+  if(id==='customer'){ seedOrganizers().then(()=>loadOrganizers()); }
 }
 
 /* ============== ORG TABS ============== */
@@ -1138,33 +1262,45 @@ function switchCustTab(name, btn){
 }
 
 /* ============== ORGANIZER PROFILE FORM ============== */
-document.getElementById('orgForm').addEventListener('submit',e=>{
+document.getElementById('orgForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const file=document.getElementById('orgPhoto').files[0];
-  if(!file){showToast('Please select a profile photo','error'); return;}
+  const files=document.getElementById('orgPhoto').files;
+  if(!files.length){showToast('Please select at least one photo','error'); return;}
   const btn=e.target.querySelector('button[type=submit]');
   btn.textContent='Uploading...'; btn.disabled=true;
-  const r=new FileReader();
-  r.onload=async()=>{
-    await db.collection('organizers').add({
-      name:document.getElementById('orgName').value,
-      phone:document.getElementById('orgPhone').value,
-      email:document.getElementById('orgEmail').value,
-      category:document.getElementById('orgCategory').value,
-      bio:document.getElementById('orgBio').value,
-      location:document.getElementById('orgLocation').value,
-      photo:r.result,
-      owner:currentUser.email,
-      rating:0, reviewCount:0,
-      createdAt:new Date()
-    });
-    document.getElementById('orgForm').reset();
-    document.getElementById('orgImgPreview').style.display='none';
-    btn.textContent='✦ Publish Profile'; btn.disabled=false;
-    showToast('✦ Profile published!');
-    loadOrgStats();
-  };
-  r.readAsDataURL(file);
+
+  // Read all images as base64
+  const readFile=f=>new Promise(res=>{
+    const r=new FileReader();
+    r.onload=()=>res(r.result);
+    r.readAsDataURL(f);
+  });
+
+  const photos=await Promise.all(Array.from(files).map(readFile));
+
+  await db.collection('organizers').add({
+    name:document.getElementById('orgName').value,
+    phone:document.getElementById('orgPhone').value,
+    whatsapp:document.getElementById('orgWhatsapp').value||document.getElementById('orgPhone').value,
+    email:document.getElementById('orgEmail').value,
+    category:document.getElementById('orgCategory').value,
+    bio:document.getElementById('orgBio').value,
+    location:document.getElementById('orgLocation').value,
+    experience:document.getElementById('orgExp').value||'',
+    priceMin:document.getElementById('orgPriceMin').value||0,
+    priceMax:document.getElementById('orgPriceMax').value||0,
+    photo:photos[0],
+    photos:photos,
+    owner:currentUser.email,
+    rating:0, reviewCount:0,
+    createdAt:new Date()
+  });
+
+  document.getElementById('orgForm').reset();
+  document.getElementById('orgImgsPreview').innerHTML='';
+  btn.textContent='✦ Publish Profile'; btn.disabled=false;
+  showToast('✦ Profile published!');
+  loadOrgStats();
 });
 
 /* ============== ORG STATS ============== */
@@ -1307,11 +1443,25 @@ async function loadMyEnquiries(){
 async function loadOrganizers(){
   const el=document.getElementById('list');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('organizers').orderBy('createdAt','desc').get();
-  allOrganizers=[];
-  snap.forEach(doc=>allOrganizers.push({id:doc.id,...doc.data()}));
-  buildCatPills();
-  renderOrganizers(allOrganizers);
+  try{
+    const snap=await db.collection('organizers').get();
+    allOrganizers=[];
+    snap.forEach(doc=>allOrganizers.push({id:doc.id,...doc.data()}));
+    // Sort by createdAt client side — no index needed
+    allOrganizers.sort((a,b)=>{
+      const at=a.createdAt?.toDate?.()?.getTime()||0;
+      const bt=b.createdAt?.toDate?.()?.getTime()||0;
+      return bt-at;
+    });
+    // Hide seed banner if organizers exist
+    const banner=document.getElementById('seedBanner');
+    if(banner) banner.style.display=allOrganizers.length>0?'none':'flex';
+    buildCatPills();
+    renderOrganizers(allOrganizers);
+  }catch(err){
+    el.innerHTML=`<p style="color:var(--muted);font-size:14px;">⚠️ Error loading: ${err.message}</p>`;
+    console.error(err);
+  }
 }
 
 function buildCatPills(){
@@ -1343,14 +1493,21 @@ function filterOrganizers(){
 
 function renderOrganizers(list){
   const el=document.getElementById('list');
+  const banner=document.getElementById('seedBanner');
   el.innerHTML='';
-  if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No organizers found.</p></div>'; return;}
+  if(!list.length){
+    el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No organizers found.</p></div>';
+    if(allOrganizers.length===0 && banner) banner.style.display='flex';
+    return;
+  }
+  if(banner) banner.style.display='none';
   list.forEach(o=>{
     const isOwner=o.owner===currentUser?.email;
     const stars=renderStars(o.rating||0);
     const card=document.createElement('div');
     card.className='org-card';
-    card.onclick=()=>openOrgModal(o);
+    card.style.cursor='pointer';
+    card.onclick=()=>openProfilePage(o);
     card.innerHTML=`
       <div class="org-img-wrap">
         <img src="${o.photo}" alt="${o.name}" loading="lazy">
@@ -1360,14 +1517,16 @@ function renderOrganizers(list){
         ${isOwner?'<div class="badge" style="margin-bottom:8px;">✦ Your listing</div>':''}
         <div class="org-name">${o.name}</div>
         ${o.location?`<div class="org-meta">📍 ${o.location}</div>`:''}
+        <div class="org-meta">📞 ${o.phone}</div>
+        ${o.whatsapp?`<div class="org-meta" style="color:#25d366;">💬 ${o.whatsapp}</div>`:''}
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
           <span class="stars">${stars}</span>
           <span class="stars-count">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+')':(o.reviewCount?o.rating.toFixed(1)+' ('+o.reviewCount+')':'No reviews')}</span>
         </div>
       </div>
-      <div class="org-footer">
+      <div class="org-footer" onclick="openProfilePage(allOrganizers.find(x=>x.id==='${o.id}'))" style="cursor:pointer;">
         <span style="font-size:12px;color:var(--muted);">${o.email.split('@')[0]}@…</span>
-        <span style="font-size:12px;color:var(--accent);font-weight:600;">View →</span>
+        <span style="font-size:12px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:4px;">View <span style="font-size:16px;">→</span></span>
       </div>`;
     el.appendChild(card);
   });
@@ -1400,9 +1559,17 @@ async function openOrgModal(o){
   <div class="modal-overlay" onclick="closeModal(event)">
     <div class="modal" id="mainModal">
       <div class="modal-img-wrap">
-        <img class="modal-img" src="${o.photo}" alt="${o.name}">
+        <img class="modal-img" id="modalMainImg" src="${o.photo}" alt="${o.name}">
         <div class="modal-close" onclick="closeModalDirect()">✕</div>
       </div>
+      ${o.photos && o.photos.length>1?`
+      <div style="display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto;">
+        ${o.photos.map((p,i)=>`
+          <img src="${p}" onclick="document.getElementById('modalMainImg').src='${p}'"
+            style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'var(--border)'};flex-shrink:0;transition:all 0.2s;"
+            onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='${i===0?'var(--accent)':'var(--border)'}'">
+        `).join('')}
+      </div>`:''}
       <div class="modal-body">
         ${o.category?`<div class="badge" style="margin-bottom:12px;">${o.category}</div>`:''}
         <div class="modal-name">${o.name}</div>
@@ -1413,13 +1580,14 @@ async function openOrgModal(o){
         ${o.bio?`<p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;">${o.bio}</p>`:''}
         <div class="info-grid">
           <div class="info-item"><div class="info-item-label">Phone</div><div class="info-item-value">📞 ${o.phone}</div></div>
+          <div class="info-item"><div class="info-item-label">WhatsApp</div><div class="info-item-value">💬 ${o.whatsapp||o.phone}</div></div>
           <div class="info-item"><div class="info-item-label">Email</div><div class="info-item-value">✉ ${o.email}</div></div>
           ${o.location?`<div class="info-item"><div class="info-item-label">Location</div><div class="info-item-value">📍 ${o.location}</div></div>`:''}
-          <div class="info-item"><div class="info-item-label">Member Since</div><div class="info-item-value">${o.createdAt?.toDate?.()?.toLocaleDateString()||'—'}</div></div>
         </div>
         <div class="modal-actions">
           ${!isOwner?`<button class="btn-primary btn-sm" onclick="scrollToEnquiry()">📩 Send Enquiry</button>`:''}
           <button class="btn-secondary btn-sm" onclick="window.open('tel:${o.phone}')">📞 Call</button>
+          ${!isOwner?`<button class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;" onclick="window.open('https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}','_blank')">💬 WhatsApp</button>`:''}
           ${isOwner?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">Delete</button>`:''}
         </div>
 
@@ -1550,3 +1718,302 @@ function getCatColor(cat){
       CEO &amp; Founder — <strong style="color:var(--text);">Ritam Mitra</strong> &nbsp;|&nbsp;
       <a href="tel:7384949090" style="color:var(--accent);text-decoration:none;">📞 7384949090</a> &nbsp;|&nbsp;
       <a href="/cdn-cgi/l/email-protection#650817170c110408080c111704250208040c094b060a08" style="color:var(--accent);text-decoration:none;">✉ <span class="__cf_email__" data-cfemail="bdd0cfcfd4c9dcd0d0d4c9cfdcfddad0dcd4d193ded2d0">[email&#160;protected]</span></a
+<!-- ===== PROFILE VIEW PAGE ===== -->
+<div class="hidden" id="profilePage" style="position:relative;z-index:5;min-height:calc(100vh - 67px);padding:0 0 80px;">
+  <div id="profileHero" style="position:relative;height:300px;overflow:hidden;background:var(--surface2);">
+    <img id="profileHeroImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%);"></div>
+    <button onclick="closeProfilePage()" style="position:absolute;top:20px;left:20px;background:rgba(0,0,0,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:10px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;">← Back</button>
+    <div id="profileThumbs" style="position:absolute;bottom:16px;right:20px;display:flex;gap:8px;"></div>
+  </div>
+
+  <div style="max-width:940px;margin:0 auto;padding:0 20px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:-40px;position:relative;z-index:2;margin-bottom:26px;">
+      <div>
+        <div id="profileCategory" style="margin-bottom:10px;"></div>
+        <div id="profileName" style="font-family:'Playfair Display',serif;font-size:38px;font-weight:900;line-height:1.05;margin-bottom:10px;"></div>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div id="profileLocation" style="font-size:13px;color:var(--muted);"></div>
+          <div id="profileExp" style="font-size:13px;color:var(--muted);"></div>
+          <div id="profileStars"></div>
+        </div>
+      </div>
+      <div id="profilePriceBadge" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 24px;text-align:center;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;">Budget Range</div>
+        <div id="profilePriceText" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--accent);"></div>
+      </div>
+    </div>
+
+    <div id="profileActions" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start;">
+      <div>
+        <!-- ABOUT -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">About</h3>
+          <p id="profileBio" style="font-size:14px;color:var(--muted);line-height:1.8;"></p>
+        </div>
+
+        <!-- SERVICES -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">🎭 Specialization</h3>
+          <div id="profileServices" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+
+        <!-- GALLERY -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">📸 Work Gallery</h3>
+          <div id="profileGallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+          <div id="profileNoGallery" style="display:none;font-size:13px;color:var(--muted);">No photos uploaded yet.</div>
+        </div>
+
+        <!-- REVIEWS -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+            <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">⭐ Reviews</h3>
+            <div id="profileRatingBig" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--accent);"></div>
+          </div>
+          <div id="profileReviews"></div>
+          <div id="profileReviewForm"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT STICKY -->
+      <div style="position:sticky;top:90px;display:flex;flex-direction:column;gap:16px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:16px;">📩 Send Enquiry</h3>
+          <div id="profileEnquiryForm"></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:16px;">📋 Contact Info</h3>
+          <div id="profileContactInfo"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====== PROFILE PAGE ====== */
+let currentProfileOrg=null;
+
+function openProfilePage(o){
+  currentProfileOrg=o;
+  hideAllPages();
+  document.getElementById('profilePage').classList.remove('hidden');
+  window.scrollTo(0,0);
+
+  // HERO IMAGE
+  document.getElementById('profileHeroImg').src=o.photo||'';
+
+  // THUMBNAILS
+  const thumbs=document.getElementById('profileThumbs');
+  thumbs.innerHTML='';
+  if(o.photos&&o.photos.length>1){
+    o.photos.forEach((p,i)=>{
+      const img=document.createElement('img');
+      img.src=p;
+      img.style.cssText=`width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'rgba(255,255,255,0.3)'};transition:all 0.2s;`;
+      img.onclick=()=>{
+        document.getElementById('profileHeroImg').src=p;
+        thumbs.querySelectorAll('img').forEach(t=>t.style.borderColor='rgba(255,255,255,0.3)');
+        img.style.borderColor='var(--accent)';
+      };
+      thumbs.appendChild(img);
+    });
+  }
+
+  // CATEGORY
+  document.getElementById('profileCategory').innerHTML=o.category?`<span class="badge">${o.category}</span>`:'';
+
+  // NAME
+  document.getElementById('profileName').textContent=o.name;
+
+  // META
+  document.getElementById('profileLocation').innerHTML=o.location?`📍 ${o.location}`:'';
+  document.getElementById('profileExp').innerHTML=o.experience?`🏆 ${o.experience} yrs experience`:'';
+
+  // STARS
+  const stars=renderStars(o.rating||0);
+  document.getElementById('profileStars').innerHTML=`<span style="color:var(--accent);font-size:15px;letter-spacing:2px;">${stars}</span> <span style="font-size:12px;color:var(--muted);">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+' reviews)':'No reviews yet'}</span>`;
+
+  // PRICE
+  const p=document.getElementById('profilePriceText');
+  if(o.priceMin||o.priceMax){
+    p.textContent=`₹${Number(o.priceMin||0).toLocaleString()} – ₹${Number(o.priceMax||0).toLocaleString()}`;
+  } else {
+    p.textContent='Contact for pricing';
+    p.style.fontSize='14px';
+  }
+
+  // ACTION BUTTONS
+  const isOwner=o.owner===currentUser?.email;
+  document.getElementById('profileActions').innerHTML=`
+    ${!isOwner?`<button class="btn-primary btn-sm" onclick="document.getElementById('profileEnquiryForm').scrollIntoView({behavior:'smooth'})">📩 Send Enquiry</button>`:''}
+    <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;">📞 Call Now</a>
+    <a href="https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;">💬 WhatsApp</a>
+    ${isOwner?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
+  `;
+
+  // BIO
+  document.getElementById('profileBio').textContent=o.bio||'No description provided.';
+
+  // SERVICES
+  const allCats=['Wedding','Corporate','Birthday','Concert','Sports','Conference','Social'];
+  const svcs=document.getElementById('profileServices');
+  if(o.category){
+    svcs.innerHTML=allCats.map(c=>`
+      <span style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;
+        background:${c===o.category?'var(--accent)':'var(--surface2)'};
+        color:${c===o.category?'#0a0a0f':'var(--muted)'};
+        border:1px solid ${c===o.category?'var(--accent)':'var(--border)'};">
+        ${c}
+      </span>`).join('');
+  } else {
+    svcs.innerHTML='<span style="color:var(--muted);font-size:13px;">Not specified</span>';
+  }
+
+  // GALLERY
+  const gallery=document.getElementById('profileGallery');
+  const noGallery=document.getElementById('profileNoGallery');
+  gallery.innerHTML='';
+  if(o.photos&&o.photos.length>0){
+    noGallery.style.display='none';
+    o.photos.forEach(p=>{
+      const div=document.createElement('div');
+      div.style.cssText='aspect-ratio:1;overflow:hidden;border-radius:10px;cursor:pointer;';
+      div.innerHTML=`<img src="${p}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('profileHeroImg').src='${p}';window.scrollTo(0,0);">`;
+      gallery.appendChild(div);
+    });
+  } else {
+    noGallery.style.display='block';
+  }
+
+  // CONTACT INFO
+  document.getElementById('profileContactInfo').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;">
+        <span style="font-size:18px;">📞</span>
+        <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Phone</div>
+        <div style="font-size:14px;font-weight:600;">${o.phone}</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;">
+        <span style="font-size:18px;">💬</span>
+        <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">WhatsApp</div>
+        <div style="font-size:14px;font-weight:600;color:#25d366;">${o.whatsapp||o.phone}</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;">
+        <span style="font-size:18px;">✉</span>
+        <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Email</div>
+        <div style="font-size:13px;font-weight:600;word-break:break-all;">${o.email}</div></div>
+      </div>
+      ${o.location?`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;">
+        <span style="font-size:18px;">📍</span>
+        <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Location</div>
+        <div style="font-size:14px;font-weight:600;">${o.location}</div></div>
+      </div>`:''}
+    </div>`;
+
+  // LOAD REVIEWS
+  loadProfileReviews(o);
+
+  // ENQUIRY FORM
+  if(!isOwner){
+    document.getElementById('profileEnquiryForm').innerHTML=`
+      <div class="form-group"><input type="text" id="penqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
+      <div class="form-group" style="margin-top:10px;"><input type="tel" id="penqPhone" placeholder="Your phone / WhatsApp" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
+      <div class="form-group" style="margin-top:10px;"><textarea id="penqMsg" rows="4" placeholder="Describe your event — date, type, guests..." style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;"></textarea></div>
+      <button class="btn-primary" style="margin-top:12px;" onclick="sendProfileEnquiry('${o.id}','${o.owner}','${o.name}')">Send Message →</button>`;
+  } else {
+    document.getElementById('profileEnquiryForm').innerHTML=`<p style="font-size:13px;color:var(--muted);">This is your own listing.</p>`;
+  }
+}
+
+async function loadProfileReviews(o){
+  const isOwner=o.owner===currentUser?.email;
+  const snap=await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
+  const reviews=[];
+  snap.forEach(d=>reviews.push(d.data()));
+
+  const ratingBig=document.getElementById('profileRatingBig');
+  ratingBig.textContent=o.rating?o.rating.toFixed(1)+' ★':'—';
+
+  const rv=document.getElementById('profileReviews');
+  rv.innerHTML=reviews.length?reviews.map(r=>`
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:13px;font-weight:600;">${r.authorName||r.authorEmail.split('@')[0]}</span>
+        <span style="color:var(--accent);font-size:13px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)} <span style="color:var(--muted);font-size:11px;">${r.createdAt?.toDate?.()?.toLocaleDateString()||''}</span></span>
+      </div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;">${r.text}</div>
+    </div>`).join('')
+  :'<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">No reviews yet. Be the first!</p>';
+
+  if(!isOwner){
+    document.getElementById('profileReviewForm').innerHTML=`
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Leave a Review</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;font-size:24px;cursor:pointer;" id="pStarPicker">
+          <span onclick="setPStar(1)" style="opacity:0.3;transition:0.15s;">★</span>
+          <span onclick="setPStar(2)" style="opacity:0.3;transition:0.15s;">★</span>
+          <span onclick="setPStar(3)" style="opacity:0.3;transition:0.15s;">★</span>
+          <span onclick="setPStar(4)" style="opacity:0.3;transition:0.15s;">★</span>
+          <span onclick="setPStar(5)" style="opacity:0.3;transition:0.15s;">★</span>
+        </div>
+        <textarea id="pReviewText" rows="3" placeholder="Share your experience..." style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:vertical;margin-bottom:10px;"></textarea>
+        <button class="btn-purple btn-sm" onclick="submitProfileReview('${o.id}','${o.owner}','${o.name}')">Submit Review</button>
+      </div>`;
+  }
+}
+
+let pSelectedStar=0;
+function setPStar(n){
+  pSelectedStar=n;
+  document.querySelectorAll('#pStarPicker span').forEach((s,i)=>{
+    s.style.opacity=i<n?'1':'0.3';
+    s.style.color=i<n?'var(--accent)':'var(--text)';
+  });
+}
+
+async function submitProfileReview(orgId,orgOwner,orgName){
+  if(!pSelectedStar){showToast('Please select a star rating','error'); return;}
+  const text=document.getElementById('pReviewText').value.trim();
+  if(!text){showToast('Please write something','error'); return;}
+  await db.collection('reviews').add({
+    orgId,orgOwner,orgName,rating:pSelectedStar,text,
+    authorEmail:currentUser.email,
+    authorName:currentUser.email.split('@')[0],
+    createdAt:new Date()
+  });
+  const allRev=await db.collection('reviews').where('orgId','==',orgId).get();
+  let total=0; allRev.forEach(d=>total+=d.data().rating);
+  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size,reviewCount:allRev.size});
+  showToast('⭐ Review submitted!');
+  const updated={...currentProfileOrg,rating:total/allRev.size,reviewCount:allRev.size};
+  currentProfileOrg=updated;
+  loadProfileReviews(updated);
+  loadOrganizers();
+}
+
+async function sendProfileEnquiry(orgId,toEmail,toName){
+  const msg=document.getElementById('penqMsg').value.trim();
+  if(!msg){showToast('Please write a message','error'); return;}
+  await db.collection('enquiries').add({
+    orgId,toEmail,toName,
+    fromEmail:currentUser.email,
+    fromName:document.getElementById('penqName').value.trim(),
+    fromPhone:document.getElementById('penqPhone').value.trim(),
+    message:msg,
+    createdAt:new Date()
+  });
+  showToast('📩 Enquiry sent!');
+  document.getElementById('penqMsg').value='';
+  document.getElementById('penqPhone').value='';
+}
+
+function closeProfilePage(){
+  document.getElementById('profilePage').classList.add('hidden');
+  document.getElementById('customer').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+</script>
