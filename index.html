@@ -276,6 +276,22 @@ header {
 .opt-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 5px; }
 .opt-desc { font-size: 12px; color: var(--muted); }
 
+/* ===== CATEGORY CHIPS ===== */
+.cat-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 20px;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+  user-select: none; color: var(--text);
+}
+.cat-chip input[type=checkbox] { display: none; }
+.cat-chip.selected {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
 /* ====== BADGE ====== */
 .badge {
   display: inline-block; padding: 4px 12px;
@@ -752,17 +768,34 @@ body.light header { background: rgba(240,236,228,0.85); }
   <div class="home-wrap fade-in">
     <div class="badge">✦ Welcome back</div>
     <h1 class="home-title">Welcome to <em>Utsaav.</em></h1>
-    <p class="home-sub">India ka apna event organizer platform.</p>
-    <div class="option-cards">
+    <p class="home-sub">India's event organizer discovery platform. What would you like to do?</p>
+    <div class="option-cards" style="grid-template-columns:1fr 1fr;">
       <div class="option-card o-opt" onclick="showSection('organizer')">
         <span class="opt-icon">🎭</span>
-        <div class="opt-title">Organizer Panel</div>
-        <div class="opt-desc">Manage profile, events & enquiries</div>
+        <div class="opt-title">I'm an Organizer</div>
+        <div class="opt-desc">List your event business, post events & get enquiries</div>
       </div>
       <div class="option-card c-opt" onclick="showSection('customer')">
-        <span class="opt-icon">✨</span>
-        <div class="opt-title">Explore Organizers</div>
-        <div class="opt-desc">Discover, rate & book professionals</div>
+        <span class="opt-icon">🔍</span>
+        <div class="opt-title">I'm a Customer</div>
+        <div class="opt-desc">Find & contact event organizers near you</div>
+      </div>
+    </div>
+    <div class="option-cards" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:18px;">
+      <div class="option-card" onclick="showSection('vendor')" style="padding:20px 14px;">
+        <span class="opt-icon" style="font-size:28px;">📸</span>
+        <div class="opt-title" style="font-size:14px;">Photographer</div>
+        <div class="opt-desc" style="font-size:12px;">List your photography services</div>
+      </div>
+      <div class="option-card" onclick="showSection('vendor')" style="padding:20px 14px;">
+        <span class="opt-icon" style="font-size:28px;">💄</span>
+        <div class="opt-title" style="font-size:14px;">Makeup Artist</div>
+        <div class="opt-desc" style="font-size:12px;">Showcase your makeup work</div>
+      </div>
+      <div class="option-card" onclick="showSection('vendor')" style="padding:20px 14px;">
+        <span class="opt-icon" style="font-size:28px;">🎁</span>
+        <div class="opt-title" style="font-size:14px;">Return Gifts</div>
+        <div class="opt-desc" style="font-size:12px;">Wedding favors & gift hampers</div>
       </div>
     </div>
     <button class="btn-secondary" onclick="logout()">← Sign out</button>
@@ -803,18 +836,21 @@ body.light header { background: rgba(240,236,228,0.85); }
               <input type="text" id="orgName" placeholder="Name or company" required>
             </div>
             <div class="form-group">
-              <label>Category</label>
-              <select id="orgCategory" required>
-                <option value="">Select category</option>
-                <option>Wedding</option>
-                <option>Corporate</option>
-                <option>Birthday</option>
-                <option>Concert</option>
-                <option>Sports</option>
-                <option>Conference</option>
-                <option>Social</option>
-                <option>Other</option>
-              </select>
+              <label>Company Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+              <input type="text" id="orgCompany" placeholder="Your company / brand name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Categories <span style="font-size:11px;color:var(--muted);">(select all that apply)</span></label>
+            <div id="catCheckboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+              <label class="cat-chip"><input type="checkbox" value="Wedding"> 💍 Wedding</label>
+              <label class="cat-chip"><input type="checkbox" value="Birthday"> 🎂 Birthday</label>
+              <label class="cat-chip"><input type="checkbox" value="Corporate"> 🏢 Corporate</label>
+              <label class="cat-chip"><input type="checkbox" value="Concert"> 🎵 Concert</label>
+              <label class="cat-chip"><input type="checkbox" value="Sports"> 🏅 Sports</label>
+              <label class="cat-chip"><input type="checkbox" value="Conference"> 🎤 Conference</label>
+              <label class="cat-chip"><input type="checkbox" value="Social"> 🎊 Social</label>
+              <label class="cat-chip"><input type="checkbox" value="Other"> ✨ Other</label>
             </div>
           </div>
           <div class="form-row">
@@ -932,6 +968,7 @@ body.light header { background: rgba(240,236,228,0.85); }
     <div class="tabs">
       <button class="tab active" onclick="switchCustTab('browse',this)">🔍 Browse</button>
       <button class="tab" onclick="switchCustTab('events',this)">🎪 Events</button>
+      <button class="tab" onclick="switchCustTab('vendors',this)">📸 Photographers & More</button>
       <button class="tab" onclick="switchCustTab('myenquiries',this)">📋 My Enquiries</button>
     </div>
 
@@ -963,6 +1000,17 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="events-grid" id="eventsGrid">
         <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
+    </div>
+
+    <!-- VENDORS TAB -->
+    <div id="custTabVendors" class="hidden">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="vendorFilterBtns">
+        <button class="vendor-type-btn active" onclick="filterVendors('all',this)">All</button>
+        <button class="vendor-type-btn" onclick="filterVendors('photographer',this)">📸 Photographers</button>
+        <button class="vendor-type-btn" onclick="filterVendors('makeup',this)">💄 Makeup Artists</button>
+        <button class="vendor-type-btn" onclick="filterVendors('gifts',this)">🎁 Return Gifts</button>
+      </div>
+      <div id="vendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
 
     <!-- MY ENQUIRIES TAB -->
@@ -1056,7 +1104,17 @@ function getSeedData(){
   ];
 }
 
-/* ============== STATE ============== */
+/* ============== CATEGORY CHIP TOGGLE ============== */
+document.addEventListener('click',e=>{
+  const chip=e.target.closest('.cat-chip');
+  if(chip && chip.closest('#catCheckboxes')){
+    const cb=chip.querySelector('input[type=checkbox]');
+    cb.checked=!cb.checked;
+    chip.classList.toggle('selected',cb.checked);
+  }
+});
+
+
 let isLogin=true;
 let allOrganizers=[];
 let activeCategory='All';
@@ -1169,7 +1227,7 @@ auth.onAuthStateChanged(user=>{
 });
 
 function hideAllPages(){
-  ['auth','verifyEmail','home','organizer','customer','profilePage'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['auth','verifyEmail','home','organizer','customer','profilePage','vendor'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
 }
 
 function showVerifyScreen(user){
@@ -1255,10 +1313,11 @@ function switchOrgTab(name, btn){
 function switchCustTab(name, btn){
   btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  ['custTabBrowse','custTabEvents','custTabMyenquiries'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  ['custTabBrowse','custTabEvents','custTabVendors','custTabMyenquiries'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
   document.getElementById('custTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
   if(name==='events') loadAllEvents();
   if(name==='myenquiries') loadMyEnquiries();
+  if(name==='vendors') loadVendors('all');
 }
 
 /* ============== ORGANIZER PROFILE FORM ============== */
@@ -1276,14 +1335,18 @@ document.getElementById('orgForm').addEventListener('submit',async e=>{
     r.readAsDataURL(f);
   });
 
+  const checkedCats=[...document.querySelectorAll('#catCheckboxes input:checked')].map(c=>c.value);
+  if(!checkedCats.length){showToast('Please select at least one category','error'); return;}
   const photos=await Promise.all(Array.from(files).map(readFile));
 
   await db.collection('organizers').add({
     name:document.getElementById('orgName').value,
+    company:document.getElementById('orgCompany').value||'',
     phone:document.getElementById('orgPhone').value,
     whatsapp:document.getElementById('orgWhatsapp').value||document.getElementById('orgPhone').value,
     email:document.getElementById('orgEmail').value,
-    category:document.getElementById('orgCategory').value,
+    category:checkedCats[0],       // primary category for card display
+    categories:checkedCats,         // all selected categories
     bio:document.getElementById('orgBio').value,
     location:document.getElementById('orgLocation').value,
     experience:document.getElementById('orgExp').value||'',
@@ -1298,6 +1361,9 @@ document.getElementById('orgForm').addEventListener('submit',async e=>{
 
   document.getElementById('orgForm').reset();
   document.getElementById('orgImgsPreview').innerHTML='';
+  // Reset category chips
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('#catCheckboxes input').forEach(c=>c.checked=false);
   btn.textContent='✦ Publish Profile'; btn.disabled=false;
   showToast('✦ Profile published!');
   loadOrgStats();
@@ -2015,5 +2081,348 @@ function closeProfilePage(){
   document.getElementById('profilePage').classList.add('hidden');
   document.getElementById('customer').classList.remove('hidden');
   window.scrollTo(0,0);
+}
+</script>
+
+<!-- ===== VENDOR PAGE (Photographer / Makeup / Return Gifts) ===== -->
+<div class="hidden" id="vendor" style="position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;">
+  <div style="width:100%;max-width:720px;">
+    <div class="panel-header">
+      <div class="panel-back" onclick="showSection('home')">←</div>
+      <div><div class="panel-title">Creative <span>Professionals</span></div></div>
+    </div>
+
+    <!-- TYPE SELECTOR -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <button class="vendor-type-btn active" onclick="selectVendorType('photographer',this)">📸 Photographer</button>
+      <button class="vendor-type-btn" onclick="selectVendorType('makeup',this)">💄 Makeup Artist</button>
+      <button class="vendor-type-btn" onclick="selectVendorType('gifts',this)">🎁 Return Gifts</button>
+    </div>
+
+    <!-- FORM -->
+    <div class="glass-card">
+      <div id="vendorTypeLabel" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:18px;color:var(--accent);">📸 Photographer Registration</div>
+      <form id="vendorForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="vName" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Company / Brand Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+            <input type="text" id="vCompany" placeholder="Studio / brand name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="vPhone" placeholder="+91 00000 00000" required>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="vWhatsapp" placeholder="+91 WhatsApp number">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="vEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>Existing Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+            <input type="url" id="vWebsite" placeholder="https://yourwebsite.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Location / City</label>
+          <input type="text" id="vLocation" placeholder="e.g. Midnapore, Kolkata..." required>
+        </div>
+        <div class="form-group">
+          <label>Bio / Description</label>
+          <textarea id="vBio" rows="3" placeholder="Tell clients about your work and experience..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Years of Experience</label>
+            <input type="number" id="vExp" placeholder="e.g. 3" min="0">
+          </div>
+          <div class="form-group" id="vSpecialtyGroup">
+            <label id="vSpecialtyLabel">Specialty</label>
+            <input type="text" id="vSpecialty" placeholder="e.g. Wedding, Portrait, Fashion">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Min Price (₹)</label>
+            <input type="number" id="vPriceMin" placeholder="e.g. 5000" min="0">
+          </div>
+          <div class="form-group">
+            <label>Max Price (₹)</label>
+            <input type="number" id="vPriceMax" placeholder="e.g. 50000" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Work Portfolio — Google Drive Link <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+          <input type="url" id="vDriveLink" placeholder="https://drive.google.com/drive/folders/...">
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">📂 Set sharing to "Anyone with link" then paste here.</div>
+        </div>
+        <div class="form-group" id="vPhotoGroup">
+          <label>Work Photos <span style="font-size:11px;color:var(--muted);">(max 10 photos — only for Photographer & Makeup)</span></label>
+          <div id="vPhotoDropzone" onclick="document.getElementById('vPhotos').click()" style="border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:32px;margin-bottom:8px;">📷</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Click to select photos</div>
+            <div style="font-size:12px;color:var(--muted);">JPG, PNG — max 10 photos</div>
+            <input type="file" id="vPhotos" accept="image/*" multiple style="display:none;" onchange="previewVendorPhotos(this)">
+          </div>
+          <!-- PREVIEW GRID -->
+          <div id="vPhotosPreview" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;"></div>
+          <div id="vPhotoCount" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top:8px;">✦ Publish Profile</button>
+      </form>
+    </div>
+
+    <!-- MY VENDOR LISTINGS -->
+    <div style="margin-top:28px;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">My Listings</div>
+      <div id="myVendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.vendor-type-btn {
+  padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.vendor-type-btn.active, .vendor-type-btn:hover {
+  background: rgba(201,168,76,0.12); border-color: var(--accent); color: var(--accent);
+}
+</style>
+
+<script>
+/* ====== VENDOR PAGE ====== */
+let currentVendorType = 'photographer';
+
+function selectVendorType(type, btn){
+  currentVendorType = type;
+  document.querySelectorAll('.vendor-type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const labels = {
+    photographer: { title:'📸 Photographer Registration', specialty:'Specialty', specialtyPlaceholder:'e.g. Wedding, Portrait, Fashion' },
+    makeup:       { title:'💄 Makeup Artist Registration', specialty:'Makeup Specialty', specialtyPlaceholder:'e.g. Bridal, Party, HD Makeup' },
+    gifts:        { title:'🎁 Return Gifts / Wedding Favors Registration', specialty:'Products Offered', specialtyPlaceholder:'e.g. Gift hampers, Dry fruits, Customized gifts' }
+  };
+  const l = labels[type];
+  document.getElementById('vendorTypeLabel').textContent = l.title;
+  document.getElementById('vSpecialtyLabel').textContent = l.specialty;
+  document.getElementById('vSpecialty').placeholder = l.specialtyPlaceholder;
+  // Hide photo upload for gifts, show for photographer & makeup
+  const photoGroup = document.getElementById('vPhotoGroup');
+  if(photoGroup) photoGroup.style.display = type==='gifts' ? 'none' : 'block';
+  loadMyVendorListings();
+}
+
+function previewVendorPhotos(input){
+  const files = Array.from(input.files);
+  if(files.length > 10){
+    showToast('Max 10 photos allowed!','error');
+    input.value='';
+    return;
+  }
+  const preview = document.getElementById('vPhotosPreview');
+  const count = document.getElementById('vPhotoCount');
+  preview.innerHTML = '';
+  count.textContent = `${files.length} photo${files.length>1?'s':''} selected`;
+
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;border:2px solid var(--border);';
+      wrap.innerHTML = `
+        <img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">
+        ${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">COVER</div>':''}
+        <button type="button" onclick="removeVendorPhoto(${i})" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);border:none;color:#fff;width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>`;
+      preview.appendChild(wrap);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeVendorPhoto(index){
+  const input = document.getElementById('vPhotos');
+  const dt = new DataTransfer();
+  Array.from(input.files).forEach((f, i) => { if(i !== index) dt.items.add(f); });
+  input.files = dt.files;
+  previewVendorPhotos(input);
+}
+
+document.getElementById('showSection') || null;
+
+// Show vendor page
+const _origShowSection = window.showSection;
+window.showSection = function(id){
+  if(id==='vendor'){
+    hideAllPages();
+    document.getElementById('vendor').classList.remove('hidden');
+    window.scrollTo(0,0);
+    loadMyVendorListings();
+    return;
+  }
+  _origShowSection(id);
+};
+
+// Vendor form submit
+document.getElementById('vendorForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const driveLink = document.getElementById('vDriveLink').value.trim();
+  if(driveLink && !driveLink.includes('drive.google.com')){
+    showToast('Please enter a valid Google Drive link','error'); return;
+  }
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.textContent='Publishing...'; btn.disabled=true;
+
+  // Read photos if any (photographer/makeup only)
+  let photos = [];
+  const photoFiles = document.getElementById('vPhotos').files;
+  if(photoFiles.length > 0 && currentVendorType !== 'gifts'){
+    const readF = f => new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); });
+    photos = await Promise.all(Array.from(photoFiles).map(readF));
+  }
+
+  await db.collection('vendors').add({
+    type: currentVendorType,
+    name: document.getElementById('vName').value,
+    company: document.getElementById('vCompany').value||'',
+    phone: document.getElementById('vPhone').value,
+    whatsapp: document.getElementById('vWhatsapp').value || document.getElementById('vPhone').value,
+    email: document.getElementById('vEmail').value,
+    website: document.getElementById('vWebsite').value||'',
+    location: document.getElementById('vLocation').value,
+    bio: document.getElementById('vBio').value||'',
+    experience: document.getElementById('vExp').value||'',
+    specialty: document.getElementById('vSpecialty').value||'',
+    priceMin: document.getElementById('vPriceMin').value||0,
+    priceMax: document.getElementById('vPriceMax').value||0,
+    driveLink: driveLink,
+    photos: photos,
+    photo: photos[0]||'',
+    owner: currentUser.email,
+    rating:0, reviewCount:0,
+    createdAt: new Date()
+  });
+
+  document.getElementById('vendorForm').reset();
+  document.getElementById('vPhotosPreview').innerHTML='';
+  document.getElementById('vPhotoCount').textContent='';
+  btn.textContent='✦ Publish Profile'; btn.disabled=false;
+  showToast('✦ Profile published!');
+  loadMyVendorListings();
+});
+
+async function loadMyVendorListings(){
+  const el=document.getElementById('myVendorList');
+  if(!el) return;
+  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap=await db.collection('vendors').where('owner','==',currentUser.email).get();
+  if(snap.empty){el.innerHTML='<p style="color:var(--muted);font-size:14px;">No listings yet.</p>'; return;}
+  el.innerHTML='';
+  snap.forEach(doc=>{
+    const v={id:doc.id,...doc.data()};
+    const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'}[v.type]||'✨';
+    const div=document.createElement('div');
+    div.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+    div.innerHTML=`
+      <div>
+        <div style="font-size:13px;color:var(--accent);font-weight:600;margin-bottom:4px;">${typeIcon} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;">${v.name}${v.company?' — '+v.company:''}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:3px;">📍 ${v.location} &nbsp;|&nbsp; 📞 ${v.phone}</div>
+        ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="font-size:12px;color:var(--accent3);text-decoration:none;margin-top:4px;display:inline-block;">📂 View Portfolio →</a>`:''}
+      </div>
+      <button onclick="deleteVendor('${v.id}')" class="btn-danger btn-sm">Delete</button>`;
+    el.appendChild(div);
+  });
+}
+
+async function deleteVendor(id){
+  if(!confirm('Delete this listing?')) return;
+  await db.collection('vendors').doc(id).delete();
+  showToast('Deleted!');
+  loadMyVendorListings();
+}
+</script>
+
+<script>
+/* ====== VENDOR BROWSING (Customer Side) ====== */
+let allVendors=[];
+
+function filterVendors(type, btn){
+  document.querySelectorAll('#vendorFilterBtns .vendor-type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadVendors(type);
+}
+
+async function loadVendors(type){
+  const el=document.getElementById('vendorList');
+  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+  try{
+    const snap=await db.collection('vendors').get();
+    allVendors=[];
+    snap.forEach(doc=>allVendors.push({id:doc.id,...doc.data()}));
+    const filtered=type==='all'?allVendors:allVendors.filter(v=>v.type===type);
+    renderVendors(filtered);
+  }catch(err){
+    el.innerHTML=`<p style="color:var(--muted);font-size:14px;">Error: ${err.message}</p>`;
+  }
+}
+
+function renderVendors(list){
+  const el=document.getElementById('vendorList');
+  el.innerHTML='';
+  if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No listings found.</p></div>'; return;}
+  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
+  const typeColor={photographer:'rgba(201,168,76,0.1)',makeup:'rgba(232,101,74,0.1)',gifts:'rgba(78,203,113,0.1)'};
+  list.forEach(v=>{
+    const card=document.createElement('div');
+    card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;transition:all 0.2s;cursor:pointer;';
+    card.onmouseover=()=>card.style.borderColor='rgba(201,168,76,0.3)';
+    card.onmouseout=()=>card.style.borderColor='rgba(255,255,255,0.07)';
+    const stars='★'.repeat(Math.round(v.rating||0))+'☆'.repeat(5-Math.round(v.rating||0));
+    card.innerHTML=`
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+            <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${typeColor[v.type]||'rgba(201,168,76,0.1)'};color:var(--accent);">${typeIcon[v.type]||'✨'} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</span>
+            ${v.specialty?`<span style="padding:4px 10px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--muted);">${v.specialty}</span>`:''}
+          </div>
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:4px;">${v.name}${v.company?` <span style="font-size:14px;font-weight:400;color:var(--muted);">— ${v.company}</span>`:''}</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:10px;">
+            <span>📍 ${v.location}</span>
+            ${v.experience?`<span>🏆 ${v.experience} yrs</span>`:''}
+            <span style="color:var(--accent);">${stars} <span style="color:var(--muted);">${v.reviewCount?'('+v.reviewCount+')':'No reviews'}</span></span>
+          </div>
+          ${v.bio?`<p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px;">${v.bio.slice(0,120)}${v.bio.length>120?'...':''}</p>`:''}
+          ${v.photos&&v.photos.length>0?`
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            ${v.photos.slice(0,5).map((p,i)=>`<img src="${p}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;border:2px solid ${i===0?'var(--accent)':'var(--border)'};" title="Photo ${i+1}">`).join('')}
+            ${v.photos.length>5?`<div style="width:56px;height:56px;border-radius:8px;background:var(--surface2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);font-weight:700;">+${v.photos.length-5}</div>`:''}
+          </div>`:''}
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            ${v.priceMin||v.priceMax?`<span style="font-size:13px;font-weight:600;color:var(--accent);">₹${Number(v.priceMin||0).toLocaleString()} – ₹${Number(v.priceMax||0).toLocaleString()}</span>`:''}
+            ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="font-size:12px;color:var(--accent3);text-decoration:none;background:rgba(76,154,201,0.1);border:1px solid rgba(76,154,201,0.2);padding:4px 12px;border-radius:20px;">📂 View Portfolio →</a>`:''}
+            ${v.website?`<a href="${v.website}" target="_blank" style="font-size:12px;color:var(--muted);text-decoration:none;">🌐 Website</a>`:''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:120px;">
+          <a href="tel:${v.phone}" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">📞 Call</a>
+          <a href="https://wa.me/91${(v.whatsapp||v.phone).replace(/\D/g,'')}" target="_blank" style="padding:8px 16px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:#25d366;text-align:center;">💬 WhatsApp</a>
+          ${v.email?`<a href="mailto:${v.email}" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">✉ Email</a>`:''}
+        </div>
+      </div>`;
+    el.appendChild(card);
+  });
 }
 </script>
