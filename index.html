@@ -47,6 +47,7 @@ body::before {
   z-index: 0;
 }
 
+/* ====== HEADER ====== */
 header {
   position: sticky;
   top: 0;
@@ -60,6 +61,19 @@ header {
   background: rgba(10,10,15,0.8);
 }
 .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+}
+.logo-text span { color: var(--accent); }
+
 .header-right { display: flex; align-items: center; gap: 10px; }
 .user-chip {
   display: flex; align-items: center; gap: 8px;
@@ -70,21 +84,32 @@ header {
   font-size: 13px;
   color: var(--muted);
 }
-.user-chip .dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; }
+.user-chip .dot {
+  width: 7px; height: 7px;
+  background: var(--success);
+  border-radius: 50%;
+}
 .icon-btn {
   width: 36px; height: 36px;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(--muted);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  color: var(--muted);
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ====== PAGES ====== */
 .page {
-  position: relative; z-index: 5;
+  position: relative;
+  z-index: 5;
   min-height: calc(100vh - 67px);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 40px 20px;
 }
 .hidden { display: none !important; }
@@ -94,6 +119,7 @@ header {
 }
 .fade-in { animation: fadeUp 0.45s ease forwards; }
 
+/* ====== GLASS CARD ====== */
 .glass-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -102,79 +128,116 @@ header {
   box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
+/* ====== FORM ELEMENTS ====== */
 .form-group { margin-bottom: 16px; }
 .form-group label {
-  display: block; font-size: 11px; font-weight: 600;
-  letter-spacing: 1.4px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 6px;
+  display: block;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
 }
 .form-group input,
 .form-group textarea,
 .form-group select {
-  width: 100%; padding: 12px 15px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 10px; color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  transition: all 0.2s; outline: none; resize: vertical;
+  width: 100%;
+  padding: 12px 15px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
+  outline: none;
+  resize: vertical;
 }
 .form-group select option { background: var(--surface2); }
 .form-group input:focus,
 .form-group textarea:focus,
-.form-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+.form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--glow);
+}
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--muted); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
+/* ====== BUTTONS ====== */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   width: 100%; padding: 13px;
   background: linear-gradient(135deg, var(--accent), #b8912f);
-  color: #0a0a0f; border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
-  cursor: pointer; letter-spacing: 0.2px; transition: all 0.2s;
+  color: #0a0a0f;
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.2px;
+  transition: all 0.2s;
 }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
 .btn-primary:active { transform: translateY(0); }
+
 .btn-secondary {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 11px 20px; background: var(--surface2); color: var(--text);
-  border: 1px solid var(--border); border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  cursor: pointer; transition: all 0.2s;
+  padding: 11px 20px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
 .btn-purple {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   padding: 11px 20px;
-  background: rgba(123,94,167,0.15); color: #b89fd4;
-  border: 1px solid rgba(123,94,167,0.3); border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  cursor: pointer; transition: all 0.2s;
+  background: rgba(123,94,167,0.15);
+  color: #b89fd4;
+  border: 1px solid rgba(123,94,167,0.3);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 .btn-purple:hover { background: rgba(123,94,167,0.25); border-color: var(--accent2); }
+
 .btn-danger {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  padding: 8px 14px; background: transparent; color: var(--danger);
-  border: 1px solid rgba(224,92,92,0.3); border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s;
+  padding: 8px 14px;
+  background: transparent; color: var(--danger);
+  border: 1px solid rgba(224,92,92,0.3);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; cursor: pointer;
+  transition: all 0.2s;
 }
 .btn-danger:hover { background: rgba(224,92,92,0.1); border-color: var(--danger); }
-/* ===== EDIT BUTTON ===== */
-.btn-edit {
-  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  padding: 8px 14px; background: rgba(76,154,201,0.1); color: #7fc3e8;
-  border: 1px solid rgba(76,154,201,0.3); border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s;
-}
-.btn-edit:hover { background: rgba(76,154,201,0.2); border-color: var(--accent3); }
-.btn-sm { padding: 7px 14px !important; font-size: 13px !important; width: auto !important; }
 
+.btn-sm {
+  padding: 7px 14px !important;
+  font-size: 13px !important;
+  width: auto !important;
+}
+
+/* ====== AUTH ====== */
 .auth-wrap { width: 100%; max-width: 440px; }
 .auth-head { margin-bottom: 28px; }
-.auth-head h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+.auth-head h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px; font-weight: 900; line-height: 1.1; margin-bottom: 8px;
+}
 .auth-head h1 em { font-style: italic; color: var(--accent); }
 .auth-head p { color: var(--muted); font-size: 14px; }
-.showpass-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; margin-bottom: 14px; }
+.showpass-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted); cursor: pointer; margin-bottom: 14px;
+}
 .showpass-label input { width: auto; margin: 0; }
 .error { color: #e07070; font-size: 12px; margin-bottom: 10px; min-height: 18px; }
 .divider { height: 1px; background: var(--border); margin: 20px 0; }
@@ -182,17 +245,27 @@ header {
 .switch-link a { color: var(--accent); cursor: pointer; font-weight: 600; }
 .switch-link a:hover { text-decoration: underline; }
 
+/* ====== HOME ====== */
 .home-wrap { width: 100%; max-width: 600px; text-align: center; }
-.home-title { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; line-height: 1.05; margin-bottom: 12px; }
+.home-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px; font-weight: 900; line-height: 1.05; margin-bottom: 12px;
+}
 .home-title em { font-style: italic; color: var(--accent); }
 .home-sub { color: var(--muted); font-size: 15px; margin-bottom: 42px; font-weight: 300; }
 .option-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
 .option-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 18px; padding: 30px 20px; cursor: pointer;
-  transition: all 0.25s; position: relative; overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
 }
-.option-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s; }
+.option-card::before {
+  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s;
+}
 .option-card.o-opt::before { background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%); }
 .option-card.c-opt::before { background: radial-gradient(ellipse at 50% 0%, rgba(123,94,167,0.15) 0%, transparent 70%); }
 .option-card:hover { transform: translateY(-3px); }
@@ -203,6 +276,7 @@ header {
 .opt-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 5px; }
 .opt-desc { font-size: 12px; color: var(--muted); }
 
+/* ===== CATEGORY CHIPS ===== */
 .cat-chip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 14px; border-radius: 20px;
@@ -211,18 +285,40 @@ header {
   user-select: none; color: var(--text);
 }
 .cat-chip input[type=checkbox] { display: none; }
-.cat-chip.selected { background: rgba(201,168,76,0.15); border-color: var(--accent); color: var(--accent); font-weight: 600; }
-
-.badge {
-  display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px;
-  letter-spacing: 0.5px; font-weight: 600;
-  background: rgba(201,168,76,0.1); color: var(--accent);
-  border: 1px solid rgba(201,168,76,0.2); margin-bottom: 14px;
+.cat-chip.selected {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
 }
-.badge-purple { background: rgba(123,94,167,0.1); color: #b89fd4; border-color: rgba(123,94,167,0.25); }
-.badge-blue { background: rgba(76,154,201,0.1); color: #7fc3e8; border-color: rgba(76,154,201,0.25); }
-.badge-green { background: rgba(92,184,92,0.1); color: #7ed37e; border-color: rgba(92,184,92,0.25); }
 
+/* ====== BADGE ====== */
+.badge {
+  display: inline-block; padding: 4px 12px;
+  border-radius: 20px; font-size: 11px;
+  letter-spacing: 0.5px; font-weight: 600;
+  background: rgba(201,168,76,0.1);
+  color: var(--accent);
+  border: 1px solid rgba(201,168,76,0.2);
+  margin-bottom: 14px;
+}
+.badge-purple {
+  background: rgba(123,94,167,0.1);
+  color: #b89fd4;
+  border-color: rgba(123,94,167,0.25);
+}
+.badge-blue {
+  background: rgba(76,154,201,0.1);
+  color: #7fc3e8;
+  border-color: rgba(76,154,201,0.25);
+}
+.badge-green {
+  background: rgba(92,184,92,0.1);
+  color: #7ed37e;
+  border-color: rgba(92,184,92,0.25);
+}
+
+/* ====== PANEL LAYOUT ====== */
 .panel-wrap { width: 100%; max-width: 560px; }
 .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
 .panel-back {
@@ -235,27 +331,40 @@ header {
 .panel-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; }
 .panel-title span { color: var(--accent); }
 
+/* ====== TABS ====== */
 .tabs {
   display: flex; gap: 4px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 12px; padding: 4px; margin-bottom: 26px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 26px;
 }
 .tab {
-  flex: 1; padding: 9px 14px; text-align: center; font-size: 13px; font-weight: 500;
-  border-radius: 9px; cursor: pointer; transition: all 0.2s; color: var(--muted);
+  flex: 1; padding: 9px 14px;
+  text-align: center; font-size: 13px; font-weight: 500;
+  border-radius: 9px; cursor: pointer;
+  transition: all 0.2s; color: var(--muted);
   border: none; background: transparent; font-family: 'DM Sans', sans-serif;
 }
 .tab.active { background: var(--surface); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 
+/* ====== ORGANIZER DASHBOARD ====== */
 .dash-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
 .stat-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 18px 16px; text-align: center; transition: all 0.2s;
+  border-radius: 14px; padding: 18px 16px;
+  text-align: center; transition: all 0.2s;
 }
 .stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
-.stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--accent); line-height: 1; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 900; color: var(--accent);
+  line-height: 1;
+}
 .stat-label { font-size: 11px; color: var(--muted); margin-top: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
 
+/* ====== CUSTOMER VIEW ====== */
 .customer-wrap { width: 100%; max-width: 900px; }
 .search-sort-row { display: flex; gap: 12px; margin-bottom: 24px; align-items: center; }
 .search-bar { position: relative; flex: 1; }
@@ -270,25 +379,31 @@ header {
 .search-bar input::placeholder { color: var(--muted); }
 .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 16px; pointer-events: none; }
 .sort-select {
-  padding: 12px 15px; background: var(--surface); border: 1px solid var(--border);
+  padding: 12px 15px;
+  background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; color: var(--text);
   font-family: 'DM Sans', sans-serif; font-size: 13px;
   outline: none; cursor: pointer; transition: all 0.2s;
 }
 .sort-select:focus { border-color: var(--accent); }
 
+/* CATEGORY PILLS */
 .cat-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
 .cat-pill {
-  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer;
-  border: 1px solid var(--border); color: var(--muted); background: var(--surface); transition: all 0.18s;
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  border: 1px solid var(--border); color: var(--muted);
+  background: var(--surface); transition: all 0.18s;
 }
 .cat-pill:hover { border-color: var(--border2); color: var(--text); }
 .cat-pill.active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); font-weight: 600; }
 
+/* ====== ORG CARDS ====== */
 .org-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 16px; }
 .org-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 18px; overflow: hidden; transition: all 0.25s; cursor: pointer; position: relative;
+  border-radius: 18px; overflow: hidden;
+  transition: all 0.25s; cursor: pointer; position: relative;
 }
 .org-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
 .org-img-wrap { aspect-ratio: 4/3; overflow: hidden; background: var(--surface2); position: relative; }
@@ -296,8 +411,10 @@ header {
 .org-card:hover .org-img-wrap img { transform: scale(1.06); }
 .cat-tag {
   position: absolute; bottom: 10px; left: 10px;
-  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
-  backdrop-filter: blur(8px); background: rgba(10,10,15,0.75);
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  backdrop-filter: blur(8px);
+  background: rgba(10,10,15,0.75);
   color: var(--accent); border: 1px solid rgba(201,168,76,0.3);
 }
 .org-body { padding: 16px; }
@@ -310,59 +427,18 @@ header {
   display: flex; align-items: center; justify-content: space-between;
 }
 
-/* ===== PAGINATION ===== */
-.pagination {
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-top: 28px; flex-wrap: wrap;
-}
-.page-btn {
-  width: 38px; height: 38px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 14px; font-family: 'DM Sans', sans-serif;
-  color: var(--muted); transition: all 0.2s; font-weight: 500;
-}
-.page-btn:hover { border-color: var(--accent); color: var(--accent); }
-.page-btn.active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); font-weight: 700; }
-.page-btn.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-.page-info { font-size: 13px; color: var(--muted); padding: 0 8px; }
-
-/* ===== IMAGE SIZE WARNING ===== */
-.img-size-warning {
-  display: none;
-  background: rgba(224,92,92,0.1);
-  border: 1px solid rgba(224,92,92,0.3);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #e07070;
-  line-height: 1.5;
-}
-.img-size-warning.show { display: block; }
-.img-size-ok {
-  display: none;
-  background: rgba(92,184,92,0.1);
-  border: 1px solid rgba(92,184,92,0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #7ed37e;
-}
-.img-size-ok.show { display: block; }
-
-/* ===== EDIT MODAL ===== */
+/* ====== MODAL ====== */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
-  padding: 20px; animation: fadeIn 0.2s ease;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .modal {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 22px; width: 100%; max-width: 580px;
+  border-radius: 22px; width: 100%; max-width: 560px;
   max-height: 90vh; overflow-y: auto;
   box-shadow: 0 32px 80px rgba(0,0,0,0.6);
   animation: modalPop 0.3s cubic-bezier(0.16,1,0.3,1);
@@ -376,24 +452,33 @@ header {
 .modal-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; margin-bottom: 4px; }
 .modal-close {
   position: absolute; top: 16px; right: 16px;
-  width: 32px; height: 32px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 14px; transition: all 0.2s; color: #fff;
+  width: 32px; height: 32px;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; transition: all 0.2s;
+  color: #fff;
 }
 .modal-close:hover { background: var(--danger); border-color: var(--danger); }
 .modal-img-wrap { position: relative; }
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
-.info-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.info-item {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px;
+}
 .info-item-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
 .info-item-value { font-size: 14px; font-weight: 500; word-break: break-all; }
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .modal-actions .btn-primary { flex: 1; }
 .modal-actions .btn-secondary { flex: 1; }
 
+/* REVIEW SECTION */
 .reviews-section { margin-top: 22px; }
 .reviews-section h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 14px; }
-.review-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.review-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px; margin-bottom: 10px;
+}
 .review-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
 .review-author { font-size: 13px; font-weight: 600; }
 .review-date { font-size: 11px; color: var(--muted); }
@@ -403,54 +488,24 @@ header {
 .star-picker span { opacity: 0.3; transition: opacity 0.15s; }
 .star-picker span.lit { opacity: 1; color: var(--accent); }
 
+/* ENQUIRY FORM */
 .enquiry-form { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
 .enquiry-form h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 14px; }
 
-.img-preview { width: 100%; height: 160px; border-radius: 10px; object-fit: cover; border: 1px solid var(--border); margin-top: 8px; display: none; }
-
-.loading-dots { display: flex; gap: 6px; justify-content: center; padding: 40px; grid-column: 1/-1; }
-.loading-dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); animation: bounce 1.2s ease-in-out infinite; }
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-  0%,80%,100% { transform: scale(0.4); opacity: 0.3; }
-  40% { transform: scale(1); opacity: 1; }
-}
-
-.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
-.empty-icon { font-size: 48px; opacity: 0.3; display: block; margin-bottom: 14px; }
-.empty-state p { font-size: 15px; }
-
-.toast {
-  position: fixed; bottom: 28px; right: 28px;
-  padding: 13px 20px; border-radius: 12px; font-size: 14px; z-index: 9999;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-  transform: translateY(70px); opacity: 0;
-  transition: all 0.3s cubic-bezier(0.16,1,0.3,1); max-width: 320px;
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { background: var(--surface); border: 1px solid var(--accent); color: var(--text); }
-.toast.error-t { background: var(--surface); border: 1px solid var(--danger); color: var(--text); }
-
-.verify-wrap { width: 100%; max-width: 440px; text-align: center; }
-.verify-icon { font-size: 64px; margin-bottom: 20px; display: block; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.verify-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; margin-bottom: 10px; }
-.verify-title em { font-style: italic; color: var(--accent); }
-.verify-sub { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px; }
-.verify-email-badge { display: inline-block; padding: 8px 18px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 28px; }
-.verify-steps { text-align: left; margin-bottom: 28px; }
-.verify-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.verify-step:last-child { border-bottom: none; }
-.step-num { width: 26px; height: 26px; flex-shrink: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); }
-.step-text { font-size: 13px; color: var(--muted); line-height: 1.5; padding-top: 3px; }
-.verify-btns { display: flex; flex-direction: column; gap: 10px; }
-.resend-timer { font-size: 12px; color: var(--muted); margin-top: 8px; }
-
+/* ====== EVENTS ====== */
 .events-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 16px; }
-.event-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: all 0.2s; cursor: pointer; }
+.event-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px;
+  transition: all 0.2s; cursor: pointer;
+}
 .event-card:hover { transform: translateY(-3px); border-color: var(--border2); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
-.event-date-badge { display: inline-flex; flex-direction: column; align-items: center; width: 52px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 6px 8px; margin-bottom: 14px; }
+.event-date-badge {
+  display: inline-flex; flex-direction: column; align-items: center;
+  width: 52px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 6px 8px; margin-bottom: 14px;
+}
 .event-date-badge .month { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 600; }
 .event-date-badge .day { font-size: 22px; font-weight: 900; font-family: 'Playfair Display', serif; line-height: 1; }
 .event-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
@@ -458,19 +513,108 @@ header {
 .event-price { font-size: 18px; font-weight: 700; color: var(--accent); margin-top: 12px; }
 .event-price span { font-size: 12px; color: var(--muted); font-weight: 400; }
 
-.enquiry-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+/* MY ENQUIRIES */
+.enquiry-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px; margin-bottom: 12px;
+}
 .enquiry-to { font-size: 13px; color: var(--muted); margin-bottom: 5px; }
 .enquiry-msg { font-size: 14px; line-height: 1.5; }
-.enquiry-status { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(201,168,76,0.1); color: var(--accent); border: 1px solid rgba(201,168,76,0.2); }
+.enquiry-status {
+  display: inline-block; margin-top: 10px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  background: rgba(201,168,76,0.1); color: var(--accent); border: 1px solid rgba(201,168,76,0.2);
+}
 
+/* IMAGE PREVIEW */
+.img-preview {
+  width: 100%; height: 160px; border-radius: 10px; object-fit: cover;
+  border: 1px solid var(--border); margin-top: 8px; display: none;
+}
+
+/* ====== LOADING ====== */
+.loading-dots { display: flex; gap: 6px; justify-content: center; padding: 40px; grid-column: 1/-1; }
+.loading-dots span {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%,80%,100% { transform: scale(0.4); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ====== EMPTY ====== */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  color: var(--muted); grid-column: 1/-1;
+}
+.empty-icon { font-size: 48px; opacity: 0.3; display: block; margin-bottom: 14px; }
+.empty-state p { font-size: 15px; }
+
+/* ====== TOAST ====== */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  padding: 13px 20px; border-radius: 12px;
+  font-size: 14px; z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transform: translateY(70px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--surface); border: 1px solid var(--accent); color: var(--text); }
+.toast.error-t { background: var(--surface); border: 1px solid var(--danger); color: var(--text); }
+
+/* ====== EMAIL VERIFY SCREEN ====== */
+.verify-wrap { width: 100%; max-width: 440px; text-align: center; }
+.verify-icon { font-size: 64px; margin-bottom: 20px; display: block; animation: float 3s ease-in-out infinite; }
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.verify-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; margin-bottom: 10px; }
+.verify-title em { font-style: italic; color: var(--accent); }
+.verify-sub { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px; }
+.verify-email-badge {
+  display: inline-block; padding: 8px 18px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 14px; font-weight: 600;
+  color: var(--accent); margin-bottom: 28px;
+}
+.verify-steps { text-align: left; margin-bottom: 28px; }
+.verify-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.verify-step:last-child { border-bottom: none; }
+.step-num {
+  width: 26px; height: 26px; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--accent);
+}
+.step-text { font-size: 13px; color: var(--muted); line-height: 1.5; padding-top: 3px; }
+.verify-btns { display: flex; flex-direction: column; gap: 10px; }
+.resend-timer { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+/* LIGHT MODE */
 body.light {
-  --bg: #f0ece4; --surface: #ffffff; --surface2: #f5f0e8; --surface3: #ede8df;
-  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
-  --text: #1a1a2e; --muted: #7a7590; --glow: rgba(201,168,76,0.12);
+  --bg: #f0ece4;
+  --surface: #ffffff;
+  --surface2: #f5f0e8;
+  --surface3: #ede8df;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1a2e;
+  --muted: #7a7590;
+  --glow: rgba(201,168,76,0.12);
 }
 body.light::before { opacity: 0.5; }
 body.light header { background: rgba(240,236,228,0.85); }
 
+/* RESPONSIVE */
 @media(max-width:640px){
   header { padding: 14px 18px; }
   .home-title { font-size: 32px; }
@@ -487,36 +631,45 @@ body.light header { background: rgba(240,236,228,0.85); }
   .customer-wrap { width: 100% !important; padding: 0 !important; }
   .glass-card { padding: 16px !important; }
   .panel-header { margin-bottom: 16px; }
-}
+  .org-card { width: 100% !important; }
+  .search-bar { width: 100% !important; }
+  .sort-select { width: 100% !important; }
+  .cat-pills { flex-wrap: wrap !important; overflow-x: auto; }
 
-/* ===== VENDOR TYPE BUTTONS ===== */
-.vendor-type-btn {
-  padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--border);
-  background: var(--surface); color: var(--muted);
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
-}
-.vendor-type-btn.active, .vendor-type-btn:hover {
-  background: rgba(201,168,76,0.12); border-color: var(--accent); color: var(--accent);
+  /* Profile page mobile */
+  #profilePage > div:last-child > div:first-child { display: block !important; }
+  #profilePage [style*="grid-template-columns:1fr 320px"],
+  #profilePage [style*="grid-template-columns: 1fr 320px"] { display: block !important; }
+  #profilePage [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+  #profilePage [style*="position:sticky"] { position: static !important; margin-top: 16px; }
+  #profilePage [style*="height:300px"] { height: 220px !important; }
+  #profilePage [style*="font-size:38px"] { font-size: 26px !important; }
+  #profilePage [style*="max-width:940px"] { padding: 0 12px !important; }
 }
 </style>
 </head>
 <body>
 
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- MODAL CONTAINER -->
 <div id="modalContainer"></div>
 
-<!-- HEADER -->
+<!-- ===== HEADER ===== -->
 <header>
-  <div class="logo" onclick="handleLogoClick()">
+  <div class="logo" onclick="handleLogoClick()" style="cursor:pointer;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" height="44" width="143">
       <defs>
         <linearGradient id="iG" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#FF6B6B"/><stop offset="35%" style="stop-color:#FF8E53"/>
-          <stop offset="70%" style="stop-color:#FFC837"/><stop offset="100%" style="stop-color:#FF6B9D"/>
+          <stop offset="0%" style="stop-color:#FF6B6B"/>
+          <stop offset="35%" style="stop-color:#FF8E53"/>
+          <stop offset="70%" style="stop-color:#FFC837"/>
+          <stop offset="100%" style="stop-color:#FF6B9D"/>
         </linearGradient>
         <linearGradient id="tG" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color:#FF6B6B"/><stop offset="50%" style="stop-color:#FFC837"/>
+          <stop offset="0%" style="stop-color:#FF6B6B"/>
+          <stop offset="50%" style="stop-color:#FFC837"/>
           <stop offset="100%" style="stop-color:#FF6B9D"/>
         </linearGradient>
         <filter id="hGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -545,7 +698,7 @@ body.light header { background: rgba(240,236,228,0.85); }
   </div>
 </header>
 
-<!-- AUTH -->
+<!-- ===== AUTH ===== -->
 <div class="page" id="auth">
   <div class="auth-wrap fade-in">
     <div class="auth-head">
@@ -578,18 +731,18 @@ body.light header { background: rgba(240,236,228,0.85); }
   </div>
 </div>
 
-<!-- VERIFY EMAIL -->
+<!-- ===== VERIFY EMAIL ===== -->
 <div class="page hidden" id="verifyEmail">
   <div class="verify-wrap fade-in">
     <span class="verify-icon">📧</span>
     <h1 class="verify-title">Check your <em>inbox.</em></h1>
     <p class="verify-sub">We've sent a verification link to:</p>
-    <div class="verify-email-badge" id="verifyEmailBadge">...</div>
+    <div class="verify-email-badge" id="verifyEmailBadge"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b1c8dec4c3f1d4dcd0d8dd9fd2dedc">[email&#160;protected]</a></div>
     <div class="glass-card" style="margin-bottom:20px;">
       <div class="verify-steps">
         <div class="verify-step">
           <div class="step-num">1</div>
-          <div class="step-text">Open the email we sent you <strong style="color:var(--accent);">(⚠️ Check your Spam / Junk folder!)</strong></div>
+          <div class="step-text">Open the email we sent you <strong style="color:var(--accent);">(⚠️ Check your Spam / Junk folder — it usually lands there!)</strong></div>
         </div>
         <div class="verify-step">
           <div class="step-num">2</div>
@@ -610,7 +763,7 @@ body.light header { background: rgba(240,236,228,0.85); }
   </div>
 </div>
 
-<!-- HOME -->
+<!-- ===== HOME ===== -->
 <div class="page hidden" id="home">
   <div class="home-wrap fade-in">
     <div class="badge">✦ Welcome back</div>
@@ -645,34 +798,30 @@ body.light header { background: rgba(240,236,228,0.85); }
         <div class="opt-desc" style="font-size:12px;">Wedding favors & gift hampers</div>
       </div>
     </div>
-    <div id="adminHomeBtn" style="display:none;margin-bottom:18px;">
-      <div class="option-card" onclick="showSection('adminPanel')" style="background:rgba(224,92,92,0.06);border-color:rgba(224,92,92,0.25);padding:20px 14px;">
-        <span class="opt-icon" style="font-size:28px;">🛡️</span>
-        <div class="opt-title" style="color:#e07070;">Admin Panel</div>
-        <div class="opt-desc" style="font-size:12px;">Delete organizers, events, vendors, reviews & enquiries</div>
-      </div>
-    </div>
     <button class="btn-secondary" onclick="logout()">← Sign out</button>
   </div>
 </div>
 
-<!-- ORGANIZER PANEL -->
+<!-- ===== ORGANIZER PANEL ===== -->
 <div class="page hidden" id="organizer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="panel-wrap fade-in" style="max-width:720px;width:100%;">
     <div class="panel-header">
       <div class="panel-back" onclick="showSection('home')">←</div>
-      <div><div class="panel-title">Organizer <span>Panel</span></div></div>
+      <div>
+        <div class="panel-title">Organizer <span>Panel</span></div>
+      </div>
     </div>
 
+    <!-- STATS -->
     <div class="dash-grid" id="orgStats">
       <div class="stat-card"><div class="stat-num" id="statProfiles">0</div><div class="stat-label">My Profiles</div></div>
       <div class="stat-card"><div class="stat-num" id="statEvents">0</div><div class="stat-label">My Events</div></div>
       <div class="stat-card"><div class="stat-num" id="statEnquiries">0</div><div class="stat-label">Enquiries</div></div>
     </div>
 
+    <!-- TABS -->
     <div class="tabs">
       <button class="tab active" onclick="switchOrgTab('profile',this)">👤 Profile</button>
-      <button class="tab" onclick="switchOrgTab('myprofiles',this)">📋 My Listings</button>
       <button class="tab" onclick="switchOrgTab('events',this)">🎪 Post Event</button>
       <button class="tab" onclick="switchOrgTab('inbox',this)">📬 Inbox</button>
     </div>
@@ -741,26 +890,12 @@ body.light header { background: rgba(240,236,228,0.85); }
             <input type="tel" id="orgWhatsapp" placeholder="+91 WhatsApp number">
           </div>
           <div class="form-group">
-            <label>Photos (select multiple — max 5)</label>
-            <input type="file" id="orgPhoto" accept="image/*" multiple onchange="handleOrgPhotoSelect(this)">
-            <!-- ===== IMAGE SIZE WARNING ===== -->
-            <div class="img-size-warning" id="orgImgWarning">
-              ⚠️ <strong>Photos too large!</strong> Each photo should be under 2MB. Please select smaller images or reduce photo size. Large photos may fail to save silently.
-            </div>
-            <div class="img-size-ok" id="orgImgOk">
-              ✅ Photos look good — size is within limits.
-            </div>
+            <label>Photos (select multiple)</label>
+            <input type="file" id="orgPhoto" accept="image/*" multiple onchange="previewMultipleImgs(this)">
             <div id="orgImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
           </div>
           <button type="submit" class="btn-primary">✦ Publish Profile</button>
         </form>
-      </div>
-    </div>
-
-    <!-- TAB: MY LISTINGS (with Edit) -->
-    <div id="orgTabMyprofiles" class="hidden">
-      <div id="myProfilesList">
-        <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
     </div>
 
@@ -777,9 +912,14 @@ body.light header { background: rgba(240,236,228,0.85); }
               <label>Category</label>
               <select id="evtCategory" required>
                 <option value="">Select</option>
-                <option>Wedding</option><option>Corporate</option><option>Birthday</option>
-                <option>Concert</option><option>Sports</option><option>Conference</option>
-                <option>Social</option><option>Other</option>
+                <option>Wedding</option>
+                <option>Corporate</option>
+                <option>Birthday</option>
+                <option>Concert</option>
+                <option>Sports</option>
+                <option>Conference</option>
+                <option>Social</option>
+                <option>Other</option>
               </select>
             </div>
           </div>
@@ -812,10 +952,11 @@ body.light header { background: rgba(240,236,228,0.85); }
     <div id="orgTabInbox" class="hidden">
       <div id="inboxList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
+
   </div>
 </div>
 
-<!-- CUSTOMER VIEW -->
+<!-- ===== CUSTOMER VIEW ===== -->
 <div class="page hidden" id="customer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="customer-wrap fade-in">
     <div class="panel-header">
@@ -823,6 +964,7 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div><div class="panel-title">Explore <span>Organizers</span></div></div>
     </div>
 
+    <!-- TABS -->
     <div class="tabs">
       <button class="tab active" onclick="switchCustTab('browse',this)">🔍 Browse</button>
       <button class="tab" onclick="switchCustTab('events',this)">🎪 Events</button>
@@ -851,9 +993,6 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="org-grid" id="list">
         <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
-      <!-- PAGINATION -->
-      <div class="pagination" id="pagination"></div>
-      <div class="page-info" id="pageInfo" style="text-align:center;margin-top:8px;"></div>
     </div>
 
     <!-- EVENTS TAB -->
@@ -878,17 +1017,17 @@ body.light header { background: rgba(240,236,228,0.85); }
     <div id="custTabMyenquiries" class="hidden">
       <div id="myEnquiriesList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
+
   </div>
 </div>
 
 <!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-/* ============ FIREBASE ============ */
-const ADMIN_EMAIL = 'mrritammitra@gmail.com';
+/* ============== FIREBASE ============== */
 firebase.initializeApp({
   apiKey:"AIzaSyBNW3y2zR8xQmhrOWqXzu8dmFRMYdSRSFM",
   authDomain:"rd-eventsphere.firebaseapp.com",
@@ -897,132 +1036,189 @@ firebase.initializeApp({
   messagingSenderId:"9010232288",
   appId:"1:9010232288:web:f5e77bb53311acef97c985"
 });
-const auth = firebase.auth();
-const db   = firebase.firestore();
+const auth=firebase.auth();
+const db=firebase.firestore();
 
-/* ============ SEED DATA ============ */
+/* ============== SEED ORGANIZERS (run once) ============== */
 async function seedOrganizers(){
   try{
-    const check = await db.collection('organizers').limit(1).get();
-    if(!check.empty) return;
-    const batch = db.batch();
-    getSeedData().forEach(o=>{ const r=db.collection('organizers').doc(); batch.set(r,o); });
-    await batch.commit();
+    const check=await db.collection('organizers').limit(1).get();
+    if(!check.empty){ console.log('Already has organizers, skip seed'); return; }
+    console.log('Seeding 10 organizers...');
+    const organizers=getSeedData();
+
+  const batch=db.batch();
+  organizers.forEach(o=>{
+    const ref=db.collection('organizers').doc();
+    batch.set(ref,o);
+  });
+  await batch.commit();
+  console.log('✅ 10 organizers seeded!');
   }catch(err){ console.error('Seed error:',err); }
 }
 
 async function forceSeed(){
-  const btn = document.getElementById('seedBtn');
-  if(btn){ btn.textContent='⏳ Adding...'; btn.disabled=true; }
+  const btn=document.getElementById('seedBtn');
+  if(btn){btn.textContent='⏳ Adding...';btn.disabled=true;}
   try{
-    const batch = db.batch();
-    getSeedData().forEach(o=>{ const r=db.collection('organizers').doc(); batch.set(r,o); });
+    const data=getSeedData();
+    const batch=db.batch();
+    data.forEach(o=>{
+      const ref=db.collection('organizers').doc();
+      batch.set(ref,o);
+    });
     await batch.commit();
-    showToast('✅ 10 organizers added!');
-    document.getElementById('seedBanner').style.display='none';
+    showToast('✅ 10 organizers added successfully!');
+    const banner=document.getElementById('seedBanner');
+    if(banner) banner.style.display='none';
     await loadOrganizers();
   }catch(err){
     showToast('❌ Error: '+err.message,'error');
-    if(btn){ btn.textContent='+ Add 10 Sample Organizers'; btn.disabled=false; }
+    console.error('Seed error:',err);
+    if(btn){btn.textContent='+ Add 10 Sample Organizers';btn.disabled=false;}
   }
+}
+
+async function seedOrganizersFresh(){
+  try{
+    const data=getSeedData();
+    const batch=db.batch();
+    data.forEach(o=>{const ref=db.collection('organizers').doc();batch.set(ref,o);});
+    await batch.commit();
+    showToast('✅ 10 organizers added!');
+  }catch(err){showToast('Error: '+err.message,'error');console.error(err);}
 }
 
 function getSeedData(){
   return [
-    {name:"Sharma Wedding Planners",phone:"9832100001",whatsapp:"9832100001",email:"sharmaweddings@gmail.com",category:"Wedding",bio:"10+ saal ka experience. Midnapore aur West Bengal mein 500+ weddings successfully organize ki hain.",location:"Midnapore, West Bengal",experience:"10",priceMin:50000,priceMax:500000,photo:"https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",photos:["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80","https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.5,reviewCount:12,createdAt:new Date()},
-    {name:"Royal Events & Decorators",phone:"9733200002",whatsapp:"9733200002",email:"royalevents.wbg@gmail.com",category:"Wedding",bio:"Royal Events specializes in royal themed weddings and receptions. Best decorator in Kharagpur area.",location:"Kharagpur, West Bengal",experience:"7",priceMin:30000,priceMax:300000,photo:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80",photos:["https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80"],owner:"seed@utsaav.com",rating:4.2,reviewCount:8,createdAt:new Date()},
-    {name:"Star Corporate Events",phone:"9434300003",whatsapp:"9434300003",email:"starcorp.events@gmail.com",category:"Corporate",bio:"Corporate seminars, conferences, product launches aur team building events mein specialist.",location:"Kolkata, West Bengal",experience:"6",priceMin:20000,priceMax:200000,photo:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80",photos:["https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80"],owner:"seed@utsaav.com",rating:4.7,reviewCount:15,createdAt:new Date()},
-    {name:"Dream Birthday Studio",phone:"9635400004",whatsapp:"9635400004",email:"dreambirthday.wb@gmail.com",category:"Birthday",bio:"Bachon se lekar adults tak — har tarah ke birthday party themes available.",location:"Paschim Medinipur, West Bengal",experience:"4",priceMin:5000,priceMax:50000,photo:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",photos:["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80"],owner:"seed@utsaav.com",rating:4.3,reviewCount:20,createdAt:new Date()},
-    {name:"Beats & Beyond Concert Co.",phone:"9800500005",whatsapp:"9800500005",email:"beatsbeyond.concerts@gmail.com",category:"Concert",bio:"Live concerts, music festivals aur cultural programs ke liye No.1 organizer in West Bengal.",location:"Durgapur, West Bengal",experience:"8",priceMin:100000,priceMax:1000000,photo:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80",photos:["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.8,reviewCount:31,createdAt:new Date()},
-    {name:"Utsav Social Events",phone:"9123600006",whatsapp:"9123600006",email:"utsavsocial.events@gmail.com",category:"Social",bio:"Pujo, cultural programs, annual functions aur community events ke liye trusted name.",location:"Midnapore, West Bengal",experience:"15",priceMin:10000,priceMax:150000,photo:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80",photos:["https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.6,reviewCount:18,createdAt:new Date()},
-    {name:"Elite Conference Solutions",phone:"9876700007",whatsapp:"9876700007",email:"eliteconf.wb@gmail.com",category:"Conference",bio:"Professional conference rooms, AV setup, speaker coordination aur delegate management.",location:"Howrah, West Bengal",experience:"9",priceMin:25000,priceMax:250000,photo:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80",photos:["https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80"],owner:"seed@utsaav.com",rating:4.4,reviewCount:9,createdAt:new Date()},
-    {name:"Champions Sports Events",phone:"9654800008",whatsapp:"9654800008",email:"championsports.events@gmail.com",category:"Sports",bio:"Cricket tournaments, football matches, kabaddi competitions aur school sports events ke expert organizer.",location:"Medinipur, West Bengal",experience:"5",priceMin:15000,priceMax:100000,photo:"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",photos:["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80"],owner:"seed@utsaav.com",rating:4.1,reviewCount:6,createdAt:new Date()},
-    {name:"Pink Celebration Studio",phone:"9345900009",whatsapp:"9345900009",email:"pinkcelebration.wb@gmail.com",category:"Birthday",bio:"Themed birthday parties, baby showers, anniversary celebrations — full package.",location:"Bankura, West Bengal",experience:"3",priceMin:8000,priceMax:60000,photo:"https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80",photos:["https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80"],owner:"seed@utsaav.com",rating:4.0,reviewCount:14,createdAt:new Date()},
-    {name:"Grand Wedding Affairs",phone:"9567000010",whatsapp:"9567000010",email:"grandwedding.affairs@gmail.com",category:"Wedding",bio:"Aapki shaadi ko unforgettable banana hamare haath mein. Full destination wedding packages available.",location:"Purulia, West Bengal",experience:"12",priceMin:75000,priceMax:750000,photo:"https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80",photos:["https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80"],owner:"seed@utsaav.com",rating:4.9,reviewCount:27,createdAt:new Date()}
+    {name:"Sharma Wedding Planners",phone:"9832100001",whatsapp:"9832100001",email:"sharmaweddings@gmail.com",category:"Wedding",bio:"10+ saal ka experience. Midnapore aur West Bengal mein 500+ weddings successfully organize ki hain. Decoration, catering, photography sab ek hi jagah.",location:"Midnapore, West Bengal",experience:"10",priceMin:50000,priceMax:500000,photo:"https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",photos:["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80","https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.5,reviewCount:12,createdAt:new Date()},
+    {name:"Royal Events & Decorators",phone:"9733200002",whatsapp:"9733200002",email:"royalevents.wbg@gmail.com",category:"Wedding",bio:"Royal Events specializes in royal themed weddings and receptions. Best decorator in Kharagpur area with 7 years of expertise.",location:"Kharagpur, West Bengal",experience:"7",priceMin:30000,priceMax:300000,photo:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80",photos:["https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80","https://images.unsplash.com/photo-1478146059778-26028b07395a?w=400&q=80"],owner:"seed@utsaav.com",rating:4.2,reviewCount:8,createdAt:new Date()},
+    {name:"Star Corporate Events",phone:"9434300003",whatsapp:"9434300003",email:"starcorp.events@gmail.com",category:"Corporate",bio:"Corporate seminars, conferences, product launches aur team building events mein specialist. Kolkata se Midnapore tak saare districts mein service available.",location:"Kolkata, West Bengal",experience:"6",priceMin:20000,priceMax:200000,photo:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80",photos:["https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80","https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80"],owner:"seed@utsaav.com",rating:4.7,reviewCount:15,createdAt:new Date()},
+    {name:"Dream Birthday Studio",phone:"9635400004",whatsapp:"9635400004",email:"dreambirthday.wb@gmail.com",category:"Birthday",bio:"Bachon se lekar adults tak — har tarah ke birthday party themes available. Balloon decoration, cake arrangement, DJ, photography sab kuch.",location:"Paschim Medinipur, West Bengal",experience:"4",priceMin:5000,priceMax:50000,photo:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",photos:["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80","https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=400&q=80"],owner:"seed@utsaav.com",rating:4.3,reviewCount:20,createdAt:new Date()},
+    {name:"Beats & Beyond Concert Co.",phone:"9800500005",whatsapp:"9800500005",email:"beatsbeyond.concerts@gmail.com",category:"Concert",bio:"Live concerts, music festivals aur cultural programs ke liye No.1 organizer in West Bengal. Stage setup, sound system, artist booking sab manage karte hain.",location:"Durgapur, West Bengal",experience:"8",priceMin:100000,priceMax:1000000,photo:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80",photos:["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80","https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&q=80"],owner:"seed@utsaav.com",rating:4.8,reviewCount:31,createdAt:new Date()},
+    {name:"Utsav Social Events",phone:"9123600006",whatsapp:"9123600006",email:"utsavsocial.events@gmail.com",category:"Social",bio:"Pujo, cultural programs, annual functions aur community events ke liye trusted name. 15 saal se Midnapore aur surrounding areas mein kaam kar rahe hain.",location:"Midnapore, West Bengal",experience:"15",priceMin:10000,priceMax:150000,photo:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80",photos:["https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80","https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80"],owner:"seed@utsaav.com",rating:4.6,reviewCount:18,createdAt:new Date()},
+    {name:"Elite Conference Solutions",phone:"9876700007",whatsapp:"9876700007",email:"eliteconf.wb@gmail.com",category:"Conference",bio:"Professional conference rooms, AV setup, speaker coordination aur delegate management mein expert. ISO certified event company.",location:"Howrah, West Bengal",experience:"9",priceMin:25000,priceMax:250000,photo:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80",photos:["https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80","https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&q=80"],owner:"seed@utsaav.com",rating:4.4,reviewCount:9,createdAt:new Date()},
+    {name:"Champions Sports Events",phone:"9654800008",whatsapp:"9654800008",email:"championsports.events@gmail.com",category:"Sports",bio:"Cricket tournaments, football matches, kabaddi competitions aur school sports events ke expert organizer. Complete sports event management available.",location:"Medinipur, West Bengal",experience:"5",priceMin:15000,priceMax:100000,photo:"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",photos:["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80","https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80"],owner:"seed@utsaav.com",rating:4.1,reviewCount:6,createdAt:new Date()},
+    {name:"Pink Celebration Studio",phone:"9345900009",whatsapp:"9345900009",email:"pinkcelebration.wb@gmail.com",category:"Birthday",bio:"Themed birthday parties, baby showers, anniversary celebrations — full package mein photography, cake, decoration, entertainment sab.",location:"Bankura, West Bengal",experience:"3",priceMin:8000,priceMax:60000,photo:"https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80",photos:["https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&q=80","https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&q=80"],owner:"seed@utsaav.com",rating:4.0,reviewCount:14,createdAt:new Date()},
+    {name:"Grand Wedding Affairs",phone:"9567000010",whatsapp:"9567000010",email:"grandwedding.affairs@gmail.com",category:"Wedding",bio:"Aapki shaadi ko unforgettable banana hamare haath mein. Full destination wedding packages available. Catering, mehendi, sangeet, reception — ek hi team.",location:"Purulia, West Bengal",experience:"12",priceMin:75000,priceMax:750000,photo:"https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80",photos:["https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80","https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&q=80"],owner:"seed@utsaav.com",rating:4.9,reviewCount:27,createdAt:new Date()}
   ];
 }
 
-/* ============ CATEGORY CHIP TOGGLE ============ */
-document.addEventListener('click', e => {
-  const chip = e.target.closest('.cat-chip');
+/* ============== CATEGORY CHIP TOGGLE ============== */
+document.addEventListener('click',e=>{
+  const chip=e.target.closest('.cat-chip');
   if(chip && chip.closest('#catCheckboxes')){
-    const cb = chip.querySelector('input[type=checkbox]');
-    cb.checked = !cb.checked;
-    chip.classList.toggle('selected', cb.checked);
+    const cb=chip.querySelector('input[type=checkbox]');
+    cb.checked=!cb.checked;
+    chip.classList.toggle('selected',cb.checked);
   }
 });
 
-let isLogin = true;
-let allOrganizers = [];
-let filteredOrganizers = [];
-let activeCategory = 'All';
-let currentUser = null;
 
-/* ===== PAGINATION STATE ===== */
-const ITEMS_PER_PAGE = 12;
-let currentPage = 1;
+let isLogin=true;
+let allOrganizers=[];
+let activeCategory='All';
+let currentUser=null;
 
-/* ============ THEME ============ */
+/* ============== THEME ============== */
 if(localStorage.getItem('esLight')==='1') document.body.classList.add('light');
 function toggleDark(){
   document.body.classList.toggle('light');
   localStorage.setItem('esLight', document.body.classList.contains('light')?'1':'0');
 }
 
-/* ============ TOAST ============ */
+/* ============== TOAST ============== */
 function showToast(msg, type='success'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + (type==='success' ? 'success' : 'error-t') + ' show';
-  setTimeout(() => t.classList.remove('show'), 3200);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+'-t show';
+  if(type==='success') t.className='toast success show';
+  setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-/* ============ AUTH ============ */
+/* ============== IMAGE PREVIEW ============== */
+function previewImg(input, previewId){
+  const prev=document.getElementById(previewId);
+  if(input.files && input.files[0]){
+    const r=new FileReader();
+    r.onload=e=>{prev.src=e.target.result; prev.style.display='block';};
+    r.readAsDataURL(input.files[0]);
+  }
+}
+
+function previewMultipleImgs(input){
+  const container=document.getElementById('orgImgsPreview');
+  container.innerHTML='';
+  Array.from(input.files).forEach((file,i)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const wrap=document.createElement('div');
+      wrap.style.cssText='position:relative;display:inline-block;';
+      wrap.innerHTML=`
+        <img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">
+        ${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
+      container.appendChild(wrap);
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+/* ============== AUTH ============== */
 function togglePass(){
-  const p = document.getElementById('authPass');
-  p.type = p.type==='password' ? 'text' : 'password';
+  const p=document.getElementById('authPass');
+  p.type=p.type==='password'?'text':'password';
 }
 function toggleAuth(){
-  isLogin = !isLogin;
-  document.getElementById('authTitle').innerHTML = isLogin ? 'Welcome <em>Back.</em>' : 'Create <em>Account.</em>';
-  document.getElementById('authSubtitle').textContent = isLogin ? 'Login to your Utsaav account.' : 'Join the Utsaav community.';
-  document.getElementById('authBtn').textContent = isLogin ? 'Login →' : 'Register →';
-  document.getElementById('switchPre').textContent = isLogin ? 'New here? ' : 'Already have an account? ';
-  document.getElementById('switchLink').textContent = isLogin ? 'Create an account' : 'Login here';
-  document.getElementById('errorMsg').textContent = '';
+  isLogin=!isLogin;
+  document.getElementById('authTitle').innerHTML=isLogin?'Welcome <em>Back.</em>':'Create <em>Account.</em>';
+  document.getElementById('authSubtitle').textContent=isLogin?'Login to your Utsaav account.':'Join the Utsaav community.';
+  document.getElementById('authBtn').textContent=isLogin?'Login →':'Register →';
+  document.getElementById('switchPre').textContent=isLogin?'New here? ':'Already have an account? ';
+  document.getElementById('switchLink').textContent=isLogin?'Create an account':'Login here';
+  document.getElementById('errorMsg').textContent='';
 }
 
-document.getElementById('authForm').addEventListener('submit', async e => {
+document.getElementById('authForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const email = document.getElementById('authEmail').value;
-  const pass  = document.getElementById('authPass').value;
-  const errEl = document.getElementById('errorMsg');
-  const btn   = document.getElementById('authBtn');
-  if(pass.length < 6){ errEl.textContent='⚠ Password must be at least 6 characters'; return; }
+  const email=document.getElementById('authEmail').value;
+  const pass=document.getElementById('authPass').value;
+  const errEl=document.getElementById('errorMsg');
+  const btn=document.getElementById('authBtn');
+  if(pass.length<6){errEl.textContent='⚠ Password must be at least 6 characters'; return;}
   btn.textContent='Please wait...'; btn.disabled=true;
   try{
     if(isLogin){
-      const cred = await auth.signInWithEmailAndPassword(email, pass);
-      if(!cred.user.emailVerified){ showVerifyScreen(cred.user); btn.textContent='Login →'; btn.disabled=false; return; }
+      const cred=await auth.signInWithEmailAndPassword(email,pass);
+      if(!cred.user.emailVerified){
+        // Force show verify screen
+        showVerifyScreen(cred.user);
+        btn.textContent='Login →'; btn.disabled=false;
+        return;
+      }
     } else {
-      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      const cred=await auth.createUserWithEmailAndPassword(email,pass);
       await cred.user.sendEmailVerification();
-      showVerifyScreen(cred.user); btn.textContent='Register →'; btn.disabled=false; return;
+      showVerifyScreen(cred.user);
+      btn.textContent='Register →'; btn.disabled=false;
+      return;
     }
-  }catch(err){ errEl.textContent='⚠ '+err.message; }
+  }catch(err){
+    errEl.textContent='⚠ '+err.message;
+  }
   btn.textContent=isLogin?'Login →':'Register →'; btn.disabled=false;
 });
 
-auth.onAuthStateChanged(user => {
-  currentUser = user;
+auth.onAuthStateChanged(user=>{
+  currentUser=user;
   if(user){
-    if(!user.emailVerified){ showVerifyScreen(user); return; }
+    if(!user.emailVerified){
+      // Signed in but not verified — show verify screen
+      showVerifyScreen(user);
+      return;
+    }
+    // Fully verified
     hideAllPages();
     document.getElementById('home').classList.remove('hidden');
     updateHeaderUser(user.email);
-    // Show admin button only for admin
-    const adminBtn = document.getElementById('adminHomeBtn');
-    if(adminBtn) adminBtn.style.display = (user.email === ADMIN_EMAIL) ? 'block' : 'none';
   } else {
     hideAllPages();
     document.getElementById('auth').classList.remove('hidden');
@@ -1031,43 +1227,44 @@ auth.onAuthStateChanged(user => {
 });
 
 function hideAllPages(){
-  ['auth','verifyEmail','home','organizer','customer','profilePage','vendor','adminPanel'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.classList.add('hidden');
-  });
+  ['auth','verifyEmail','home','organizer','customer','profilePage','vendor'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
 }
 
 function showVerifyScreen(user){
   hideAllPages();
   document.getElementById('verifyEmail').classList.remove('hidden');
-  document.getElementById('verifyEmailBadge').textContent = user.email;
+  document.getElementById('verifyEmailBadge').textContent=user.email;
   updateHeaderUser(user.email);
 }
 
-let resendCooldown = null;
+let resendCooldown=null;
 async function resendVerification(){
-  const btn   = document.getElementById('resendBtn');
-  const timer = document.getElementById('resendTimer');
+  const btn=document.getElementById('resendBtn');
+  const timer=document.getElementById('resendTimer');
   try{
     await auth.currentUser.sendEmailVerification();
     showToast('📧 Verification email resent!');
-    btn.disabled = true;
-    let secs = 60;
-    timer.textContent = `Resend available in ${secs}s`;
-    resendCooldown = setInterval(()=>{
+    btn.disabled=true;
+    let secs=60;
+    timer.textContent=`Resend available in ${secs}s`;
+    resendCooldown=setInterval(()=>{
       secs--;
-      timer.textContent = `Resend available in ${secs}s`;
-      if(secs<=0){ clearInterval(resendCooldown); btn.disabled=false; timer.textContent=''; }
+      timer.textContent=`Resend available in ${secs}s`;
+      if(secs<=0){
+        clearInterval(resendCooldown);
+        btn.disabled=false;
+        timer.textContent='';
+      }
     },1000);
   }catch(err){ showToast('Could not resend: '+err.message,'error'); }
 }
 
 async function checkVerified(){
-  const btn = document.querySelector('#verifyEmail .btn-primary');
+  const btn=document.querySelector('#verifyEmail .btn-primary');
   btn.textContent='Checking...'; btn.disabled=true;
   await auth.currentUser.reload();
   if(auth.currentUser.emailVerified){
-    currentUser = auth.currentUser;
+    currentUser=auth.currentUser;
     showToast('✦ Email verified! Welcome aboard.');
     hideAllPages();
     document.getElementById('home').classList.remove('hidden');
@@ -1075,7 +1272,7 @@ async function checkVerified(){
   } else {
     showToast('⚠ Not verified yet. Check your inbox.','error');
   }
-  btn.textContent="✓ I've verified my email"; btn.disabled=false;
+  btn.textContent='✓ I\'ve verified my email'; btn.disabled=false;
 }
 
 function updateHeaderUser(email){
@@ -1087,469 +1284,145 @@ function updateHeaderUser(email){
 function logout(){ auth.signOut(); }
 function handleLogoClick(){ if(currentUser) showSection('home'); }
 
-/* ============ SECTION NAVIGATION ============ */
+/* ============== SECTION NAVIGATION ============== */
+const sections=['auth','verifyEmail','home','organizer','customer'];
 function showSection(id){
   hideAllPages();
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.classList.remove('hidden');
+  document.getElementById(id).classList.remove('hidden');
+  document.getElementById(id).querySelector('.fade-in')?.classList.remove('fade-in');
+  void document.getElementById(id).offsetWidth;
+  document.getElementById(id).querySelector('[class*="wrap"],[class*="Wrap"]')?.classList.add('fade-in');
+
   if(id==='organizer'){ loadOrgStats(); loadMyEvents(); }
   if(id==='customer'){ seedOrganizers().then(()=>loadOrganizers()); }
-  if(id==='vendor'){ loadMyVendorListings(); }
 }
 
-/* ============ ORG TABS ============ */
+/* ============== ORG TABS ============== */
 function switchOrgTab(name, btn){
-  btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  ['orgTabProfile','orgTabMyprofiles','orgTabEvents','orgTabInbox'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.classList.add('hidden');
+  document.querySelectorAll('.tabs .tab').forEach((t,i,a)=>{
+    if(a[0].parentElement.id===undefined||a[0].closest('#organizer'))t.classList.remove('active');
   });
-  const target = document.getElementById('orgTab'+name.charAt(0).toUpperCase()+name.slice(1));
-  if(target) target.classList.remove('hidden');
+  btn.classList.add('active');
+  ['orgTabProfile','orgTabEvents','orgTabInbox'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('orgTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
   if(name==='inbox') loadInbox();
   if(name==='events') loadMyEvents();
-  if(name==='myprofiles') loadMyProfiles();
 }
 
-/* ============ CUST TABS ============ */
+/* ============== CUST TABS ============== */
 function switchCustTab(name, btn){
   btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  ['custTabBrowse','custTabEvents','custTabVendors','custTabMyenquiries'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.classList.add('hidden');
-  });
-  const target = document.getElementById('custTab'+name.charAt(0).toUpperCase()+name.slice(1));
-  if(target) target.classList.remove('hidden');
+  ['custTabBrowse','custTabEvents','custTabVendors','custTabMyenquiries'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('custTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
   if(name==='events') loadAllEvents();
   if(name==='myenquiries') loadMyEnquiries();
   if(name==='vendors') loadVendors('all');
 }
 
-/* ============ FEATURE 2: IMAGE SIZE WARNING ============ */
-const MAX_TOTAL_SIZE_MB = 4; // Firestore doc limit safety
-const MAX_SINGLE_SIZE_MB = 2;
-
-function handleOrgPhotoSelect(input){
-  const warning = document.getElementById('orgImgWarning');
-  const ok      = document.getElementById('orgImgOk');
-  warning.classList.remove('show');
-  ok.classList.remove('show');
-
-  const files = Array.from(input.files);
-  if(!files.length) return;
-
-  let hasLarge = false;
-  let totalMB = 0;
-
-  files.forEach(f => {
-    const mb = f.size / 1024 / 1024;
-    totalMB += mb;
-    if(mb > MAX_SINGLE_SIZE_MB) hasLarge = true;
-  });
-
-  if(hasLarge || totalMB > MAX_TOTAL_SIZE_MB){
-    warning.innerHTML = `⚠️ <strong>Photos may be too large!</strong><br>
-      Total size: <strong>${totalMB.toFixed(1)}MB</strong> across ${files.length} photo(s).<br>
-      Individual photos over 2MB or total over 4MB may fail to save. Please choose smaller images.`;
-    warning.classList.add('show');
-  } else {
-    ok.textContent = `✅ ${files.length} photo(s) selected — ${totalMB.toFixed(1)}MB total. Good to go!`;
-    ok.classList.add('show');
-  }
-
-  previewMultipleImgs(input);
-}
-
-function previewMultipleImgs(input){
-  const container = document.getElementById('orgImgsPreview');
-  container.innerHTML = '';
-  Array.from(input.files).forEach((file, i) => {
-    const r = new FileReader();
-    r.onload = e => {
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'position:relative;display:inline-block;';
-      wrap.innerHTML = `
-        <img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">
-        ${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
-      container.appendChild(wrap);
-    };
-    r.readAsDataURL(file);
-  });
-}
-
-/* ============ ORGANIZER PROFILE FORM ============ */
-const compressPhoto = (file) => new Promise(res => {
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  img.onload = () => {
-    const MAX = 600;
-    let w = img.width, h = img.height;
-    if(w > MAX){ h = Math.round(h * MAX / w); w = MAX; }
-    const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
-    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-    URL.revokeObjectURL(url);
-    res(canvas.toDataURL('image/jpeg', 0.5));
-  };
-  img.src = url;
-});
-
-document.getElementById('orgForm').addEventListener('submit', async e => {
+/* ============== ORGANIZER PROFILE FORM ============== */
+document.getElementById('orgForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const files = document.getElementById('orgPhoto').files;
-  if(!files.length){ showToast('Please select at least one photo','error'); return; }
+  const files=document.getElementById('orgPhoto').files;
+  if(!files.length){showToast('Please select at least one photo','error'); return;}
+  const btn=e.target.querySelector('button[type=submit]');
+  btn.disabled=true;
 
-  const checkedCats = [...document.querySelectorAll('#catCheckboxes input:checked')].map(c=>c.value);
-  if(!checkedCats.length){ showToast('Please select at least one category','error'); return; }
+  const checkedCats=[...document.querySelectorAll('#catCheckboxes input:checked')].map(c=>c.value);
+  if(!checkedCats.length){showToast('Please select at least one category','error'); return;}
 
-  const btn = e.target.querySelector('button[type=submit]');
-  btn.disabled = true;
+  // Compress photos (max 800px, quality 0.72)
+  const compressPhoto = (file) => new Promise(res => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 600;
+      let w = img.width, h = img.height;
+      if(w > MAX){ h = Math.round(h * MAX / w); w = MAX; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      res(canvas.toDataURL('image/jpeg', 0.5));
+    };
+    img.src = url;
+  });
+
   btn.textContent = 'Compressing...';
-
   const photos = await Promise.all(Array.from(files).slice(0,5).map(compressPhoto));
 
-  // Check final compressed size
-  const totalBytes = photos.reduce((sum, p) => sum + p.length, 0);
-  if(totalBytes > 900000){ // ~900KB compressed = safe for Firestore 1MB doc limit
-    showToast('⚠️ Photos still too large after compression. Please use fewer or smaller images.','error');
-    btn.textContent='✦ Publish Profile'; btn.disabled=false;
-    return;
-  }
-
   btn.textContent = 'Saving...';
-  try{
-    await db.collection('organizers').add({
-      name:       document.getElementById('orgName').value,
-      company:    document.getElementById('orgCompany').value||'',
-      phone:      document.getElementById('orgPhone').value,
-      whatsapp:   document.getElementById('orgWhatsapp').value || document.getElementById('orgPhone').value,
-      email:      document.getElementById('orgEmail').value,
-      category:   checkedCats[0],
-      categories: checkedCats,
-      bio:        document.getElementById('orgBio').value,
-      location:   document.getElementById('orgLocation').value,
-      experience: document.getElementById('orgExp').value||'',
-      priceMin:   Number(document.getElementById('orgPriceMin').value)||0,
-      priceMax:   Number(document.getElementById('orgPriceMax').value)||0,
-      photo:      photos[0],
-      photos:     photos,
-      owner:      currentUser.email,
-      rating:     0, reviewCount: 0,
-      createdAt:  new Date()
-    });
-    document.getElementById('orgForm').reset();
-    document.getElementById('orgImgsPreview').innerHTML='';
-    document.getElementById('orgImgWarning').classList.remove('show');
-    document.getElementById('orgImgOk').classList.remove('show');
-    document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('selected'));
-    document.querySelectorAll('#catCheckboxes input').forEach(c=>c.checked=false);
-    showToast('✦ Profile published!');
-    loadOrgStats();
-  }catch(err){
-    showToast('❌ Error saving: '+err.message+' (Try fewer/smaller photos)','error');
-    console.error(err);
-  }
+  await db.collection('organizers').add({
+    name:document.getElementById('orgName').value,
+    company:document.getElementById('orgCompany').value||'',
+    phone:document.getElementById('orgPhone').value,
+    whatsapp:document.getElementById('orgWhatsapp').value||document.getElementById('orgPhone').value,
+    email:document.getElementById('orgEmail').value,
+    category:checkedCats[0],
+    categories:checkedCats,
+    bio:document.getElementById('orgBio').value,
+    location:document.getElementById('orgLocation').value,
+    experience:document.getElementById('orgExp').value||'',
+    priceMin:document.getElementById('orgPriceMin').value||0,
+    priceMax:document.getElementById('orgPriceMax').value||0,
+    photo:photos[0],
+    photos:photos,
+    owner:currentUser.email,
+    rating:0, reviewCount:0,
+    createdAt:new Date()
+  });
+
+  document.getElementById('orgForm').reset();
+  document.getElementById('orgImgsPreview').innerHTML='';
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('#catCheckboxes input').forEach(c=>c.checked=false);
   btn.textContent='✦ Publish Profile'; btn.disabled=false;
+  showToast('✦ Profile published!');
+  loadOrgStats();
 });
 
-/* ============ ORG STATS ============ */
+/* ============== ORG STATS ============== */
 async function loadOrgStats(){
-  const [profSnap, evtSnap, enqSnap] = await Promise.all([
+  const [profSnap,evtSnap,enqSnap]=await Promise.all([
     db.collection('organizers').where('owner','==',currentUser.email).get(),
     db.collection('events').where('owner','==',currentUser.email).get(),
     db.collection('enquiries').where('toEmail','==',currentUser.email).get()
   ]);
-  document.getElementById('statProfiles').textContent  = profSnap.size;
-  document.getElementById('statEvents').textContent    = evtSnap.size;
-  document.getElementById('statEnquiries').textContent = enqSnap.size;
+  document.getElementById('statProfiles').textContent=profSnap.size;
+  document.getElementById('statEvents').textContent=evtSnap.size;
+  document.getElementById('statEnquiries').textContent=enqSnap.size;
 }
 
-/* ============ FEATURE 1: MY LISTINGS (with Edit) ============ */
-async function loadMyProfiles(){
-  const el = document.getElementById('myProfilesList');
-  if(!el) return;
-  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('organizers').where('owner','==',currentUser.email).get();
-
-  if(snap.empty){
-    el.innerHTML='<div class="empty-state"><span class="empty-icon">👤</span><p>No listings yet. Use the Profile tab to create one.</p></div>';
-    return;
-  }
-
-  el.innerHTML = '';
-  snap.forEach(doc => {
-    const o = {id: doc.id, ...doc.data()};
-    const div = document.createElement('div');
-    div.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;';
-    div.innerHTML = `
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <img src="${o.photo}" style="width:70px;height:70px;object-fit:cover;border-radius:12px;border:2px solid var(--border);flex-shrink:0;">
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:3px;">${o.name}</div>
-          <div style="font-size:12px;color:var(--muted);">📍 ${o.location||'—'} &nbsp;|&nbsp; ${o.category||'—'}</div>
-          <div style="font-size:12px;color:var(--muted);">📞 ${o.phone} &nbsp;|&nbsp; ⭐ ${o.rating?o.rating.toFixed(1):'0.0'} (${o.reviewCount||0} reviews)</div>
-          ${o.priceMin||o.priceMax?`<div style="font-size:13px;color:var(--accent);font-weight:600;margin-top:4px;">₹${Number(o.priceMin).toLocaleString()} – ₹${Number(o.priceMax).toLocaleString()}</div>`:''}
-        </div>
-        <div style="display:flex;gap:8px;flex-shrink:0;">
-          <button class="btn-edit btn-sm" onclick="openEditModal('${o.id}')">✏️ Edit</button>
-          <button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">Delete</button>
-        </div>
-      </div>`;
-    el.appendChild(div);
-  });
-}
-
-/* ============ FEATURE 1: EDIT MODAL ============ */
-async function openEditModal(orgId){
-  const snap = await db.collection('organizers').doc(orgId).get();
-  if(!snap.exists){ showToast('Profile not found','error'); return; }
-  const o = {id: snap.id, ...snap.data()};
-
-  document.getElementById('modalContainer').innerHTML = `
-  <div class="modal-overlay" onclick="closeEditModal(event)">
-    <div class="modal" id="editModal">
-      <div class="modal-body">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
-          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">✏️ Edit Profile</div>
-          <div class="modal-close" style="position:static;width:32px;height:32px;" onclick="closeEditModalDirect()">✕</div>
-        </div>
-
-        <form id="editForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Organizer Name</label>
-              <input type="text" id="editName" value="${escHtml(o.name)}" required>
-            </div>
-            <div class="form-group">
-              <label>Company Name</label>
-              <input type="text" id="editCompany" value="${escHtml(o.company||'')}">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Categories</label>
-            <div id="editCatCheckboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
-              ${['Wedding','Birthday','Corporate','Concert','Sports','Conference','Social','Other'].map(cat=>{
-                const icons={'Wedding':'💍','Birthday':'🎂','Corporate':'🏢','Concert':'🎵','Sports':'🏅','Conference':'🎤','Social':'🎊','Other':'✨'};
-                const checked = (o.categories||[o.category]).includes(cat);
-                return `<label class="cat-chip ${checked?'selected':''}" data-cat="${cat}"><input type="checkbox" value="${cat}" ${checked?'checked':''}> ${icons[cat]||'✨'} ${cat}</label>`;
-              }).join('')}
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Phone</label>
-              <input type="tel" id="editPhone" value="${escHtml(o.phone)}" required>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" id="editEmail" value="${escHtml(o.email)}" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Bio / Description</label>
-            <textarea id="editBio" rows="3">${escHtml(o.bio||'')}</textarea>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Location / City</label>
-              <input type="text" id="editLocation" value="${escHtml(o.location||'')}" required>
-            </div>
-            <div class="form-group">
-              <label>Years of Experience</label>
-              <input type="number" id="editExp" value="${escHtml(o.experience||'')}" min="0">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Min Price (₹)</label>
-              <input type="number" id="editPriceMin" value="${o.priceMin||0}" min="0">
-            </div>
-            <div class="form-group">
-              <label>Max Price (₹)</label>
-              <input type="number" id="editPriceMax" value="${o.priceMax||0}" min="0">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>WhatsApp Number</label>
-            <input type="tel" id="editWhatsapp" value="${escHtml(o.whatsapp||o.phone)}">
-          </div>
-
-          <div class="form-group">
-            <label>Update Photos <span style="font-size:11px;color:var(--muted);">(leave empty to keep current photos)</span></label>
-            <input type="file" id="editPhotos" accept="image/*" multiple onchange="handleEditPhotoSelect(this)">
-            <div class="img-size-warning" id="editImgWarning"></div>
-            <div class="img-size-ok" id="editImgOk"></div>
-            <div id="editImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
-              ${(o.photos||[o.photo]).map((p,i)=>`
-                <div style="position:relative;display:inline-block;">
-                  <img src="${p}" style="width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">
-                  ${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;">MAIN</div>':''}
-                </div>`).join('')}
-            </div>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:20px;">
-            <button type="submit" class="btn-primary" style="flex:1;">💾 Save Changes</button>
-            <button type="button" class="btn-secondary" style="width:auto;" onclick="closeEditModalDirect()">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>`;
-
-  // Bind category chip clicks inside edit modal
-  document.querySelectorAll('#editCatCheckboxes .cat-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const cb = chip.querySelector('input[type=checkbox]');
-      cb.checked = !cb.checked;
-      chip.classList.toggle('selected', cb.checked);
-    });
-  });
-
-  // Bind form submit
-  document.getElementById('editForm').addEventListener('submit', e => saveEdit(e, orgId, o));
-}
-
-function handleEditPhotoSelect(input){
-  const warning = document.getElementById('editImgWarning');
-  const ok      = document.getElementById('editImgOk');
-  if(warning) warning.classList.remove('show');
-  if(ok) ok.classList.remove('show');
-
-  const files = Array.from(input.files);
-  if(!files.length) return;
-
-  let hasLarge = false, totalMB = 0;
-  files.forEach(f => { const mb = f.size/1024/1024; totalMB+=mb; if(mb>MAX_SINGLE_SIZE_MB) hasLarge=true; });
-
-  if(hasLarge || totalMB > MAX_TOTAL_SIZE_MB){
-    if(warning){
-      warning.innerHTML = `⚠️ Photos may be too large (${totalMB.toFixed(1)}MB). Large photos may fail to save.`;
-      warning.classList.add('show');
-    }
-  } else {
-    if(ok){
-      ok.textContent = `✅ ${files.length} photo(s) — ${totalMB.toFixed(1)}MB. Good to go!`;
-      ok.classList.add('show');
-    }
-  }
-
-  // Preview new photos
-  const preview = document.getElementById('editImgsPreview');
-  if(preview){
-    preview.innerHTML = '';
-    files.forEach((file,i)=>{
-      const r = new FileReader();
-      r.onload = e2 => {
-        const wrap = document.createElement('div');
-        wrap.style.cssText='position:relative;display:inline-block;';
-        wrap.innerHTML=`<img src="${e2.target.result}" style="width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid var(--accent);">
-          ${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;">NEW</div>':''}`;
-        preview.appendChild(wrap);
-      };
-      r.readAsDataURL(file);
-    });
-  }
-}
-
-async function saveEdit(e, orgId, original){
+/* ============== EVENTS ============== */
+document.getElementById('eventForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const btn = e.target.querySelector('button[type=submit]');
-  btn.disabled = true; btn.textContent = 'Saving...';
-
-  const checkedCats = [...document.querySelectorAll('#editCatCheckboxes input:checked')].map(c=>c.value);
-  if(!checkedCats.length){ showToast('Please select at least one category','error'); btn.disabled=false; btn.textContent='💾 Save Changes'; return; }
-
-  const newFiles = document.getElementById('editPhotos').files;
-  let photos = original.photos || [original.photo];
-  let photo  = original.photo;
-
-  if(newFiles.length > 0){
-    btn.textContent = 'Compressing photos...';
-    const compressed = await Promise.all(Array.from(newFiles).slice(0,5).map(compressPhoto));
-    const totalBytes = compressed.reduce((s,p)=>s+p.length, 0);
-    if(totalBytes > 900000){
-      showToast('⚠️ Photos still too large. Use fewer/smaller images.','error');
-      btn.disabled=false; btn.textContent='💾 Save Changes'; return;
-    }
-    photos = compressed;
-    photo  = compressed[0];
-  }
-
-  btn.textContent = 'Saving...';
-  try{
-    await db.collection('organizers').doc(orgId).update({
-      name:       document.getElementById('editName').value,
-      company:    document.getElementById('editCompany').value||'',
-      phone:      document.getElementById('editPhone').value,
-      whatsapp:   document.getElementById('editWhatsapp').value||document.getElementById('editPhone').value,
-      email:      document.getElementById('editEmail').value,
-      category:   checkedCats[0],
-      categories: checkedCats,
-      bio:        document.getElementById('editBio').value,
-      location:   document.getElementById('editLocation').value,
-      experience: document.getElementById('editExp').value||'',
-      priceMin:   Number(document.getElementById('editPriceMin').value)||0,
-      priceMax:   Number(document.getElementById('editPriceMax').value)||0,
-      whatsapp:   document.getElementById('editWhatsapp').value||document.getElementById('editPhone').value,
-      photo,
-      photos,
-      updatedAt:  new Date()
-    });
-    showToast('✅ Profile updated successfully!');
-    closeEditModalDirect();
-    loadMyProfiles();
-    loadOrgStats();
-    loadOrganizers();
-  }catch(err){
-    showToast('❌ Error: '+err.message,'error');
-    console.error(err);
-  }
-  btn.disabled=false; btn.textContent='💾 Save Changes';
-}
-
-function closeEditModal(e){ if(e.target.classList.contains('modal-overlay')) closeEditModalDirect(); }
-function closeEditModalDirect(){ document.getElementById('modalContainer').innerHTML=''; }
-function escHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-/* ============ EVENTS ============ */
-document.getElementById('eventForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const price = parseInt(document.getElementById('evtPrice').value)||0;
+  const price=parseInt(document.getElementById('evtPrice').value)||0;
   await db.collection('events').add({
-    name:        document.getElementById('evtName').value,
-    category:    document.getElementById('evtCategory').value,
-    date:        document.getElementById('evtDate').value,
-    price,
-    venue:       document.getElementById('evtVenue').value,
-    description: document.getElementById('evtDesc').value,
-    owner:       currentUser.email,
-    createdAt:   new Date()
+    name:document.getElementById('evtName').value,
+    category:document.getElementById('evtCategory').value,
+    date:document.getElementById('evtDate').value,
+    price:price,
+    venue:document.getElementById('evtVenue').value,
+    description:document.getElementById('evtDesc').value,
+    owner:currentUser.email,
+    createdAt:new Date()
   });
   document.getElementById('eventForm').reset();
   showToast('🎪 Event posted!');
-  loadMyEvents(); loadOrgStats();
+  loadMyEvents();
+  loadOrgStats();
 });
 
 async function loadMyEvents(){
-  const el = document.getElementById('myEventsList');
+  const el=document.getElementById('myEventsList');
   if(!el) return;
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('events').where('owner','==',currentUser.email).orderBy('createdAt','desc').get();
-  if(snap.empty){ el.innerHTML='<p style="color:var(--muted);font-size:14px;">No events posted yet.</p>'; return; }
+  const snap=await db.collection('events').where('owner','==',currentUser.email).orderBy('createdAt','desc').get();
+  if(snap.empty){el.innerHTML='<p style="color:var(--muted);font-size:14px;">No events posted yet.</p>'; return;}
   el.innerHTML='';
   snap.forEach(doc=>{
-    const ev = doc.data();
-    const d = new Date(ev.date);
+    const ev=doc.data();
+    const d=new Date(ev.date);
     el.innerHTML+=`
     <div class="enquiry-item" style="display:flex;align-items:flex-start;gap:14px;">
       <div style="flex-shrink:0;text-align:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;">
@@ -1558,7 +1431,7 @@ async function loadMyEvents(){
       </div>
       <div style="flex:1;">
         <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;">${ev.name}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px;">📍 ${ev.venue} &nbsp;|&nbsp; ${ev.category}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">📍 ${ev.venue} &nbsp;|&nbsp; <span class="badge badge-${getCatColor(ev.category)}" style="margin:0;">${ev.category}</span></div>
         <div style="font-size:16px;font-weight:700;color:var(--accent);margin-top:6px;">${ev.price?'₹'+ev.price.toLocaleString():'Free'}</div>
       </div>
       <button class="btn-danger btn-sm" onclick="deleteEvent('${doc.id}')">Delete</button>
@@ -1574,15 +1447,15 @@ async function deleteEvent(id){
 }
 
 async function loadAllEvents(){
-  const el = document.getElementById('eventsGrid');
+  const el=document.getElementById('eventsGrid');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('events').orderBy('date','asc').get();
+  const snap=await db.collection('events').orderBy('date','asc').get();
   el.innerHTML='';
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return; }
+  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return;}
   snap.forEach(doc=>{
-    const ev = doc.data();
-    const d  = new Date(ev.date);
-    const card = document.createElement('div');
+    const ev=doc.data();
+    const d=new Date(ev.date);
+    const card=document.createElement('div');
     card.className='event-card';
     card.innerHTML=`
       <div class="event-date-badge">
@@ -1599,16 +1472,16 @@ async function loadAllEvents(){
   });
 }
 
-/* ============ INBOX ============ */
+/* ============== INBOX ============== */
 async function loadInbox(){
-  const el = document.getElementById('inboxList');
+  const el=document.getElementById('inboxList');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('enquiries').where('toEmail','==',currentUser.email).orderBy('createdAt','desc').get();
+  const snap=await db.collection('enquiries').where('toEmail','==',currentUser.email).orderBy('createdAt','desc').get();
   el.innerHTML='';
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return; }
+  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return;}
   snap.forEach(doc=>{
-    const q = doc.data();
-    const d = q.createdAt?.toDate?.()?.toLocaleDateString()||'';
+    const q=doc.data();
+    const d=q.createdAt?.toDate?.()?.toLocaleDateString()||'';
     el.innerHTML+=`
     <div class="enquiry-item">
       <div class="enquiry-to" style="display:flex;justify-content:space-between;">
@@ -1622,16 +1495,16 @@ async function loadInbox(){
   });
 }
 
-/* ============ MY ENQUIRIES ============ */
+/* ============== MY ENQUIRIES ============== */
 async function loadMyEnquiries(){
-  const el = document.getElementById('myEnquiriesList');
+  const el=document.getElementById('myEnquiriesList');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('enquiries').where('fromEmail','==',currentUser.email).orderBy('createdAt','desc').get();
+  const snap=await db.collection('enquiries').where('fromEmail','==',currentUser.email).orderBy('createdAt','desc').get();
   el.innerHTML='';
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">📋</span><p>You haven\'t sent any enquiries yet.</p></div>'; return; }
+  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📋</span><p>You haven\'t sent any enquiries yet.</p></div>'; return;}
   snap.forEach(doc=>{
-    const q = doc.data();
-    const d = q.createdAt?.toDate?.()?.toLocaleDateString()||'';
+    const q=doc.data();
+    const d=q.createdAt?.toDate?.()?.toLocaleDateString()||'';
     el.innerHTML+=`
     <div class="enquiry-item">
       <div class="enquiry-to" style="display:flex;justify-content:space-between;">
@@ -1644,32 +1517,34 @@ async function loadMyEnquiries(){
   });
 }
 
-/* ============ ORGANIZERS LOAD ============ */
+/* ============== ORGANIZERS LOAD ============== */
 async function loadOrganizers(){
-  const el = document.getElementById('list');
+  const el=document.getElementById('list');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
   try{
-    const snap = await db.collection('organizers').get();
-    allOrganizers = [];
-    snap.forEach(doc => allOrganizers.push({id:doc.id,...doc.data()}));
+    const snap=await db.collection('organizers').get();
+    allOrganizers=[];
+    snap.forEach(doc=>allOrganizers.push({id:doc.id,...doc.data()}));
+    // Sort by createdAt client side — no index needed
     allOrganizers.sort((a,b)=>{
-      const at = a.createdAt?.toDate?.()?.getTime()||0;
-      const bt = b.createdAt?.toDate?.()?.getTime()||0;
-      return bt - at;
+      const at=a.createdAt?.toDate?.()?.getTime()||0;
+      const bt=b.createdAt?.toDate?.()?.getTime()||0;
+      return bt-at;
     });
-    const banner = document.getElementById('seedBanner');
-    if(banner) banner.style.display = allOrganizers.length>0 ? 'none' : 'flex';
+    // Hide seed banner if organizers exist
+    const banner=document.getElementById('seedBanner');
+    if(banner) banner.style.display=allOrganizers.length>0?'none':'flex';
     buildCatPills();
-    currentPage = 1;
-    filterOrganizers();
+    renderOrganizers(allOrganizers);
   }catch(err){
     el.innerHTML=`<p style="color:var(--muted);font-size:14px;">⚠️ Error loading: ${err.message}</p>`;
+    console.error(err);
   }
 }
 
 function buildCatPills(){
-  const cats = ['All', ...new Set(allOrganizers.map(o=>o.category).filter(Boolean))];
-  document.getElementById('catPills').innerHTML = cats.map(c=>`
+  const cats=['All',...new Set(allOrganizers.map(o=>o.category).filter(Boolean))];
+  document.getElementById('catPills').innerHTML=cats.map(c=>`
     <div class="cat-pill${c==='All'?' active':''}" onclick="setCat('${c}',this)">${c}</div>
   `).join('');
 }
@@ -1677,126 +1552,40 @@ function buildCatPills(){
 function setCat(cat, el){
   document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
-  activeCategory = cat;
-  currentPage = 1;
+  activeCategory=cat;
   filterOrganizers();
 }
 
 function filterOrganizers(){
-  const term = document.getElementById('search').value.toLowerCase();
-  const sort = document.getElementById('sortBy').value;
-
-  let filtered = allOrganizers.filter(o=>{
-    const matchCat    = activeCategory==='All' || o.category===activeCategory;
-    const matchSearch = !term || [o.name,o.email,o.phone,o.location,o.bio].join(' ').toLowerCase().includes(term);
-    return matchCat && matchSearch;
+  const term=document.getElementById('search').value.toLowerCase();
+  const sort=document.getElementById('sortBy').value;
+  let filtered=allOrganizers.filter(o=>{
+    const matchCat=activeCategory==='All'||o.category===activeCategory;
+    const matchSearch=!term||[o.name,o.email,o.phone,o.location,o.bio].join(' ').toLowerCase().includes(term);
+    return matchCat&&matchSearch;
   });
-
   if(sort==='rating') filtered.sort((a,b)=>(b.rating||0)-(a.rating||0));
   else if(sort==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
-
-  filteredOrganizers = filtered;
-  currentPage = 1;
-  renderPage();
-}
-
-/* ============ FEATURE 3: PAGINATION ============ */
-function renderPage(){
-  const total = filteredOrganizers.length;
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-  if(currentPage > totalPages && totalPages > 0) currentPage = totalPages;
-
-  const start = (currentPage - 1) * ITEMS_PER_PAGE;
-  const end   = Math.min(start + ITEMS_PER_PAGE, total);
-  const pageItems = filteredOrganizers.slice(start, end);
-
-  renderOrganizers(pageItems);
-  renderPagination(totalPages, total, start, end);
-}
-
-function renderPagination(totalPages, total, start, end){
-  const pgEl   = document.getElementById('pagination');
-  const infoEl = document.getElementById('pageInfo');
-
-  if(!pgEl) return;
-
-  // Info text
-  if(infoEl){
-    if(total === 0){
-      infoEl.textContent = '';
-    } else {
-      infoEl.textContent = `Showing ${start+1}–${end} of ${total} organizers`;
-    }
-  }
-
-  // No pagination needed
-  if(totalPages <= 1){ pgEl.innerHTML=''; return; }
-
-  let html = '';
-
-  // Prev button
-  html += `<div class="page-btn ${currentPage===1?'disabled':''}" onclick="goToPage(${currentPage-1})">←</div>`;
-
-  // Page numbers — show smart range
-  const range = getPageRange(currentPage, totalPages);
-  range.forEach(p => {
-    if(p === '...'){
-      html += `<div class="page-btn disabled" style="cursor:default;">…</div>`;
-    } else {
-      html += `<div class="page-btn ${p===currentPage?'active':''}" onclick="goToPage(${p})">${p}</div>`;
-    }
-  });
-
-  // Next button
-  html += `<div class="page-btn ${currentPage===totalPages?'disabled':''}" onclick="goToPage(${currentPage+1})">→</div>`;
-
-  pgEl.innerHTML = html;
-}
-
-function getPageRange(current, total){
-  if(total <= 7) return Array.from({length:total},(_,i)=>i+1);
-  const range = [];
-  if(current <= 4){
-    for(let i=1; i<=5; i++) range.push(i);
-    range.push('...'); range.push(total);
-  } else if(current >= total-3){
-    range.push(1); range.push('...');
-    for(let i=total-4; i<=total; i++) range.push(i);
-  } else {
-    range.push(1); range.push('...');
-    for(let i=current-1; i<=current+1; i++) range.push(i);
-    range.push('...'); range.push(total);
-  }
-  return range;
-}
-
-function goToPage(page){
-  const totalPages = Math.ceil(filteredOrganizers.length / ITEMS_PER_PAGE);
-  if(page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderPage();
-  // Scroll back to top of list
-  document.getElementById('list').scrollIntoView({behavior:'smooth', block:'start'});
+  renderOrganizers(filtered);
 }
 
 function renderOrganizers(list){
-  const el = document.getElementById('list');
-  const banner = document.getElementById('seedBanner');
-  el.innerHTML = '';
-
-  if(!list.length && filteredOrganizers.length===0){
+  const el=document.getElementById('list');
+  const banner=document.getElementById('seedBanner');
+  el.innerHTML='';
+  if(!list.length){
     el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No organizers found.</p></div>';
     if(allOrganizers.length===0 && banner) banner.style.display='flex';
     return;
   }
   if(banner) banner.style.display='none';
-
   list.forEach(o=>{
-    const isOwner = o.owner===currentUser?.email;
-    const stars   = renderStars(o.rating||0);
-    const card    = document.createElement('div');
+    const isOwner=o.owner===currentUser?.email;
+    const stars=renderStars(o.rating||0);
+    const card=document.createElement('div');
     card.className='org-card';
-    card.onclick  = () => openProfilePage(o);
+    card.style.cursor='pointer';
+    card.onclick=()=>openProfilePage(o);
     card.innerHTML=`
       <div class="org-img-wrap">
         <img src="${o.photo}" alt="${o.name}" loading="lazy">
@@ -1810,10 +1599,10 @@ function renderOrganizers(list){
         ${o.whatsapp?`<div class="org-meta" style="color:#25d366;">💬 ${o.whatsapp}</div>`:''}
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
           <span class="stars">${stars}</span>
-          <span class="stars-count">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+')':'No reviews'}</span>
+          <span class="stars-count">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+')':(o.reviewCount?o.rating.toFixed(1)+' ('+o.reviewCount+')':'No reviews')}</span>
         </div>
       </div>
-      <div class="org-footer">
+      <div class="org-footer" onclick="openProfilePage(allOrganizers.find(x=>x.id==='${o.id}'))" style="cursor:pointer;">
         <span style="font-size:12px;color:var(--muted);">${o.email.split('@')[0]}@…</span>
         <span style="font-size:12px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:4px;">View <span style="font-size:16px;">→</span></span>
       </div>`;
@@ -1822,19 +1611,19 @@ function renderOrganizers(list){
 }
 
 function renderStars(r){
-  const full = Math.round(r);
-  return Array.from({length:5},(_,i)=>i<full?'★':'☆').join('');
+  const full=Math.round(r);
+  return Array.from({length:5},(_, i)=>i<full?'★':'☆').join('');
 }
 
-/* ============ VIEW MODAL (for customer) ============ */
+/* ============== ORGANIZER MODAL ============== */
 async function openOrgModal(o){
-  const isOwner = o.owner===currentUser?.email;
-  const snap    = await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
-  const reviews = [];
+  const isOwner=o.owner===currentUser?.email;
+  const snap=await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
+  const reviews=[];
   snap.forEach(d=>reviews.push(d.data()));
 
-  const stars = renderStars(o.rating||0);
-  let reviewsHtml = reviews.length ? reviews.map(rv=>`
+  const stars=renderStars(o.rating||0);
+  let reviewsHtml=reviews.length?reviews.map(rv=>`
     <div class="review-card">
       <div class="review-top">
         <span class="review-author">${rv.authorName||rv.authorEmail.split('@')[0]}</span>
@@ -1842,7 +1631,7 @@ async function openOrgModal(o){
       </div>
       <div class="review-text">${rv.text}</div>
     </div>`).join('')
-  : '<p style="font-size:13px;color:var(--muted);">No reviews yet.</p>';
+    :'<p style="font-size:13px;color:var(--muted);">No reviews yet. Be the first!</p>';
 
   document.getElementById('modalContainer').innerHTML=`
   <div class="modal-overlay" onclick="closeModal(event)">
@@ -1851,13 +1640,16 @@ async function openOrgModal(o){
         <img class="modal-img" id="modalMainImg" src="${o.photo}" alt="${o.name}">
         <div class="modal-close" onclick="closeModalDirect()">✕</div>
       </div>
-      ${o.photos&&o.photos.length>1?`
+      ${o.photos && o.photos.length>1?`
       <div style="display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto;">
-        ${o.photos.map((p,i)=>`<img src="${p}" onclick="document.getElementById('modalMainImg').src='${p}'"
-          style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'var(--border)'};flex-shrink:0;">`).join('')}
+        ${o.photos.map((p,i)=>`
+          <img src="${p}" onclick="document.getElementById('modalMainImg').src='${p}'"
+            style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'var(--border)'};flex-shrink:0;transition:all 0.2s;"
+            onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='${i===0?'var(--accent)':'var(--border)'}'">
+        `).join('')}
       </div>`:''}
       <div class="modal-body">
-        ${o.category?`<div class="badge">${o.category}</div>`:''}
+        ${o.category?`<div class="badge" style="margin-bottom:12px;">${o.category}</div>`:''}
         <div class="modal-name">${o.name}</div>
         <div style="display:flex;align-items:center;gap:8px;margin:6px 0 14px;">
           <span class="stars" style="font-size:16px;">${stars}</span>
@@ -1876,96 +1668,143 @@ async function openOrgModal(o){
           ${!isOwner?`<button class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;" onclick="window.open('https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}','_blank')">💬 WhatsApp</button>`:''}
           ${isOwner?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">Delete</button>`:''}
         </div>
+
+        <!-- REVIEWS -->
         <div class="reviews-section">
-          <h4>Reviews</h4>
+          <h4>Reviews & Ratings</h4>
           <div id="reviewsList">${reviewsHtml}</div>
           ${!isOwner?`
           <div class="review-form">
             <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Leave a review</div>
             <div class="star-picker" id="starPicker">
               <span onclick="setStar(1)">★</span><span onclick="setStar(2)">★</span>
-              <span onclick="setStar(3)">★</span><span onclick="setStar(4)">★</span><span onclick="setStar(5)">★</span>
+              <span onclick="setStar(3)">★</span><span onclick="setStar(4)">★</span>
+              <span onclick="setStar(5)">★</span>
             </div>
             <div class="form-group"><textarea id="reviewText" rows="2" placeholder="Share your experience..."></textarea></div>
             <button class="btn-purple btn-sm" onclick="submitReview('${o.id}','${o.owner}','${o.name}')">Submit Review</button>
           </div>`:''}
         </div>
+
+        <!-- ENQUIRY FORM -->
         ${!isOwner?`
         <div class="enquiry-form" id="enquiryFormSection">
           <h4>📩 Send Enquiry</h4>
           <div class="form-group"><input type="text" id="enqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}"></div>
           <div class="form-group"><input type="tel" id="enqPhone" placeholder="Your phone number"></div>
-          <div class="form-group"><textarea id="enqMsg" rows="3" placeholder="Describe your event..."></textarea></div>
+          <div class="form-group"><textarea id="enqMsg" rows="3" placeholder="Describe your event requirements..."></textarea></div>
           <button class="btn-primary btn-sm" onclick="sendEnquiry('${o.id}','${o.owner}','${o.name}')">Send Message</button>
         </div>`:''}
       </div>
     </div>
   </div>`;
-  selectedStar = 0;
+
+  selectedStar=0;
 }
 
-let selectedStar = 0;
+let selectedStar=0;
 function setStar(n){
-  selectedStar = n;
+  selectedStar=n;
   document.querySelectorAll('#starPicker span').forEach((s,i)=>s.classList.toggle('lit',i<n));
 }
-function scrollToEnquiry(){ document.getElementById('enquiryFormSection')?.scrollIntoView({behavior:'smooth',block:'start'}); }
+function scrollToEnquiry(){
+  document.getElementById('enquiryFormSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function closeModal(e){ if(e.target.classList.contains('modal-overlay')) closeModalDirect(); }
 function closeModalDirect(){ document.getElementById('modalContainer').innerHTML=''; }
 
+/* ============== SUBMIT REVIEW ============== */
 async function submitReview(orgId, orgOwner, orgName){
-  if(!selectedStar){ showToast('Please select a star rating','error'); return; }
-  const text = document.getElementById('reviewText').value.trim();
-  if(!text){ showToast('Please write a review','error'); return; }
-  await db.collection('reviews').add({ orgId, orgOwner, orgName, rating:selectedStar, text, authorEmail:currentUser.email, authorName:currentUser.email.split('@')[0], createdAt:new Date() });
-  const allRev = await db.collection('reviews').where('orgId','==',orgId).get();
-  let total = 0; allRev.forEach(d=>total+=d.data().rating);
-  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size, reviewCount:allRev.size});
+  if(!selectedStar){showToast('Please select a star rating','error'); return;}
+  const text=document.getElementById('reviewText').value.trim();
+  if(!text){showToast('Please write a review','error'); return;}
+  await db.collection('reviews').add({
+    orgId, orgOwner, orgName,
+    rating:selectedStar,
+    text,
+    authorEmail:currentUser.email,
+    authorName:currentUser.email.split('@')[0],
+    createdAt:new Date()
+  });
+  // Update avg rating on organizer doc
+  const orgRef=db.collection('organizers').doc(orgId);
+  const allRev=await db.collection('reviews').where('orgId','==',orgId).get();
+  let total=0; allRev.forEach(d=>total+=d.data().rating);
+  await orgRef.update({rating:total/allRev.size, reviewCount:allRev.size});
   showToast('⭐ Review submitted!');
   closeModalDirect();
   loadOrganizers();
 }
 
+/* ============== SEND ENQUIRY ============== */
 async function sendEnquiry(orgId, toEmail, toName){
-  const msg = document.getElementById('enqMsg').value.trim();
-  if(!msg){ showToast('Please write a message','error'); return; }
+  const msg=document.getElementById('enqMsg').value.trim();
+  if(!msg){showToast('Please write a message','error'); return;}
+  const name=document.getElementById('enqName').value.trim();
+  const phone=document.getElementById('enqPhone').value.trim();
   await db.collection('enquiries').add({
     orgId, toEmail, toName,
-    fromEmail:  currentUser.email,
-    fromName:   document.getElementById('enqName').value.trim(),
-    fromPhone:  document.getElementById('enqPhone').value.trim(),
-    message:    msg,
-    createdAt:  new Date()
+    fromEmail:currentUser.email,
+    fromName:name||currentUser.email.split('@')[0],
+    fromPhone:phone,
+    message:msg,
+    createdAt:new Date()
   });
   showToast('📩 Enquiry sent!');
   closeModalDirect();
 }
 
+/* ============== DELETE ORG ============== */
 async function deleteOrg(id){
   if(!confirm('Delete this organizer profile?')) return;
   await db.collection('organizers').doc(id).delete();
   showToast('Listing removed.','error');
   closeModalDirect();
-  closeEditModalDirect();
   loadOrganizers();
   loadOrgStats();
-  loadMyProfiles();
 }
 
+/* ============== CATEGORY COLOR HELPER ============== */
 function getCatColor(cat){
   const map={Wedding:'',Corporate:'blue',Birthday:'purple',Concert:'green',Sports:'blue',Conference:'blue',Social:'purple'};
   return map[cat]||'';
 }
 </script>
 
+<!-- FOOTER -->
+<footer style="position:relative;z-index:5;border-top:1px solid var(--border);background:var(--surface);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+  <div style="display:flex;align-items:center;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" height="36" width="117">
+      <defs>
+        <linearGradient id="ifIG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF6B6B"/><stop offset="70%" style="stop-color:#FFC837"/><stop offset="100%" style="stop-color:#FF6B9D"/></linearGradient>
+        <linearGradient id="ifTG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FF6B6B"/><stop offset="50%" style="stop-color:#FFC837"/><stop offset="100%" style="stop-color:#FF6B9D"/></linearGradient>
+        <filter id="ifG"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <circle cx="78" cy="80" r="44" fill="none" stroke="url(#ifIG)" stroke-width="1.5" opacity="0.9"/>
+      <circle cx="78" cy="80" r="44" fill="url(#ifIG)" opacity="0.1"/>
+      <circle cx="78" cy="34" r="2.5" fill="url(#ifIG)"/><circle cx="78" cy="126" r="2.5" fill="url(#ifIG)"/><circle cx="32" cy="80" r="2.5" fill="url(#ifIG)"/><circle cx="124" cy="80" r="2.5" fill="url(#ifIG)"/>
+      <path d="M 55 52 L 55 88 Q 55 108 78 108 Q 101 108 101 88 L 101 52" fill="none" stroke="url(#ifIG)" stroke-width="7" stroke-linecap="round" filter="url(#ifG)"/>
+      <g transform="translate(52,46)" filter="url(#ifG)"><path d="M0,-6 L1.5,-1.5 L6,0 L1.5,1.5 L0,6 L-1.5,1.5 L-6,0 L-1.5,-1.5 Z" fill="#FFC837"/></g>
+      <g transform="translate(104,46)" filter="url(#ifG)"><path d="M0,-5 L1.2,-1.2 L5,0 L1.2,1.2 L0,5 L-1.2,1.2 L-5,0 L-1.2,-1.2 Z" fill="#FF6B9D"/></g>
+      <text x="168" y="95" font-family="Georgia,serif" font-size="58" font-weight="700" letter-spacing="4" fill="url(#ifTG)">UTSAAV</text>
+      <text x="170" y="118" font-family="Georgia,serif" font-size="12" letter-spacing="5" fill="#555">EVENT MANAGEMENT</text>
+    </svg>
+  </div>
+  <div style="text-align:center;font-size:13px;color:var(--muted);line-height:1.8;">
+    <div>Event Management Platform — <a href="landing.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Organizers ke liye free listing →</a></div>
+    <div style="margin-top:4px;">
+      CEO &amp; Founder — <strong style="color:var(--text);">Ritam Mitra</strong> &nbsp;|&nbsp;
+      <a href="tel:7384949090" style="color:var(--accent);text-decoration:none;">📞 7384949090</a> &nbsp;|&nbsp;
+      <a href="/cdn-cgi/l/email-protection#650817170c110408080c111704250208040c094b060a08" style="color:var(--accent);text-decoration:none;">✉ <span class="__cf_email__" data-cfemail="bdd0cfcfd4c9dcd0d0d4c9cfdcfddad0dcd4d193ded2d0">[email&#160;protected]</span></a
 <!-- ===== PROFILE VIEW PAGE ===== -->
 <div class="hidden" id="profilePage" style="position:relative;z-index:5;min-height:calc(100vh - 67px);padding:0 0 80px;">
   <div id="profileHero" style="position:relative;height:300px;overflow:hidden;background:var(--surface2);">
     <img id="profileHeroImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);">
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%);"></div>
-    <button onclick="closeProfilePage()" style="position:absolute;top:20px;left:20px;background:rgba(0,0,0,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:10px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;">← Back</button>
+    <button onclick="closeProfilePage()" style="position:absolute;top:20px;left:20px;background:rgba(0,0,0,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:10px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;">← Back</button>
     <div id="profileThumbs" style="position:absolute;bottom:16px;right:20px;display:flex;gap:8px;"></div>
   </div>
+
   <div style="max-width:940px;margin:0 auto;padding:0 20px;">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:-40px;position:relative;z-index:2;margin-bottom:26px;">
       <div>
@@ -1982,22 +1821,31 @@ function getCatColor(cat){
         <div id="profilePriceText" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--accent);"></div>
       </div>
     </div>
+
     <div id="profileActions" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;"></div>
+
     <div style="display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start;">
       <div>
+        <!-- ABOUT -->
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
           <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">About</h3>
           <p id="profileBio" style="font-size:14px;color:var(--muted);line-height:1.8;"></p>
         </div>
+
+        <!-- SERVICES -->
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
           <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">🎭 Specialization</h3>
           <div id="profileServices" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
         </div>
+
+        <!-- GALLERY -->
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;">
           <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">📸 Work Gallery</h3>
           <div id="profileGallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
           <div id="profileNoGallery" style="display:none;font-size:13px;color:var(--muted);">No photos uploaded yet.</div>
         </div>
+
+        <!-- REVIEWS -->
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
             <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">⭐ Reviews</h3>
@@ -2007,6 +1855,8 @@ function getCatColor(cat){
           <div id="profileReviewForm"></div>
         </div>
       </div>
+
+      <!-- RIGHT STICKY -->
       <div style="position:sticky;top:90px;display:flex;flex-direction:column;gap:16px;">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
           <h3 style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:16px;">📩 Send Enquiry</h3>
@@ -2022,22 +1872,25 @@ function getCatColor(cat){
 </div>
 
 <script>
-let currentProfileOrg = null;
+/* ====== PROFILE PAGE ====== */
+let currentProfileOrg=null;
 
 function openProfilePage(o){
-  currentProfileOrg = o;
+  currentProfileOrg=o;
   hideAllPages();
   document.getElementById('profilePage').classList.remove('hidden');
   window.scrollTo(0,0);
 
-  document.getElementById('profileHeroImg').src = o.photo||'';
+  // HERO IMAGE
+  document.getElementById('profileHeroImg').src=o.photo||'';
 
-  const thumbs = document.getElementById('profileThumbs');
+  // THUMBNAILS
+  const thumbs=document.getElementById('profileThumbs');
   thumbs.innerHTML='';
-  if(o.photos && o.photos.length>1){
+  if(o.photos&&o.photos.length>1){
     o.photos.forEach((p,i)=>{
-      const img = document.createElement('img');
-      img.src = p;
+      const img=document.createElement('img');
+      img.src=p;
       img.style.cssText=`width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'rgba(255,255,255,0.3)'};transition:all 0.2s;`;
       img.onclick=()=>{
         document.getElementById('profileHeroImg').src=p;
@@ -2048,54 +1901,73 @@ function openProfilePage(o){
     });
   }
 
-  document.getElementById('profileCategory').innerHTML = o.category?`<span class="badge">${o.category}</span>`:'';
-  document.getElementById('profileName').textContent    = o.name;
-  document.getElementById('profileLocation').innerHTML  = o.location?`📍 ${o.location}`:'';
-  document.getElementById('profileExp').innerHTML       = o.experience?`🏆 ${o.experience} yrs experience`:'';
+  // CATEGORY
+  document.getElementById('profileCategory').innerHTML=o.category?`<span class="badge">${o.category}</span>`:'';
 
-  const stars = renderStars(o.rating||0);
+  // NAME
+  document.getElementById('profileName').textContent=o.name;
+
+  // META
+  document.getElementById('profileLocation').innerHTML=o.location?`📍 ${o.location}`:'';
+  document.getElementById('profileExp').innerHTML=o.experience?`🏆 ${o.experience} yrs experience`:'';
+
+  // STARS
+  const stars=renderStars(o.rating||0);
   document.getElementById('profileStars').innerHTML=`<span style="color:var(--accent);font-size:15px;letter-spacing:2px;">${stars}</span> <span style="font-size:12px;color:var(--muted);">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+' reviews)':'No reviews yet'}</span>`;
 
-  const p = document.getElementById('profilePriceText');
+  // PRICE
+  const p=document.getElementById('profilePriceText');
   if(o.priceMin||o.priceMax){
     p.textContent=`₹${Number(o.priceMin||0).toLocaleString()} – ₹${Number(o.priceMax||0).toLocaleString()}`;
-  } else { p.textContent='Contact for pricing'; p.style.fontSize='14px'; }
+  } else {
+    p.textContent='Contact for pricing';
+    p.style.fontSize='14px';
+  }
 
-  const isOwner = o.owner===currentUser?.email;
+  // ACTION BUTTONS
+  const isOwner=o.owner===currentUser?.email;
   document.getElementById('profileActions').innerHTML=`
     ${!isOwner?`<button class="btn-primary btn-sm" onclick="document.getElementById('profileEnquiryForm').scrollIntoView({behavior:'smooth'})">📩 Send Enquiry</button>`:''}
     <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;">📞 Call Now</a>
     <a href="https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;">💬 WhatsApp</a>
-    ${isOwner?`<button class="btn-edit btn-sm" onclick="openEditModal('${o.id}')">✏️ Edit Profile</button><button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
+    ${isOwner?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
   `;
 
-  document.getElementById('profileBio').textContent = o.bio||'No description provided.';
+  // BIO
+  document.getElementById('profileBio').textContent=o.bio||'No description provided.';
 
-  const allCats = ['Wedding','Corporate','Birthday','Concert','Sports','Conference','Social'];
-  const svcs    = document.getElementById('profileServices');
+  // SERVICES
+  const allCats=['Wedding','Corporate','Birthday','Concert','Sports','Conference','Social'];
+  const svcs=document.getElementById('profileServices');
   if(o.category){
-    svcs.innerHTML = allCats.map(c=>`
+    svcs.innerHTML=allCats.map(c=>`
       <span style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;
         background:${c===o.category?'var(--accent)':'var(--surface2)'};
         color:${c===o.category?'#0a0a0f':'var(--muted)'};
-        border:1px solid ${c===o.category?'var(--accent)':'var(--border)'};">${c}</span>`).join('');
+        border:1px solid ${c===o.category?'var(--accent)':'var(--border)'};">
+        ${c}
+      </span>`).join('');
   } else {
     svcs.innerHTML='<span style="color:var(--muted);font-size:13px;">Not specified</span>';
   }
 
-  const gallery   = document.getElementById('profileGallery');
-  const noGallery = document.getElementById('profileNoGallery');
-  gallery.innerHTML = '';
-  if(o.photos && o.photos.length>0){
+  // GALLERY
+  const gallery=document.getElementById('profileGallery');
+  const noGallery=document.getElementById('profileNoGallery');
+  gallery.innerHTML='';
+  if(o.photos&&o.photos.length>0){
     noGallery.style.display='none';
-    o.photos.forEach(ph=>{
-      const div = document.createElement('div');
+    o.photos.forEach(p=>{
+      const div=document.createElement('div');
       div.style.cssText='aspect-ratio:1;overflow:hidden;border-radius:10px;cursor:pointer;';
-      div.innerHTML=`<img src="${ph}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('profileHeroImg').src='${ph}';window.scrollTo(0,0);">`;
+      div.innerHTML=`<img src="${p}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('profileHeroImg').src='${p}';window.scrollTo(0,0);">`;
       gallery.appendChild(div);
     });
-  } else { noGallery.style.display='block'; }
+  } else {
+    noGallery.style.display='block';
+  }
 
+  // CONTACT INFO
   document.getElementById('profileContactInfo').innerHTML=`
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;">
@@ -2120,8 +1992,10 @@ function openProfilePage(o){
       </div>`:''}
     </div>`;
 
+  // LOAD REVIEWS
   loadProfileReviews(o);
 
+  // ENQUIRY FORM
   if(!isOwner){
     document.getElementById('profileEnquiryForm').innerHTML=`
       <div class="form-group"><input type="text" id="penqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
@@ -2134,15 +2008,16 @@ function openProfilePage(o){
 }
 
 async function loadProfileReviews(o){
-  const isOwner = o.owner===currentUser?.email;
-  const snap = await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
-  const reviews = [];
+  const isOwner=o.owner===currentUser?.email;
+  const snap=await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
+  const reviews=[];
   snap.forEach(d=>reviews.push(d.data()));
 
-  document.getElementById('profileRatingBig').textContent = o.rating ? o.rating.toFixed(1)+' ★' : '—';
+  const ratingBig=document.getElementById('profileRatingBig');
+  ratingBig.textContent=o.rating?o.rating.toFixed(1)+' ★':'—';
 
-  const rv = document.getElementById('profileReviews');
-  rv.innerHTML = reviews.length ? reviews.map(r=>`
+  const rv=document.getElementById('profileReviews');
+  rv.innerHTML=reviews.length?reviews.map(r=>`
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
         <span style="font-size:13px;font-weight:600;">${r.authorName||r.authorEmail.split('@')[0]}</span>
@@ -2150,7 +2025,7 @@ async function loadProfileReviews(o){
       </div>
       <div style="font-size:13px;color:var(--muted);line-height:1.6;">${r.text}</div>
     </div>`).join('')
-  : '<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">No reviews yet.</p>';
+  :'<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">No reviews yet. Be the first!</p>';
 
   if(!isOwner){
     document.getElementById('profileReviewForm').innerHTML=`
@@ -2169,40 +2044,45 @@ async function loadProfileReviews(o){
   }
 }
 
-let pSelectedStar = 0;
+let pSelectedStar=0;
 function setPStar(n){
-  pSelectedStar = n;
+  pSelectedStar=n;
   document.querySelectorAll('#pStarPicker span').forEach((s,i)=>{
-    s.style.opacity = i<n ? '1' : '0.3';
-    s.style.color   = i<n ? 'var(--accent)' : 'var(--text)';
+    s.style.opacity=i<n?'1':'0.3';
+    s.style.color=i<n?'var(--accent)':'var(--text)';
   });
 }
 
-async function submitProfileReview(orgId, orgOwner, orgName){
-  if(!pSelectedStar){ showToast('Please select a star rating','error'); return; }
-  const text = document.getElementById('pReviewText').value.trim();
-  if(!text){ showToast('Please write something','error'); return; }
-  await db.collection('reviews').add({ orgId, orgOwner, orgName, rating:pSelectedStar, text, authorEmail:currentUser.email, authorName:currentUser.email.split('@')[0], createdAt:new Date() });
-  const allRev = await db.collection('reviews').where('orgId','==',orgId).get();
+async function submitProfileReview(orgId,orgOwner,orgName){
+  if(!pSelectedStar){showToast('Please select a star rating','error'); return;}
+  const text=document.getElementById('pReviewText').value.trim();
+  if(!text){showToast('Please write something','error'); return;}
+  await db.collection('reviews').add({
+    orgId,orgOwner,orgName,rating:pSelectedStar,text,
+    authorEmail:currentUser.email,
+    authorName:currentUser.email.split('@')[0],
+    createdAt:new Date()
+  });
+  const allRev=await db.collection('reviews').where('orgId','==',orgId).get();
   let total=0; allRev.forEach(d=>total+=d.data().rating);
-  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size, reviewCount:allRev.size});
+  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size,reviewCount:allRev.size});
   showToast('⭐ Review submitted!');
-  const updated = {...currentProfileOrg, rating:total/allRev.size, reviewCount:allRev.size};
-  currentProfileOrg = updated;
+  const updated={...currentProfileOrg,rating:total/allRev.size,reviewCount:allRev.size};
+  currentProfileOrg=updated;
   loadProfileReviews(updated);
   loadOrganizers();
 }
 
-async function sendProfileEnquiry(orgId, toEmail, toName){
-  const msg = document.getElementById('penqMsg').value.trim();
-  if(!msg){ showToast('Please write a message','error'); return; }
+async function sendProfileEnquiry(orgId,toEmail,toName){
+  const msg=document.getElementById('penqMsg').value.trim();
+  if(!msg){showToast('Please write a message','error'); return;}
   await db.collection('enquiries').add({
-    orgId, toEmail, toName,
-    fromEmail: currentUser.email,
-    fromName:  document.getElementById('penqName').value.trim(),
-    fromPhone: document.getElementById('penqPhone').value.trim(),
-    message:   msg,
-    createdAt: new Date()
+    orgId,toEmail,toName,
+    fromEmail:currentUser.email,
+    fromName:document.getElementById('penqName').value.trim(),
+    fromPhone:document.getElementById('penqPhone').value.trim(),
+    message:msg,
+    createdAt:new Date()
   });
   showToast('📩 Enquiry sent!');
   document.getElementById('penqMsg').value='';
@@ -2216,65 +2096,105 @@ function closeProfilePage(){
 }
 </script>
 
-<!-- VENDOR PAGE -->
+<!-- ===== VENDOR PAGE (Photographer / Makeup / Return Gifts) ===== -->
 <div class="hidden" id="vendor" style="position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;">
   <div style="width:100%;max-width:720px;">
     <div class="panel-header">
       <div class="panel-back" onclick="showSection('home')">←</div>
       <div><div class="panel-title">Creative <span>Professionals</span></div></div>
     </div>
+
+    <!-- TYPE SELECTOR -->
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
       <button class="vendor-type-btn active" onclick="selectVendorType('photographer',this)">📸 Photographer</button>
       <button class="vendor-type-btn" onclick="selectVendorType('makeup',this)">💄 Makeup Artist</button>
       <button class="vendor-type-btn" onclick="selectVendorType('gifts',this)">🎁 Return Gifts</button>
     </div>
+
+    <!-- FORM -->
     <div class="glass-card">
       <div id="vendorTypeLabel" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:18px;color:var(--accent);">📸 Photographer Registration</div>
       <form id="vendorForm">
         <div class="form-row">
-          <div class="form-group"><label>Your Name</label><input type="text" id="vName" placeholder="Full name" required></div>
-          <div class="form-group"><label>Company / Brand Name</label><input type="text" id="vCompany" placeholder="Studio / brand name"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Phone Number</label><input type="tel" id="vPhone" placeholder="+91 00000 00000" required></div>
-          <div class="form-group"><label>WhatsApp Number</label><input type="tel" id="vWhatsapp" placeholder="+91 WhatsApp number"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Email</label><input type="email" id="vEmail" placeholder="your@email.com" required></div>
-          <div class="form-group"><label>Website (optional)</label><input type="url" id="vWebsite" placeholder="https://..."></div>
-        </div>
-        <div class="form-group"><label>Location / City</label><input type="text" id="vLocation" placeholder="e.g. Midnapore..." required></div>
-        <div class="form-group"><label>Bio / Description</label><textarea id="vBio" rows="3" placeholder="Tell clients about your work..."></textarea></div>
-        <div class="form-row">
-          <div class="form-group"><label>Years of Experience</label><input type="number" id="vExp" placeholder="e.g. 3" min="0"></div>
           <div class="form-group">
-            <label id="vSpecialtyLabel">Specialty</label>
-            <input type="text" id="vSpecialty" placeholder="e.g. Wedding, Portrait">
+            <label>Your Name</label>
+            <input type="text" id="vName" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Company / Brand Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+            <input type="text" id="vCompany" placeholder="Studio / brand name">
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Min Price (₹)</label><input type="number" id="vPriceMin" placeholder="e.g. 5000" min="0"></div>
-          <div class="form-group"><label>Max Price (₹)</label><input type="number" id="vPriceMax" placeholder="e.g. 50000" min="0"></div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="vPhone" placeholder="+91 00000 00000" required>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="vWhatsapp" placeholder="+91 WhatsApp number">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="vEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>Existing Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+            <input type="url" id="vWebsite" placeholder="https://yourwebsite.com">
+          </div>
         </div>
         <div class="form-group">
-          <label>Portfolio — Google Drive Link (optional)</label>
-          <input type="url" id="vDriveLink" placeholder="https://drive.google.com/...">
+          <label>Location / City</label>
+          <input type="text" id="vLocation" placeholder="e.g. Midnapore, Kolkata..." required>
+        </div>
+        <div class="form-group">
+          <label>Bio / Description</label>
+          <textarea id="vBio" rows="3" placeholder="Tell clients about your work and experience..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Years of Experience</label>
+            <input type="number" id="vExp" placeholder="e.g. 3" min="0">
+          </div>
+          <div class="form-group" id="vSpecialtyGroup">
+            <label id="vSpecialtyLabel">Specialty</label>
+            <input type="text" id="vSpecialty" placeholder="e.g. Wedding, Portrait, Fashion">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Min Price (₹)</label>
+            <input type="number" id="vPriceMin" placeholder="e.g. 5000" min="0">
+          </div>
+          <div class="form-group">
+            <label>Max Price (₹)</label>
+            <input type="number" id="vPriceMax" placeholder="e.g. 50000" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Work Portfolio — Google Drive Link <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+          <input type="url" id="vDriveLink" placeholder="https://drive.google.com/drive/folders/...">
           <div style="font-size:12px;color:var(--muted);margin-top:6px;">📂 Set sharing to "Anyone with link" then paste here.</div>
         </div>
         <div class="form-group" id="vPhotoGroup">
-          <label>Work Photos <span style="font-size:11px;color:var(--muted);">(max 5)</span></label>
-          <div id="vPhotoDropzone" onclick="document.getElementById('vPhotos').click()" style="border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;background:var(--surface2);">
+          <label>Work Photos <span style="font-size:11px;color:var(--muted);">(max 5 photos — only for Photographer & Makeup)</span></label>
+          <div id="vPhotoDropzone" onclick="document.getElementById('vPhotos').click()" style="border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
             <div style="font-size:32px;margin-bottom:8px;">📷</div>
-            <div style="font-size:14px;font-weight:600;">Click to select photos</div>
-            <div style="font-size:12px;color:var(--muted);">JPG, PNG — max 5</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Click to select photos</div>
+            <div style="font-size:12px;color:var(--muted);">JPG, PNG — max 5 photos</div>
             <input type="file" id="vPhotos" accept="image/*" multiple style="display:none;" onchange="previewVendorPhotos(this)">
           </div>
+          <!-- PREVIEW GRID -->
           <div id="vPhotosPreview" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;"></div>
           <div id="vPhotoCount" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
         </div>
         <button type="submit" class="btn-primary" style="margin-top:8px;">✦ Publish Profile</button>
       </form>
     </div>
+
+    <!-- MY VENDOR LISTINGS -->
     <div style="margin-top:28px;">
       <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">My Listings</div>
       <div id="myVendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
@@ -2282,7 +2202,20 @@ function closeProfilePage(){
   </div>
 </div>
 
+<style>
+.vendor-type-btn {
+  padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.vendor-type-btn.active, .vendor-type-btn:hover {
+  background: rgba(201,168,76,0.12); border-color: var(--accent); color: var(--accent);
+}
+</style>
+
 <script>
+/* ====== VENDOR PAGE ====== */
 let currentVendorType = 'photographer';
 
 function selectVendorType(type, btn){
@@ -2290,38 +2223,58 @@ function selectVendorType(type, btn){
   document.querySelectorAll('.vendor-type-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   const labels = {
-    photographer:{ title:'📸 Photographer Registration', specialty:'Specialty', ph:'e.g. Wedding, Portrait' },
-    makeup:      { title:'💄 Makeup Artist Registration', specialty:'Makeup Specialty', ph:'e.g. Bridal, HD Makeup' },
-    gifts:       { title:'🎁 Return Gifts Registration', specialty:'Products Offered', ph:'e.g. Gift hampers' }
+    photographer: { title:'📸 Photographer Registration', specialty:'Specialty', specialtyPlaceholder:'e.g. Wedding, Portrait, Fashion' },
+    makeup:       { title:'💄 Makeup Artist Registration', specialty:'Makeup Specialty', specialtyPlaceholder:'e.g. Bridal, Party, HD Makeup' },
+    gifts:        { title:'🎁 Return Gifts / Wedding Favors Registration', specialty:'Products Offered', specialtyPlaceholder:'e.g. Gift hampers, Dry fruits, Customized gifts' }
   };
   const l = labels[type];
   document.getElementById('vendorTypeLabel').textContent = l.title;
   document.getElementById('vSpecialtyLabel').textContent = l.specialty;
-  document.getElementById('vSpecialty').placeholder = l.ph;
-  const pg = document.getElementById('vPhotoGroup');
-  if(pg) pg.style.display = type==='gifts' ? 'none' : 'block';
+  document.getElementById('vSpecialty').placeholder = l.specialtyPlaceholder;
+  // Hide photo upload for gifts, show for photographer & makeup
+  const photoGroup = document.getElementById('vPhotoGroup');
+  if(photoGroup) photoGroup.style.display = type==='gifts' ? 'none' : 'block';
   loadMyVendorListings();
 }
 
 function previewVendorPhotos(input){
-  if(input.files.length>5){ showToast('Max 5 photos!','error'); input.value=''; return; }
+  const files = Array.from(input.files);
+  if(files.length > 5){
+    showToast('Max 5 photos allowed!','error');
+    input.value='';
+    return;
+  }
   const preview = document.getElementById('vPhotosPreview');
-  const count   = document.getElementById('vPhotoCount');
-  preview.innerHTML='';
-  count.textContent=`${input.files.length} photo(s) selected`;
-  Array.from(input.files).forEach((file,i)=>{
-    const r = new FileReader();
-    r.onload = e => {
+  const count = document.getElementById('vPhotoCount');
+  preview.innerHTML = '';
+  count.textContent = `${files.length} photo${files.length>1?'s':''} selected`;
+
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
       const wrap = document.createElement('div');
-      wrap.style.cssText='position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;border:2px solid var(--border);';
-      wrap.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">
-        ${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;">COVER</div>':''}`;
+      wrap.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;border:2px solid var(--border);';
+      wrap.innerHTML = `
+        <img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">
+        ${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">COVER</div>':''}
+        <button type="button" onclick="removeVendorPhoto(${i})" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);border:none;color:#fff;width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>`;
       preview.appendChild(wrap);
     };
-    r.readAsDataURL(file);
+    reader.readAsDataURL(file);
   });
 }
 
+function removeVendorPhoto(index){
+  const input = document.getElementById('vPhotos');
+  const dt = new DataTransfer();
+  Array.from(input.files).forEach((f, i) => { if(i !== index) dt.items.add(f); });
+  input.files = dt.files;
+  previewVendorPhotos(input);
+}
+
+document.getElementById('showSection') || null;
+
+// Show vendor page
 const _origShowSection = window.showSection;
 window.showSection = function(id){
   if(id==='vendor'){
@@ -2334,40 +2287,65 @@ window.showSection = function(id){
   _origShowSection(id);
 };
 
+// Vendor form submit
 document.getElementById('vendorForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const driveLink = document.getElementById('vDriveLink').value.trim();
-  if(driveLink && !driveLink.includes('drive.google.com')){ showToast('Please enter a valid Google Drive link','error'); return; }
+  if(driveLink && !driveLink.includes('drive.google.com')){
+    showToast('Please enter a valid Google Drive link','error'); return;
+  }
   const btn = e.target.querySelector('button[type=submit]');
   btn.disabled=true;
-  let photos=[];
+
+  // Read + COMPRESS photos (max 800px wide, quality 0.7)
+  let photos = [];
   const photoFiles = document.getElementById('vPhotos').files;
-  if(photoFiles.length>0 && currentVendorType!=='gifts'){
-    btn.textContent='Compressing...';
+  if(photoFiles.length > 0 && currentVendorType !== 'gifts'){
+    // max 5 photos, all parallel
+    btn.textContent = "Compressing...";
+
+    const compressPhoto = (file) => new Promise(res => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const MAX = 600;
+        let w = img.width, h = img.height;
+        if(w > MAX){ h = Math.round(h * MAX / w); w = MAX; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        res(canvas.toDataURL('image/jpeg', 0.5));
+      };
+      img.src = url;
+    });
+
     photos = await Promise.all(Array.from(photoFiles).slice(0,5).map(compressPhoto));
   }
-  btn.textContent='Saving...';
+
+  btn.textContent = 'Saving...';
   await db.collection('vendors').add({
-    type:currentVendorType,
-    name:document.getElementById('vName').value,
-    company:document.getElementById('vCompany').value||'',
-    phone:document.getElementById('vPhone').value,
-    whatsapp:document.getElementById('vWhatsapp').value||document.getElementById('vPhone').value,
-    email:document.getElementById('vEmail').value,
-    website:document.getElementById('vWebsite').value||'',
-    location:document.getElementById('vLocation').value,
-    bio:document.getElementById('vBio').value||'',
-    experience:document.getElementById('vExp').value||'',
-    specialty:document.getElementById('vSpecialty').value||'',
-    priceMin:document.getElementById('vPriceMin').value||0,
-    priceMax:document.getElementById('vPriceMax').value||0,
-    driveLink,
-    photos,
-    photo:photos[0]||'',
-    owner:currentUser.email,
-    rating:0,reviewCount:0,
-    createdAt:new Date()
+    type: currentVendorType,
+    name: document.getElementById('vName').value,
+    company: document.getElementById('vCompany').value||'',
+    phone: document.getElementById('vPhone').value,
+    whatsapp: document.getElementById('vWhatsapp').value || document.getElementById('vPhone').value,
+    email: document.getElementById('vEmail').value,
+    website: document.getElementById('vWebsite').value||'',
+    location: document.getElementById('vLocation').value,
+    bio: document.getElementById('vBio').value||'',
+    experience: document.getElementById('vExp').value||'',
+    specialty: document.getElementById('vSpecialty').value||'',
+    priceMin: document.getElementById('vPriceMin').value||0,
+    priceMax: document.getElementById('vPriceMax').value||0,
+    driveLink: driveLink,
+    photos: photos,
+    photo: photos[0]||'',
+    owner: currentUser.email,
+    rating:0, reviewCount:0,
+    createdAt: new Date()
   });
+
   document.getElementById('vendorForm').reset();
   document.getElementById('vPhotosPreview').innerHTML='';
   document.getElementById('vPhotoCount').textContent='';
@@ -2377,23 +2355,23 @@ document.getElementById('vendorForm').addEventListener('submit', async e=>{
 });
 
 async function loadMyVendorListings(){
-  const el = document.getElementById('myVendorList');
+  const el=document.getElementById('myVendorList');
   if(!el) return;
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('vendors').where('owner','==',currentUser.email).get();
-  if(snap.empty){ el.innerHTML='<p style="color:var(--muted);font-size:14px;">No listings yet.</p>'; return; }
+  const snap=await db.collection('vendors').where('owner','==',currentUser.email).get();
+  if(snap.empty){el.innerHTML='<p style="color:var(--muted);font-size:14px;">No listings yet.</p>'; return;}
   el.innerHTML='';
   snap.forEach(doc=>{
-    const v = {id:doc.id,...doc.data()};
-    const typeIcon = {photographer:'📸',makeup:'💄',gifts:'🎁'}[v.type]||'✨';
-    const div = document.createElement('div');
+    const v={id:doc.id,...doc.data()};
+    const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'}[v.type]||'✨';
+    const div=document.createElement('div');
     div.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
     div.innerHTML=`
       <div>
         <div style="font-size:13px;color:var(--accent);font-weight:600;margin-bottom:4px;">${typeIcon} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</div>
         <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;">${v.name}${v.company?' — '+v.company:''}</div>
-        <div style="font-size:13px;color:var(--muted);margin-top:3px;">📍 ${v.location} | 📞 ${v.phone}</div>
-        ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="font-size:12px;color:var(--accent3);text-decoration:none;">📂 View Portfolio →</a>`:''}
+        <div style="font-size:13px;color:var(--muted);margin-top:3px;">📍 ${v.location} &nbsp;|&nbsp; 📞 ${v.phone}</div>
+        ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="font-size:12px;color:var(--accent3);text-decoration:none;margin-top:4px;display:inline-block;">📂 View Portfolio →</a>`:''}
       </div>
       <button onclick="deleteVendor('${v.id}')" class="btn-danger btn-sm">Delete</button>`;
     el.appendChild(div);
@@ -2406,9 +2384,11 @@ async function deleteVendor(id){
   showToast('Deleted!');
   loadMyVendorListings();
 }
+</script>
 
-/* ===== VENDOR BROWSING (Customer Side) ===== */
-let allVendors = [];
+<script>
+/* ====== VENDOR BROWSING (Customer Side) ====== */
+let allVendors=[];
 
 function filterVendors(type, btn){
   document.querySelectorAll('#vendorFilterBtns .vendor-type-btn').forEach(b=>b.classList.remove('active'));
@@ -2417,350 +2397,158 @@ function filterVendors(type, btn){
 }
 
 async function loadVendors(type){
-  const el = document.getElementById('vendorList');
+  const el=document.getElementById('vendorList');
   el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
   try{
-    const snap = await db.collection('vendors').get();
+    const snap=await db.collection('vendors').get();
     allVendors=[];
     snap.forEach(doc=>allVendors.push({id:doc.id,...doc.data()}));
-    const filtered = type==='all' ? allVendors : allVendors.filter(v=>v.type===type);
+    const filtered=type==='all'?allVendors:allVendors.filter(v=>v.type===type);
     renderVendors(filtered);
-  }catch(err){ el.innerHTML=`<p style="color:var(--muted);">Error: ${err.message}</p>`; }
+  }catch(err){
+    el.innerHTML=`<p style="color:var(--muted);font-size:14px;">Error: ${err.message}</p>`;
+  }
 }
 
 function renderVendors(list){
-  const el = document.getElementById('vendorList');
+  const el=document.getElementById('vendorList');
   el.innerHTML='';
-  if(!list.length){ el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No listings found.</p></div>'; return; }
+  if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No listings found.</p></div>'; return;}
   const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
+  const typeColor={photographer:'rgba(201,168,76,0.1)',makeup:'rgba(232,101,74,0.1)',gifts:'rgba(78,203,113,0.1)'};
   list.forEach(v=>{
-    const card = document.createElement('div');
+    const card=document.createElement('div');
     card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;transition:all 0.2s;cursor:pointer;';
     card.onmouseover=()=>card.style.borderColor='rgba(201,168,76,0.3)';
     card.onmouseout=()=>card.style.borderColor='rgba(255,255,255,0.07)';
+    // Card click opens vendor profile
+    card.onclick=(e)=>{
+      if(e.target.tagName==='A'||e.target.closest('a')) return; // don't intercept link clicks
+      openVendorProfile(v);
+    };
     const stars='★'.repeat(Math.round(v.rating||0))+'☆'.repeat(5-Math.round(v.rating||0));
     card.innerHTML=`
       <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div style="flex:1;">
-          <div style="margin-bottom:8px;">
-            <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(201,168,76,0.1);color:var(--accent);">${typeIcon[v.type]||'✨'} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</span>
-            ${v.specialty?`<span style="margin-left:6px;padding:4px 10px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--muted);">${v.specialty}</span>`:''}
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+            <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${typeColor[v.type]||'rgba(201,168,76,0.1)'};color:var(--accent);">${typeIcon[v.type]||'✨'} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</span>
+            ${v.specialty?`<span style="padding:4px 10px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--muted);">${v.specialty}</span>`:''}
           </div>
           <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:4px;">${v.name}${v.company?` <span style="font-size:14px;font-weight:400;color:var(--muted);">— ${v.company}</span>`:''}</div>
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:10px;">
             <span>📍 ${v.location}</span>
             ${v.experience?`<span>🏆 ${v.experience} yrs</span>`:''}
-            <span style="color:var(--accent);">${stars}</span>
+            <span style="color:var(--accent);">${stars} <span style="color:var(--muted);">${v.reviewCount?'('+v.reviewCount+')':'No reviews'}</span></span>
           </div>
           ${v.bio?`<p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px;">${v.bio.slice(0,120)}${v.bio.length>120?'...':''}</p>`:''}
-          ${v.photos&&v.photos.length>0?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">${v.photos.slice(0,5).map((p,i)=>`<img src="${p}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;border:2px solid ${i===0?'var(--accent)':'var(--border)}'">`).join('')}</div>`:''}
+          ${v.photos&&v.photos.length>0?`
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            ${v.photos.slice(0,5).map((p,i)=>`<img src="${p}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;border:2px solid ${i===0?'var(--accent)':'var(--border)'};" title="Photo ${i+1}">`).join('')}
+          </div>`:''}
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             ${v.priceMin||v.priceMax?`<span style="font-size:13px;font-weight:600;color:var(--accent);">₹${Number(v.priceMin||0).toLocaleString()} – ₹${Number(v.priceMax||0).toLocaleString()}</span>`:''}
-            ${v.driveLink?`<a href="${v.driveLink}" target="_blank" onclick="event.stopPropagation()" style="font-size:12px;color:#4ecb71;text-decoration:none;background:rgba(78,203,113,0.1);border:1px solid rgba(78,203,113,0.25);padding:5px 14px;border-radius:20px;font-weight:600;">📂 Portfolio →</a>`:''}
+            ${v.driveLink?`<a href="${v.driveLink}" target="_blank" onclick="event.stopPropagation()" style="font-size:12px;color:#4ecb71;text-decoration:none;background:rgba(78,203,113,0.1);border:1px solid rgba(78,203,113,0.25);padding:5px 14px;border-radius:20px;font-weight:600;">📂 View Portfolio →</a>`:''}
+            ${v.website?`<a href="${v.website}" target="_blank" onclick="event.stopPropagation()" style="font-size:12px;color:var(--muted);text-decoration:none;background:var(--surface2);border:1px solid var(--border);padding:5px 14px;border-radius:20px;">🌐 Website</a>`:''}
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;min-width:120px;">
           <a href="tel:${v.phone}" onclick="event.stopPropagation()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">📞 Call</a>
           <a href="https://wa.me/91${(v.whatsapp||v.phone).replace(/\D/g,'')}" target="_blank" onclick="event.stopPropagation()" style="padding:8px 16px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:#25d366;text-align:center;">💬 WhatsApp</a>
+          ${v.email?`<a href="mailto:${v.email}" onclick="event.stopPropagation()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">✉ Email</a>`:''}
+          <button onclick="event.stopPropagation();openVendorProfile(allVendors.find(x=>x.id==='${v.id}'))" style="padding:8px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:8px;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;">View Profile →</button>
         </div>
       </div>`;
     el.appendChild(card);
   });
 }
-</script>
 
-<!-- ===== ADMIN PANEL ===== -->
-<div class="hidden" id="adminPanel" style="position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;">
-  <div style="width:100%;max-width:900px;">
+/* ====== VENDOR PROFILE PAGE ====== */
+let currentVendorProfile = null;
+
+function openVendorProfile(v){
+  currentVendorProfile = v;
+  hideAllPages();
+  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
+  const stars='★'.repeat(Math.round(v.rating||0))+'☆'.repeat(5-Math.round(v.rating||0));
+
+  // Build page
+  let page = document.getElementById('vendorProfilePage');
+  if(!page){
+    page = document.createElement('div');
+    page.id = 'vendorProfilePage';
+    page.style.cssText='position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;min-height:100vh;';
+    document.body.appendChild(page);
+  }
+  page.style.display='flex';
+
+  const photosHtml = v.photos&&v.photos.length>0 ? `
+    <div style="margin-bottom:24px;">
+      <img id="vpMainPhoto" src="${v.photos[0]}" style="width:100%;max-height:360px;object-fit:cover;border-radius:16px;margin-bottom:10px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${v.photos.map((p,i)=>`<img src="${p}" onclick="document.getElementById('vpMainPhoto').src='${p}'" style="width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid ${i===0?'var(--accent)':'var(--border)'};cursor:pointer;transition:border 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='${i===0?'var(--accent)':'var(--border)'}'">`).join('')}
+      </div>
+    </div>` : '';
+
+  page.innerHTML = `
+  <div style="width:100%;max-width:780px;">
     <div class="panel-header">
-      <div class="panel-back" onclick="showSection('home')">←</div>
-      <div>
-        <div class="panel-title">🛡️ Admin <span>Panel</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;">Full control — delete any listing, event, review or enquiry</div>
+      <div class="panel-back" onclick="closeVendorProfile()">←</div>
+      <div><div class="panel-title">${typeIcon[v.type]||'✨'} <span>${v.type.charAt(0).toUpperCase()+v.type.slice(1)} Profile</span></div></div>
+    </div>
+
+    ${photosHtml}
+
+    <div class="glass-card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;margin-bottom:4px;">${v.name}</div>
+          ${v.company?`<div style="font-size:14px;color:var(--muted);margin-bottom:8px;">${v.company}</div>`:''}
+          <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);">
+            <span>📍 ${v.location}</span>
+            ${v.experience?`<span>🏆 ${v.experience} years exp</span>`:''}
+            ${v.specialty?`<span>🎯 ${v.specialty}</span>`:''}
+          </div>
+        </div>
+        ${v.priceMin||v.priceMax?`<div style="text-align:right;"><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Price Range</div><div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent);">₹${Number(v.priceMin||0).toLocaleString()} – ₹${Number(v.priceMax||0).toLocaleString()}</div></div>`:''}
+      </div>
+      <div style="color:var(--accent);font-size:16px;margin-bottom:4px;">${stars} <span style="font-size:13px;color:var(--muted);">${v.reviewCount?'('+v.reviewCount+' reviews)':'No reviews yet'}</span></div>
+      ${v.bio?`<p style="font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">${v.bio}</p>`:''}
+    </div>
+
+    <!-- CONTACT CARD -->
+    <div class="glass-card" style="margin-bottom:16px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;margin-bottom:16px;">Contact</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="tel:${v.phone}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);">
+          <span style="font-size:18px;">📞</span><div><div style="font-size:11px;color:var(--muted);">Phone</div><div style="font-weight:600;">${v.phone}</div></div>
+        </a>
+        <a href="https://wa.me/91${(v.whatsapp||v.phone).replace(/\D/g,'')}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.2);border-radius:10px;text-decoration:none;color:#25d366;">
+          <span style="font-size:18px;">💬</span><div><div style="font-size:11px;color:var(--muted);">WhatsApp</div><div style="font-weight:600;">${v.whatsapp||v.phone}</div></div>
+        </a>
+        ${v.email?`<a href="mailto:${v.email}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);">
+          <span style="font-size:18px;">✉</span><div><div style="font-size:11px;color:var(--muted);">Email</div><div style="font-weight:600;">${v.email}</div></div>
+        </a>`:''}
+        ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(78,203,113,0.08);border:1px solid rgba(78,203,113,0.25);border-radius:10px;text-decoration:none;color:#4ecb71;">
+          <span style="font-size:18px;">📂</span><div><div style="font-size:11px;color:var(--muted);">Portfolio</div><div style="font-weight:600;">View on Google Drive →</div></div>
+        </a>`:''}
+        ${v.website?`<a href="${v.website}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);">
+          <span style="font-size:18px;">🌐</span><div><div style="font-size:11px;color:var(--muted);">Website</div><div style="font-weight:600;">${v.website}</div></div>
+        </a>`:''}
       </div>
     </div>
+  </div>`;
 
-    <!-- ADMIN STATS -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;" id="adminStats">
-      <div class="stat-card"><div class="stat-num" id="adminStatOrgs">—</div><div class="stat-label">Organizers</div></div>
-      <div class="stat-card"><div class="stat-num" id="adminStatEvents">—</div><div class="stat-label">Events</div></div>
-      <div class="stat-card"><div class="stat-num" id="adminStatVendors">—</div><div class="stat-label">Vendors</div></div>
-      <div class="stat-card"><div class="stat-num" id="adminStatEnquiries">—</div><div class="stat-label">Enquiries</div></div>
-    </div>
-
-    <!-- ADMIN TABS -->
-    <div class="tabs" style="margin-bottom:22px;">
-      <button class="tab active" onclick="switchAdminTab('organizers',this)">🎭 Organizers</button>
-      <button class="tab" onclick="switchAdminTab('events',this)">🎪 Events</button>
-      <button class="tab" onclick="switchAdminTab('vendors',this)">📸 Vendors</button>
-      <button class="tab" onclick="switchAdminTab('enquiries',this)">📬 Enquiries</button>
-      <button class="tab" onclick="switchAdminTab('reviews',this)">⭐ Reviews</button>
-    </div>
-
-    <!-- ORGANIZERS TAB -->
-    <div id="adminTabOrganizers">
-      <div id="adminOrgList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    </div>
-
-    <!-- EVENTS TAB -->
-    <div id="adminTabEvents" class="hidden">
-      <div id="adminEventList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    </div>
-
-    <!-- VENDORS TAB -->
-    <div id="adminTabVendors" class="hidden">
-      <div id="adminVendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    </div>
-
-    <!-- ENQUIRIES TAB -->
-    <div id="adminTabEnquiries" class="hidden">
-      <div id="adminEnquiryList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    </div>
-
-    <!-- REVIEWS TAB -->
-    <div id="adminTabReviews" class="hidden">
-      <div id="adminReviewList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ============================================================
-   ADMIN PANEL — only accessible to mrritammitra@gmail.com
-   ============================================================ */
-
-function isAdmin(){ return currentUser && currentUser.email === ADMIN_EMAIL; }
-
-/* Override showSection to handle admin */
-const _showSectionBeforeAdmin = window.showSection;
-window.showSection = function(id){
-  if(id === 'adminPanel'){
-    if(!isAdmin()){ showToast('⛔ Access denied.','error'); return; }
-    hideAllPages();
-    document.getElementById('adminPanel').classList.remove('hidden');
-    window.scrollTo(0,0);
-    loadAdminStats();
-    loadAdminOrganizers();
-    return;
-  }
-  _showSectionBeforeAdmin(id);
-};
-
-/* ---- Stats ---- */
-async function loadAdminStats(){
-  const [o,e,v,q] = await Promise.all([
-    db.collection('organizers').get(),
-    db.collection('events').get(),
-    db.collection('vendors').get(),
-    db.collection('enquiries').get()
-  ]);
-  document.getElementById('adminStatOrgs').textContent      = o.size;
-  document.getElementById('adminStatEvents').textContent    = e.size;
-  document.getElementById('adminStatVendors').textContent   = v.size;
-  document.getElementById('adminStatEnquiries').textContent = q.size;
+  window.scrollTo(0,0);
 }
 
-/* ---- Tab Switch ---- */
-function switchAdminTab(name, btn){
-  btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  ['adminTabOrganizers','adminTabEvents','adminTabVendors','adminTabEnquiries','adminTabReviews'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.classList.add('hidden');
-  });
-  const target = document.getElementById('adminTab'+name.charAt(0).toUpperCase()+name.slice(1));
-  if(target) target.classList.remove('hidden');
-
-  if(name==='organizers') loadAdminOrganizers();
-  if(name==='events')     loadAdminEvents();
-  if(name==='vendors')    loadAdminVendors();
-  if(name==='enquiries')  loadAdminEnquiries();
-  if(name==='reviews')    loadAdminReviews();
-}
-
-/* ---- Helper: admin row card ---- */
-function adminCard(html){ return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;">${html}</div>`; }
-function adminDeleteBtn(collection, id, label='Delete'){
-  return `<button onclick="adminDelete('${collection}','${id}','${label}')" class="btn-danger btn-sm" style="white-space:nowrap;">🗑 ${label}</button>`;
-}
-
-async function adminDelete(collection, id, label){
-  if(!confirm(`Delete this ${label}? This cannot be undone.`)) return;
-  try{
-    await db.collection(collection).doc(id).delete();
-    showToast(`✅ ${label} deleted!`);
-    loadAdminStats();
-    // Reload current visible tab
-    const tabs = ['organizers','events','vendors','enquiries','reviews'];
-    tabs.forEach(t=>{
-      const el = document.getElementById('adminTab'+t.charAt(0).toUpperCase()+t.slice(1));
-      if(el && !el.classList.contains('hidden')){
-        if(t==='organizers') loadAdminOrganizers();
-        if(t==='events')     loadAdminEvents();
-        if(t==='vendors')    loadAdminVendors();
-        if(t==='enquiries')  loadAdminEnquiries();
-        if(t==='reviews')    loadAdminReviews();
-      }
-    });
-  }catch(err){ showToast('Error: '+err.message,'error'); }
-}
-
-/* ---- ORGANIZERS ---- */
-async function loadAdminOrganizers(){
-  const el = document.getElementById('adminOrgList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('organizers').get();
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">🎭</span><p>No organizers yet.</p></div>'; return; }
-  // Sort by createdAt desc
-  const docs = [];
-  snap.forEach(doc=>docs.push({id:doc.id,...doc.data()}));
-  docs.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-
-  el.innerHTML='';
-  docs.forEach(o=>{
-    const div = document.createElement('div');
-    div.innerHTML = adminCard(`
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <img src="${o.photo||''}" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:2px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:3px;">${o.name||'—'}</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:2px;">📧 <strong>${o.owner||'—'}</strong> &nbsp;|&nbsp; 📞 ${o.phone||'—'}</div>
-          <div style="font-size:12px;color:var(--muted);">📍 ${o.location||'—'} &nbsp;|&nbsp; 🏷️ ${o.category||'—'} &nbsp;|&nbsp; ⭐ ${o.rating?o.rating.toFixed(1):'0'} (${o.reviewCount||0})</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px;">ID: <code style="font-size:10px;background:var(--surface2);padding:1px 5px;border-radius:4px;">${o.id}</code> &nbsp;|&nbsp; Added: ${o.createdAt?.toDate?.()?.toLocaleDateString()||'—'}</div>
-        </div>
-        <div style="flex-shrink:0;display:flex;gap:8px;">
-          <button class="btn-edit btn-sm" onclick="openEditModal('${o.id}')">✏️ Edit</button>
-          ${adminDeleteBtn('organizers', o.id, 'Organizer')}
-        </div>
-      </div>`);
-    el.appendChild(div.firstChild);
-  });
-}
-
-/* ---- EVENTS ---- */
-async function loadAdminEvents(){
-  const el = document.getElementById('adminEventList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('events').get();
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return; }
-  const docs=[];
-  snap.forEach(doc=>docs.push({id:doc.id,...doc.data()}));
-  docs.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-  el.innerHTML='';
-  docs.forEach(ev=>{
-    const div=document.createElement('div');
-    div.innerHTML=adminCard(`
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <div style="flex-shrink:0;text-align:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;min-width:52px;">
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:600;">${new Date(ev.date).toLocaleString('default',{month:'short'})}</div>
-          <div style="font-size:22px;font-weight:900;font-family:'Playfair Display',serif;line-height:1;">${new Date(ev.date).getDate()}</div>
-        </div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;">${ev.name||'—'}</div>
-          <div style="font-size:12px;color:var(--muted);">📧 <strong>${ev.owner||'—'}</strong> &nbsp;|&nbsp; 📍 ${ev.venue||'—'} &nbsp;|&nbsp; 🏷️ ${ev.category||'—'}</div>
-          <div style="font-size:12px;color:var(--accent);font-weight:600;">${ev.price?'₹'+Number(ev.price).toLocaleString():'Free'}</div>
-        </div>
-        <div style="flex-shrink:0;">${adminDeleteBtn('events', ev.id, 'Event')}</div>
-      </div>`);
-    el.appendChild(div.firstChild);
-  });
-}
-
-/* ---- VENDORS ---- */
-async function loadAdminVendors(){
-  const el = document.getElementById('adminVendorList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('vendors').get();
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">📸</span><p>No vendors yet.</p></div>'; return; }
-  const docs=[];
-  snap.forEach(doc=>docs.push({id:doc.id,...doc.data()}));
-  docs.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
-  el.innerHTML='';
-  docs.forEach(v=>{
-    const div=document.createElement('div');
-    div.innerHTML=adminCard(`
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        ${v.photo?`<img src="${v.photo}" style="width:60px;height:60px;object-fit:cover;border-radius:10px;border:2px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">`:'<div style="width:60px;height:60px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">'+(typeIcon[v.type]||'✨')+'</div>'}
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;">${v.name||'—'}${v.company?' <span style="font-size:13px;color:var(--muted);">— '+v.company+'</span>':''}</div>
-          <div style="font-size:12px;color:var(--muted);">📧 <strong>${v.owner||'—'}</strong> &nbsp;|&nbsp; ${typeIcon[v.type]||'✨'} ${v.type||'—'} &nbsp;|&nbsp; 📍 ${v.location||'—'}</div>
-          <div style="font-size:12px;color:var(--muted);">📞 ${v.phone||'—'} &nbsp;|&nbsp; ⭐ ${v.rating||0} (${v.reviewCount||0})</div>
-        </div>
-        <div style="flex-shrink:0;">${adminDeleteBtn('vendors', v.id, 'Vendor')}</div>
-      </div>`);
-    el.appendChild(div.firstChild);
-  });
-}
-
-/* ---- ENQUIRIES ---- */
-async function loadAdminEnquiries(){
-  const el = document.getElementById('adminEnquiryList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('enquiries').get();
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return; }
-  const docs=[];
-  snap.forEach(doc=>docs.push({id:doc.id,...doc.data()}));
-  docs.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-  el.innerHTML='';
-  docs.forEach(q=>{
-    const div=document.createElement('div');
-    div.innerHTML=adminCard(`
-      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:13px;margin-bottom:4px;">
-            <span style="color:var(--muted);">From:</span> <strong>${q.fromEmail||q.fromName||'—'}</strong>
-            ${q.fromPhone?`<span style="color:var(--muted);font-size:12px;"> (${q.fromPhone})</span>`:''}
-            <span style="color:var(--muted);"> → </span>
-            <strong style="color:var(--accent);">${q.toName||q.toEmail||'—'}</strong>
-          </div>
-          <div style="font-size:13px;color:var(--text);line-height:1.5;background:var(--surface2);border-radius:8px;padding:10px;margin-bottom:6px;">${q.message||'—'}</div>
-          <div style="font-size:11px;color:var(--muted);">📅 ${q.createdAt?.toDate?.()?.toLocaleDateString()||'—'}</div>
-        </div>
-        <div style="flex-shrink:0;">${adminDeleteBtn('enquiries', q.id, 'Enquiry')}</div>
-      </div>`);
-    el.appendChild(div.firstChild);
-  });
-}
-
-/* ---- REVIEWS ---- */
-async function loadAdminReviews(){
-  const el = document.getElementById('adminReviewList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap = await db.collection('reviews').get();
-  if(snap.empty){ el.innerHTML='<div class="empty-state"><span class="empty-icon">⭐</span><p>No reviews yet.</p></div>'; return; }
-  const docs=[];
-  snap.forEach(doc=>docs.push({id:doc.id,...doc.data()}));
-  docs.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-  el.innerHTML='';
-  docs.forEach(r=>{
-    const div=document.createElement('div');
-    div.innerHTML=adminCard(`
-      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
-            <span style="color:var(--accent);font-size:15px;">${'★'.repeat(r.rating||0)}${'☆'.repeat(5-(r.rating||0))}</span>
-            <span style="font-size:13px;font-weight:600;">${r.authorEmail||r.authorName||'—'}</span>
-            <span style="font-size:11px;color:var(--muted);">→ for <strong>${r.orgName||'—'}</strong></span>
-          </div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:8px;padding:10px;margin-bottom:4px;">${r.text||'—'}</div>
-          <div style="font-size:11px;color:var(--muted);">📅 ${r.createdAt?.toDate?.()?.toLocaleDateString()||'—'}</div>
-        </div>
-        <div style="flex-shrink:0;">${adminDeleteBtn('reviews', r.id, 'Review')}</div>
-      </div>`);
-    el.appendChild(div.firstChild);
-  });
+function closeVendorProfile(){
+  const page = document.getElementById('vendorProfilePage');
+  if(page) page.style.display='none';
+  showSection('customer');
+  // Re-open vendors tab
+  setTimeout(()=>{
+    const tabs = document.querySelectorAll('#customer .tab');
+    tabs.forEach(t=>{ if(t.textContent.includes('Photographers')) t.click(); });
+  }, 100);
 }
 </script>
-
-<!-- FOOTER -->
-<footer style="position:relative;z-index:5;border-top:1px solid var(--border);background:var(--surface);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-  <div style="text-align:center;font-size:13px;color:var(--muted);line-height:1.8;width:100%;">
-    CEO & Founder — <strong style="color:var(--text);">Ritam Mitra</strong> &nbsp;|&nbsp;
-    <a href="tel:7384949090" style="color:var(--accent);text-decoration:none;">📞 7384949090</a> &nbsp;|&nbsp;
-    <a href="mailto:mrritammitra@gmail.com" style="color:var(--accent);text-decoration:none;">✉ mrritammitra@gmail.com</a>
-  </div>
-</footer>
-
-</body>
-</html>
