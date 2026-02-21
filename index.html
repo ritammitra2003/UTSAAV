@@ -418,6 +418,33 @@ header {
   display: flex; align-items: center; justify-content: space-between;
 }
 
+/* ===== CLOUDINARY UPLOAD PROGRESS ===== */
+.upload-progress-wrap {
+  margin-top: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: none;
+}
+.upload-progress-wrap.visible { display: block; }
+.upload-progress-bar-bg {
+  background: var(--surface3);
+  border-radius: 6px;
+  height: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.upload-progress-bar {
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent), #f0c060);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+.upload-progress-text { font-size: 12px; color: var(--muted); display: flex; align-items: center; justify-content: space-between; }
+.upload-status-icon { font-size: 14px; }
+
 .modal-overlay {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
@@ -479,11 +506,6 @@ header {
 
 .enquiry-form { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
 .enquiry-form h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 14px; }
-
-.img-preview {
-  width: 100%; height: 160px; border-radius: 10px; object-fit: cover;
-  border: 1px solid var(--border); margin-top: 8px; display: none;
-}
 
 .loading-dots { display: flex; gap: 6px; justify-content: center; padding: 40px; grid-column: 1/-1; }
 .loading-dots span {
@@ -576,10 +598,13 @@ header {
 .admin-stat-num { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:#e8a87c; }
 .admin-stat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
 
-.edit-modal {
-  background: var(--surface); border: 1px solid rgba(201,168,76,0.3);
-  border-radius: 16px; padding: 26px; width: 100%; max-width: 600px;
-  max-height: 85vh; overflow-y: auto;
+/* ===== CLOUDINARY INFO BOX ===== */
+.cloudinary-info {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(76,203,113,0.08);
+  border: 1px solid rgba(76,203,113,0.2);
+  border-radius: 10px; padding: 10px 14px;
+  margin-bottom: 14px; font-size: 12px; color: #4ecb71;
 }
 
 body.light {
@@ -613,14 +638,6 @@ body.light header { background: rgba(240,236,228,0.85); }
   .glass-card { padding: 16px !important; }
   .panel-header { margin-bottom: 16px; }
   .admin-stats-row { grid-template-columns: repeat(2,1fr); }
-  #profilePage > div:last-child > div:first-child { display: block !important; }
-  #profilePage [style*="grid-template-columns:1fr 320px"],
-  #profilePage [style*="grid-template-columns: 1fr 320px"] { display: block !important; }
-  #profilePage [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
-  #profilePage [style*="position:sticky"] { position: static !important; margin-top: 16px; }
-  #profilePage [style*="height:300px"] { height: 220px !important; }
-  #profilePage [style*="font-size:38px"] { font-size: 26px !important; }
-  #profilePage [style*="max-width:940px"] { padding: 0 12px !important; }
 }
 </style>
 </head>
@@ -670,7 +687,7 @@ body.light header { background: rgba(240,236,228,0.85); }
   </div>
 </header>
 
-<!-- AUTH — ✅ PHONE NUMBER FIELD ADDED (signup mein dikhega) -->
+<!-- AUTH -->
 <div class="page" id="auth">
   <div class="auth-wrap fade-in">
     <div class="auth-head">
@@ -684,7 +701,6 @@ body.light header { background: rgba(240,236,228,0.85); }
           <label>Email Address</label>
           <input type="email" id="authEmail" placeholder="you@example.com" required>
         </div>
-        <!-- ✅ NEW: Phone field — hidden on login, shown on signup -->
         <div class="form-group hidden" id="phoneGroup">
           <label>Phone Number</label>
           <input type="tel" id="authPhone" placeholder="+91 00000 00000">
@@ -719,7 +735,7 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="verify-steps">
         <div class="verify-step">
           <div class="step-num">1</div>
-          <div class="step-text">Open the email we sent you <strong style="color:var(--accent);">(⚠️ Check your Spam / Junk folder — it usually lands there!)</strong></div>
+          <div class="step-text">Open the email we sent you <strong style="color:var(--accent);">(⚠️ Check your Spam / Junk folder!)</strong></div>
         </div>
         <div class="verify-step">
           <div class="step-num">2</div>
@@ -810,6 +826,9 @@ body.light header { background: rgba(240,236,228,0.85); }
 
     <div id="orgTabProfile">
       <div class="glass-card">
+        <div class="cloudinary-info">
+          ☁️ Photos are stored on Cloudinary — unlimited storage, fast loading worldwide
+        </div>
         <form id="orgForm">
           <div class="form-row">
             <div class="form-group">
@@ -871,9 +890,18 @@ body.light header { background: rgba(240,236,228,0.85); }
             <input type="tel" id="orgWhatsapp" placeholder="+91 WhatsApp number">
           </div>
           <div class="form-group">
-            <label>Photos (select multiple)</label>
-            <input type="file" id="orgPhoto" accept="image/*" multiple onchange="previewMultipleImgs(this)">
+            <label>Photos <span style="font-size:11px;color:var(--muted);">(select multiple — uploaded to Cloudinary)</span></label>
+            <input type="file" id="orgPhoto" accept="image/*" multiple onchange="previewMultipleImgs(this,'orgImgsPreview')">
             <div id="orgImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+            <div class="upload-progress-wrap" id="orgUploadProgress">
+              <div class="upload-progress-text">
+                <span id="orgUploadStatusText">☁️ Uploading to Cloudinary...</span>
+                <span class="upload-status-icon" id="orgUploadIcon">⏳</span>
+              </div>
+              <div class="upload-progress-bar-bg">
+                <div class="upload-progress-bar" id="orgUploadBar"></div>
+              </div>
+            </div>
           </div>
           <button type="submit" class="btn-primary">✦ Publish Profile</button>
         </form>
@@ -993,7 +1021,7 @@ body.light header { background: rgba(240,236,228,0.85); }
   </div>
 </div>
 
-<!-- ===== ADMIN PANEL ===== -->
+<!-- ADMIN PANEL -->
 <div class="page hidden" id="admin" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="admin-wrap fade-in">
     <div class="panel-header">
@@ -1021,17 +1049,17 @@ body.light header { background: rgba(240,236,228,0.85); }
     </div>
 
     <div id="adminTabOrganizers">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All organizer profiles on the platform. You can delete or edit any listing.</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All organizer profiles on the platform.</div>
       <div id="adminOrgList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
 
     <div id="adminTabVendors" class="hidden">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All vendor profiles (photographers, makeup artists, return gifts).</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All vendor profiles.</div>
       <div id="adminVendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
 
     <div id="adminTabEvents" class="hidden">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All events posted on the platform.</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All events on the platform.</div>
       <div id="adminEventList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
 
@@ -1043,8 +1071,9 @@ body.light header { background: rgba(240,236,228,0.85); }
     <div id="adminTabAddlisting" class="hidden">
       <div class="admin-section">
         <div class="admin-section-title">➕ Add Vendor Listing (on behalf of anyone)</div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Use this to list your uncle's makeup business or anyone else — no login needed from them. You submit it here as admin.</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Use this to list a makeup artist, photographer, or gifts seller without them needing an account.</div>
         <div class="glass-card">
+          <div class="cloudinary-info">☁️ Photos will be uploaded to Cloudinary — no Firebase storage used</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;" id="adminVendorTypeBtns">
             <button class="vendor-type-btn active" onclick="adminSelectVendorType('photographer',this)">📸 Photographer</button>
             <button class="vendor-type-btn" onclick="adminSelectVendorType('makeup',this)">💄 Makeup Artist</button>
@@ -1115,9 +1144,18 @@ body.light header { background: rgba(240,236,228,0.85); }
               <input type="url" id="avDriveLink" placeholder="https://drive.google.com/...">
             </div>
             <div class="form-group" id="avPhotoGroup">
-              <label>Work Photos <span style="font-size:11px;color:var(--muted);">(max 5)</span></label>
-              <input type="file" id="avPhotos" accept="image/*" multiple onchange="previewAdminVendorPhotos(this)">
+              <label>Work Photos <span style="font-size:11px;color:var(--muted);">(multiple allowed — Cloudinary)</span></label>
+              <input type="file" id="avPhotos" accept="image/*" multiple onchange="previewMultipleImgs(this,'avPhotosPreview')">
               <div id="avPhotosPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+              <div class="upload-progress-wrap" id="avUploadProgress">
+                <div class="upload-progress-text">
+                  <span id="avUploadStatusText">☁️ Uploading to Cloudinary...</span>
+                  <span class="upload-status-icon" id="avUploadIcon">⏳</span>
+                </div>
+                <div class="upload-progress-bar-bg">
+                  <div class="upload-progress-bar" id="avUploadBar"></div>
+                </div>
+              </div>
             </div>
             <button type="submit" class="btn-primary" style="margin-top:8px;">✦ Publish Listing</button>
           </form>
@@ -1126,8 +1164,9 @@ body.light header { background: rgba(240,236,228,0.85); }
 
       <div class="admin-section" style="margin-top:20px;">
         <div class="admin-section-title">🎭 Add Organizer Profile (on behalf of anyone)</div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">List a full event organizer profile for someone without them needing an account.</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">List a full event organizer without them needing an account.</div>
         <div class="glass-card">
+          <div class="cloudinary-info">☁️ Photos will be uploaded to Cloudinary — no Firebase storage used</div>
           <form id="adminOrgForm">
             <div class="form-row">
               <div class="form-group">
@@ -1191,16 +1230,24 @@ body.light header { background: rgba(240,236,228,0.85); }
               <input type="tel" id="aoWhatsapp" placeholder="+91 WhatsApp number">
             </div>
             <div class="form-group">
-              <label>Photos (select multiple)</label>
-              <input type="file" id="aoPhotos" accept="image/*" multiple onchange="previewAdminOrgPhotos(this)">
+              <label>Photos <span style="font-size:11px;color:var(--muted);">(multiple allowed — Cloudinary)</span></label>
+              <input type="file" id="aoPhotos" accept="image/*" multiple onchange="previewMultipleImgs(this,'aoImgsPreview')">
               <div id="aoImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+              <div class="upload-progress-wrap" id="aoUploadProgress">
+                <div class="upload-progress-text">
+                  <span id="aoUploadStatusText">☁️ Uploading to Cloudinary...</span>
+                  <span class="upload-status-icon" id="aoUploadIcon">⏳</span>
+                </div>
+                <div class="upload-progress-bar-bg">
+                  <div class="upload-progress-bar" id="aoUploadBar"></div>
+                </div>
+              </div>
             </div>
             <button type="submit" class="btn-primary">✦ Publish Organizer Profile</button>
           </form>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -1210,6 +1257,7 @@ body.light header { background: rgba(240,236,228,0.85); }
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+// ===== FIREBASE CONFIG =====
 firebase.initializeApp({
   apiKey:"AIzaSyBNW3y2zR8xQmhrOWqXzu8dmFRMYdSRSFM",
   authDomain:"rd-eventsphere.firebaseapp.com",
@@ -1218,45 +1266,350 @@ firebase.initializeApp({
   messagingSenderId:"9010232288",
   appId:"1:9010232288:web:f5e77bb53311acef97c985"
 });
-const auth=firebase.auth();
-const db=firebase.firestore();
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ===== CLOUDINARY CONFIG =====
+const CLOUDINARY_CLOUD_NAME = 'dkmygobzq';
+const CLOUDINARY_UPLOAD_PRESET = 'utsaav_uploads';
+const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 const ADMIN_EMAIL = 'mrritammitra@gmail.com';
 
-/* ===== SEED ===== */
-async function seedOrganizers(){
-  try{
-    const check=await db.collection('organizers').limit(1).get();
-    if(!check.empty){ return; }
-    const batch=db.batch();
-    getSeedData().forEach(o=>{ const ref=db.collection('organizers').doc(); batch.set(ref,o); });
-    await batch.commit();
-  }catch(err){ console.error('Seed error:',err); }
+// ===================================================================
+// CLOUDINARY UPLOAD FUNCTION
+// Upload a single File to Cloudinary, returns secure_url string
+// progressBarId & statusTextId are optional — for showing progress UI
+// ===================================================================
+async function uploadToCloudinary(file, progressBarId, statusTextId, iconId) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', CLOUDINARY_UPLOAD_URL);
+
+    // Track upload progress
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable && progressBarId) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        const bar = document.getElementById(progressBarId);
+        if (bar) bar.style.width = pct + '%';
+        const txt = document.getElementById(statusTextId);
+        if (txt) txt.textContent = `☁️ Uploading... ${pct}%`;
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        resolve(data.secure_url);
+      } else {
+        reject(new Error('Cloudinary upload failed: ' + xhr.responseText));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('Network error during upload'));
+    xhr.send(formData);
+  });
 }
 
-async function forceSeed(){
-  const btn=document.getElementById('seedBtn');
-  if(btn){btn.textContent='⏳ Adding...';btn.disabled=true;}
-  try{
-    const batch=db.batch();
-    getSeedData().forEach(o=>{ const ref=db.collection('organizers').doc(); batch.set(ref,o); });
-    await batch.commit();
-    showToast('✅ 10 organizers added!');
-    const banner=document.getElementById('seedBanner');
-    if(banner) banner.style.display='none';
-    await loadOrganizers();
-  }catch(err){
-    showToast('❌ Error: '+err.message,'error');
-    if(btn){btn.textContent='+ Add 10 Sample Organizers';btn.disabled=false;}
+// ===================================================================
+// UPLOAD MULTIPLE FILES TO CLOUDINARY
+// Returns array of secure_url strings
+// progressWrapId, barId, statusTextId, iconId for showing progress
+// ===================================================================
+async function uploadMultipleToCloudinary(files, progressWrapId, barId, statusTextId, iconId) {
+  const wrap = document.getElementById(progressWrapId);
+  const bar  = document.getElementById(barId);
+  const txt  = document.getElementById(statusTextId);
+  const icon = document.getElementById(iconId);
+
+  if (wrap) wrap.classList.add('visible');
+  if (bar)  bar.style.width = '0%';
+  if (txt)  txt.textContent = `☁️ Uploading 0 / ${files.length} photos...`;
+
+  const urls = [];
+  for (let i = 0; i < files.length; i++) {
+    if (txt) txt.textContent = `☁️ Uploading photo ${i + 1} / ${files.length}...`;
+    if (bar) bar.style.width = Math.round((i / files.length) * 90) + '%';
+    const url = await uploadToCloudinary(files[i]);
+    urls.push(url);
+  }
+
+  if (bar)  bar.style.width = '100%';
+  if (txt)  txt.textContent = `✅ All ${files.length} photos uploaded!`;
+  if (icon) icon.textContent = '✅';
+
+  setTimeout(() => { if (wrap) wrap.classList.remove('visible'); }, 2000);
+  return urls;
+}
+
+// ===== CAT CHIP TOGGLE =====
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.cat-chip');
+  if (chip && (chip.closest('#catCheckboxes') || chip.closest('#aoCatCheckboxes'))) {
+    const cb = chip.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    chip.classList.toggle('selected', cb.checked);
+  }
+});
+
+let isLogin = true;
+let allOrganizers = [];
+let activeCategory = 'All';
+let currentUser = null;
+
+// ===== THEME =====
+if (localStorage.getItem('esLight') === '1') document.body.classList.add('light');
+function toggleDark() {
+  document.body.classList.toggle('light');
+  localStorage.setItem('esLight', document.body.classList.contains('light') ? '1' : '0');
+}
+
+// ===== TOAST =====
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type === 'success' ? 'success' : 'error-t') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ===== IMAGE LOCAL PREVIEW (before upload) =====
+function previewMultipleImgs(input, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  Array.from(input.files).forEach((file, i) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;display:inline-block;';
+      wrap.innerHTML = `<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
+      container.appendChild(wrap);
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+// ===== AUTH =====
+function togglePass() {
+  const p = document.getElementById('authPass');
+  p.type = p.type === 'password' ? 'text' : 'password';
+}
+
+function toggleAuth() {
+  isLogin = !isLogin;
+  document.getElementById('authTitle').innerHTML = isLogin ? 'Welcome <em>Back.</em>' : 'Create <em>Account.</em>';
+  document.getElementById('authSubtitle').textContent = isLogin ? 'Login to your Utsaav account.' : 'Join the Utsaav community.';
+  document.getElementById('authBtn').textContent = isLogin ? 'Login →' : 'Register →';
+  document.getElementById('switchPre').textContent = isLogin ? 'New here? ' : 'Already have an account? ';
+  document.getElementById('switchLink').textContent = isLogin ? 'Create an account' : 'Login here';
+  document.getElementById('errorMsg').textContent = '';
+  const phoneGroup = document.getElementById('phoneGroup');
+  const phoneInput = document.getElementById('authPhone');
+  if (isLogin) {
+    phoneGroup.classList.add('hidden');
+    phoneInput.removeAttribute('required');
+  } else {
+    phoneGroup.classList.remove('hidden');
+    phoneInput.setAttribute('required','true');
   }
 }
 
-function getSeedData(){
+document.getElementById('authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value;
+  const pass  = document.getElementById('authPass').value;
+  const phone = document.getElementById('authPhone')?.value?.trim() || '';
+  const errEl = document.getElementById('errorMsg');
+  const btn   = document.getElementById('authBtn');
+  if (pass.length < 6) { errEl.textContent = '⚠ Password must be at least 6 characters'; return; }
+  if (!isLogin) {
+    if (!phone) { errEl.textContent = '⚠ Phone number required hai'; return; }
+    if (phone.replace(/\D/g,'').length < 10) { errEl.textContent = '⚠ Valid phone number dalo (minimum 10 digits)'; return; }
+  }
+  btn.textContent = 'Please wait...'; btn.disabled = true;
+  try {
+    if (isLogin) {
+      const cred = await auth.signInWithEmailAndPassword(email, pass);
+      if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) {
+        showVerifyScreen(cred.user);
+        btn.textContent = 'Login →'; btn.disabled = false;
+        return;
+      }
+    } else {
+      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      await db.collection('users').doc(cred.user.uid).set({ email, phone, createdAt: new Date() });
+      await cred.user.sendEmailVerification();
+      showVerifyScreen(cred.user);
+      btn.textContent = 'Register →'; btn.disabled = false;
+      return;
+    }
+  } catch(err) { errEl.textContent = '⚠ ' + err.message; }
+  btn.textContent = isLogin ? 'Login →' : 'Register →'; btn.disabled = false;
+});
+
+auth.onAuthStateChanged(user => {
+  currentUser = user;
+  if (user) {
+    const isAdmin = user.email === ADMIN_EMAIL;
+    if (!user.emailVerified && !isAdmin) { showVerifyScreen(user); return; }
+    hideAllPages();
+    document.getElementById('home').classList.remove('hidden');
+    updateHeaderUser(user.email, isAdmin);
+    const adminBtn = document.getElementById('adminHomeBtn');
+    if (adminBtn) adminBtn.classList.toggle('hidden', !isAdmin);
+  } else {
+    hideAllPages();
+    document.getElementById('auth').classList.remove('hidden');
+    document.getElementById('headerRight').innerHTML = '<div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>';
+  }
+});
+
+function hideAllPages() {
+  ['auth','verifyEmail','home','organizer','customer','admin','profilePage','vendor'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+}
+
+function showVerifyScreen(user) {
+  hideAllPages();
+  document.getElementById('verifyEmail').classList.remove('hidden');
+  document.getElementById('verifyEmailBadge').textContent = user.email;
+  updateHeaderUser(user.email, false);
+}
+
+let resendCooldown = null;
+async function resendVerification() {
+  const btn = document.getElementById('resendBtn');
+  const timer = document.getElementById('resendTimer');
+  try {
+    await auth.currentUser.sendEmailVerification();
+    showToast('📧 Verification email resent!');
+    btn.disabled = true;
+    let secs = 60;
+    timer.textContent = `Resend available in ${secs}s`;
+    resendCooldown = setInterval(() => {
+      secs--;
+      timer.textContent = `Resend available in ${secs}s`;
+      if (secs <= 0) { clearInterval(resendCooldown); btn.disabled = false; timer.textContent = ''; }
+    }, 1000);
+  } catch(err) { showToast('Could not resend: ' + err.message, 'error'); }
+}
+
+async function checkVerified() {
+  const btn = document.querySelector('#verifyEmail .btn-primary');
+  btn.textContent = 'Checking...'; btn.disabled = true;
+  await auth.currentUser.reload();
+  if (auth.currentUser.emailVerified) {
+    currentUser = auth.currentUser;
+    showToast('✦ Email verified! Welcome aboard.');
+    hideAllPages();
+    document.getElementById('home').classList.remove('hidden');
+    updateHeaderUser(currentUser.email, currentUser.email === ADMIN_EMAIL);
+    const adminBtn = document.getElementById('adminHomeBtn');
+    if (adminBtn) adminBtn.classList.add('hidden');
+  } else {
+    showToast('⚠ Not verified yet. Check your inbox.', 'error');
+  }
+  btn.textContent = "✓ I've verified my email"; btn.disabled = false;
+}
+
+function updateHeaderUser(email, isAdmin) {
+  const adminBadge = isAdmin ? `<span class="badge-red badge" style="margin:0;font-size:10px;padding:3px 8px;">👑 ADMIN</span>` : '';
+  document.getElementById('headerRight').innerHTML = `
+    <div class="user-chip"><div class="dot"></div>${email.split('@')[0]} ${adminBadge}</div>
+    <div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>`;
+}
+
+function logout() { auth.signOut(); }
+function handleLogoClick() { if (currentUser) showSection('home'); }
+
+// ===== NAVIGATION =====
+function showSection(id) {
+  if (id === 'admin' && currentUser?.email !== ADMIN_EMAIL) { showToast('Access denied.', 'error'); return; }
+  if (id === 'vendor') {
+    hideAllPages();
+    document.getElementById('vendor').classList.remove('hidden');
+    window.scrollTo(0, 0);
+    loadMyVendorListings();
+    return;
+  }
+  hideAllPages();
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0, 0);
+  if (id === 'organizer') { loadOrgStats(); loadMyEvents(); }
+  if (id === 'customer')  { seedOrganizers().then(() => loadOrganizers()); }
+  if (id === 'admin')     { loadAdminStats(); loadAdminOrganizers(); }
+}
+
+// ===== TAB SWITCHERS =====
+function switchOrgTab(name, btn) {
+  btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['orgTabProfile','orgTabEvents','orgTabInbox'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('orgTab' + name.charAt(0).toUpperCase() + name.slice(1))?.classList.remove('hidden');
+  if (name === 'inbox')  loadInbox();
+  if (name === 'events') loadMyEvents();
+}
+
+function switchCustTab(name, btn) {
+  btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['custTabBrowse','custTabEvents','custTabVendors','custTabMyenquiries'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('custTab' + name.charAt(0).toUpperCase() + name.slice(1))?.classList.remove('hidden');
+  if (name === 'events')      loadAllEvents();
+  if (name === 'myenquiries') loadMyEnquiries();
+  if (name === 'vendors')     loadVendors('all');
+}
+
+function switchAdminTab(name, btn) {
+  btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['adminTabOrganizers','adminTabVendors','adminTabEvents','adminTabEnquiries','adminTabAddlisting'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('adminTab' + name.charAt(0).toUpperCase() + name.slice(1))?.classList.remove('hidden');
+  if (name === 'organizers') loadAdminOrganizers();
+  if (name === 'vendors')    loadAdminVendors();
+  if (name === 'events')     loadAdminEvents();
+  if (name === 'enquiries')  loadAdminEnquiries();
+}
+
+// ===== SEED DATA =====
+async function seedOrganizers() {
+  try {
+    const check = await db.collection('organizers').limit(1).get();
+    if (!check.empty) return;
+    const batch = db.batch();
+    getSeedData().forEach(o => { const ref = db.collection('organizers').doc(); batch.set(ref, o); });
+    await batch.commit();
+  } catch(err) { console.error('Seed error:', err); }
+}
+
+async function forceSeed() {
+  const btn = document.getElementById('seedBtn');
+  if (btn) { btn.textContent = '⏳ Adding...'; btn.disabled = true; }
+  try {
+    const batch = db.batch();
+    getSeedData().forEach(o => { const ref = db.collection('organizers').doc(); batch.set(ref, o); });
+    await batch.commit();
+    showToast('✅ 10 organizers added!');
+    const banner = document.getElementById('seedBanner');
+    if (banner) banner.style.display = 'none';
+    await loadOrganizers();
+  } catch(err) {
+    showToast('❌ Error: ' + err.message, 'error');
+    if (btn) { btn.textContent = '+ Add 10 Sample Organizers'; btn.disabled = false; }
+  }
+}
+
+function getSeedData() {
   return [
     {name:"Sharma Wedding Planners",phone:"9832100001",whatsapp:"9832100001",email:"sharmaweddings@gmail.com",category:"Wedding",bio:"10+ saal ka experience. Midnapore aur West Bengal mein 500+ weddings successfully organize ki hain.",location:"Midnapore, West Bengal",experience:"10",priceMin:50000,priceMax:500000,photo:"https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",photos:["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80","https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.5,reviewCount:12,createdAt:new Date()},
     {name:"Royal Events & Decorators",phone:"9733200002",whatsapp:"9733200002",email:"royalevents.wbg@gmail.com",category:"Wedding",bio:"Royal Events specializes in royal themed weddings. Best decorator in Kharagpur with 7 years.",location:"Kharagpur, West Bengal",experience:"7",priceMin:30000,priceMax:300000,photo:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80",photos:["https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80"],owner:"seed@utsaav.com",rating:4.2,reviewCount:8,createdAt:new Date()},
     {name:"Star Corporate Events",phone:"9434300003",whatsapp:"9434300003",email:"starcorp.events@gmail.com",category:"Corporate",bio:"Corporate seminars, conferences, product launches specialist. Kolkata to Midnapore service.",location:"Kolkata, West Bengal",experience:"6",priceMin:20000,priceMax:200000,photo:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80",photos:["https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80"],owner:"seed@utsaav.com",rating:4.7,reviewCount:15,createdAt:new Date()},
-    {name:"Dream Birthday Studio",phone:"9635400004",whatsapp:"9635400004",email:"dreambirthday.wb@gmail.com",category:"Birthday",bio:"Bachon se lekar adults tak — har tarah ke birthday party themes. Balloon, cake, DJ, photography.",location:"Paschim Medinipur, West Bengal",experience:"4",priceMin:5000,priceMax:50000,photo:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",photos:["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80"],owner:"seed@utsaav.com",rating:4.3,reviewCount:20,createdAt:new Date()},
+    {name:"Dream Birthday Studio",phone:"9635400004",whatsapp:"9635400004",email:"dreambirthday.wb@gmail.com",category:"Birthday",bio:"Bachon se lekar adults tak — har tarah ke birthday party themes.",location:"Paschim Medinipur, West Bengal",experience:"4",priceMin:5000,priceMax:50000,photo:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",photos:["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80"],owner:"seed@utsaav.com",rating:4.3,reviewCount:20,createdAt:new Date()},
     {name:"Beats & Beyond Concert Co.",phone:"9800500005",whatsapp:"9800500005",email:"beatsbeyond.concerts@gmail.com",category:"Concert",bio:"Live concerts, music festivals aur cultural programs ke liye No.1 in West Bengal.",location:"Durgapur, West Bengal",experience:"8",priceMin:100000,priceMax:1000000,photo:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80",photos:["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.8,reviewCount:31,createdAt:new Date()},
     {name:"Utsav Social Events",phone:"9123600006",whatsapp:"9123600006",email:"utsavsocial.events@gmail.com",category:"Social",bio:"Pujo, cultural programs, annual functions. 15 saal se Midnapore mein.",location:"Midnapore, West Bengal",experience:"15",priceMin:10000,priceMax:150000,photo:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80",photos:["https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80"],owner:"seed@utsaav.com",rating:4.6,reviewCount:18,createdAt:new Date()},
     {name:"Elite Conference Solutions",phone:"9876700007",whatsapp:"9876700007",email:"eliteconf.wb@gmail.com",category:"Conference",bio:"Professional conference rooms, AV setup, speaker coordination expert.",location:"Howrah, West Bengal",experience:"9",priceMin:25000,priceMax:250000,photo:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80",photos:["https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&q=80"],owner:"seed@utsaav.com",rating:4.4,reviewCount:9,createdAt:new Date()},
@@ -1266,320 +1619,44 @@ function getSeedData(){
   ];
 }
 
-/* ===== CAT CHIP TOGGLE ===== */
-document.addEventListener('click',e=>{
-  const chip=e.target.closest('.cat-chip');
-  if(chip && (chip.closest('#catCheckboxes')||chip.closest('#aoCatCheckboxes'))){
-    const cb=chip.querySelector('input[type=checkbox]');
-    cb.checked=!cb.checked;
-    chip.classList.toggle('selected',cb.checked);
-  }
-});
-
-let isLogin=true;
-let allOrganizers=[];
-let activeCategory='All';
-let currentUser=null;
-
-/* ===== THEME ===== */
-if(localStorage.getItem('esLight')==='1') document.body.classList.add('light');
-function toggleDark(){
-  document.body.classList.toggle('light');
-  localStorage.setItem('esLight', document.body.classList.contains('light')?'1':'0');
-}
-
-/* ===== TOAST ===== */
-function showToast(msg, type='success'){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+(type==='success'?'success':'error-t')+' show';
-  setTimeout(()=>t.classList.remove('show'),3200);
-}
-
-/* ===== IMAGE HELPERS ===== */
-function previewMultipleImgs(input){
-  const container=document.getElementById('orgImgsPreview');
-  container.innerHTML='';
-  Array.from(input.files).forEach((file,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const wrap=document.createElement('div');
-      wrap.style.cssText='position:relative;display:inline-block;';
-      wrap.innerHTML=`<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
-      container.appendChild(wrap);
-    };
-    r.readAsDataURL(file);
-  });
-}
-
-function previewAdminOrgPhotos(input){
-  const container=document.getElementById('aoImgsPreview');
-  container.innerHTML='';
-  Array.from(input.files).forEach((file,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const wrap=document.createElement('div');
-      wrap.style.cssText='position:relative;display:inline-block;';
-      wrap.innerHTML=`<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
-      container.appendChild(wrap);
-    };
-    r.readAsDataURL(file);
-  });
-}
-
-function previewAdminVendorPhotos(input){
-  const container=document.getElementById('avPhotosPreview');
-  container.innerHTML='';
-  Array.from(input.files).slice(0,5).forEach((file,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const wrap=document.createElement('div');
-      wrap.style.cssText='position:relative;display:inline-block;';
-      wrap.innerHTML=`<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--border);">${i===0?'<div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">MAIN</div>':''}`;
-      container.appendChild(wrap);
-    };
-    r.readAsDataURL(file);
-  });
-}
-
-/* ===== AUTH ===== */
-function togglePass(){
-  const p=document.getElementById('authPass');
-  p.type=p.type==='password'?'text':'password';
-}
-
-// ✅ UPDATED toggleAuth — phone field show/hide
-function toggleAuth(){
-  isLogin=!isLogin;
-  document.getElementById('authTitle').innerHTML=isLogin?'Welcome <em>Back.</em>':'Create <em>Account.</em>';
-  document.getElementById('authSubtitle').textContent=isLogin?'Login to your Utsaav account.':'Join the Utsaav community.';
-  document.getElementById('authBtn').textContent=isLogin?'Login →':'Register →';
-  document.getElementById('switchPre').textContent=isLogin?'New here? ':'Already have an account? ';
-  document.getElementById('switchLink').textContent=isLogin?'Create an account':'Login here';
-  document.getElementById('errorMsg').textContent='';
-  // ✅ Phone field: show on signup, hide on login
-  const phoneGroup=document.getElementById('phoneGroup');
-  const phoneInput=document.getElementById('authPhone');
-  if(isLogin){
-    phoneGroup.classList.add('hidden');
-    phoneInput.removeAttribute('required');
-  } else {
-    phoneGroup.classList.remove('hidden');
-    phoneInput.setAttribute('required','true');
-  }
-}
-
-// ✅ UPDATED authForm — phone validation + Firestore save
-document.getElementById('authForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const email=document.getElementById('authEmail').value;
-  const pass=document.getElementById('authPass').value;
-  const phone=document.getElementById('authPhone')?.value?.trim()||'';
-  const errEl=document.getElementById('errorMsg');
-  const btn=document.getElementById('authBtn');
-  if(pass.length<6){errEl.textContent='⚠ Password must be at least 6 characters'; return;}
-  // ✅ Phone validation — only on signup
-  if(!isLogin){
-    if(!phone){ errEl.textContent='⚠ Phone number required hai'; return; }
-    if(phone.replace(/\D/g,'').length<10){ errEl.textContent='⚠ Valid phone number dalo (minimum 10 digits)'; return; }
-  }
-  btn.textContent='Please wait...'; btn.disabled=true;
-  try{
-    if(isLogin){
-      const cred=await auth.signInWithEmailAndPassword(email,pass);
-      if(!cred.user.emailVerified && cred.user.email!==ADMIN_EMAIL){
-        showVerifyScreen(cred.user);
-        btn.textContent='Login →'; btn.disabled=false;
-        return;
-      }
-    } else {
-      const cred=await auth.createUserWithEmailAndPassword(email,pass);
-      // ✅ Phone number Firestore mein save karo
-      await db.collection('users').doc(cred.user.uid).set({
-        email: email,
-        phone: phone,
-        createdAt: new Date()
-      });
-      await cred.user.sendEmailVerification();
-      showVerifyScreen(cred.user);
-      btn.textContent='Register →'; btn.disabled=false;
-      return;
-    }
-  }catch(err){ errEl.textContent='⚠ '+err.message; }
-  btn.textContent=isLogin?'Login →':'Register →'; btn.disabled=false;
-});
-
-auth.onAuthStateChanged(user=>{
-  currentUser=user;
-  if(user){
-    const isAdmin = user.email===ADMIN_EMAIL;
-    if(!user.emailVerified && !isAdmin){
-      showVerifyScreen(user);
-      return;
-    }
-    hideAllPages();
-    document.getElementById('home').classList.remove('hidden');
-    updateHeaderUser(user.email, isAdmin);
-    const adminBtn = document.getElementById('adminHomeBtn');
-    if(adminBtn) adminBtn.classList.toggle('hidden', !isAdmin);
-  } else {
-    hideAllPages();
-    document.getElementById('auth').classList.remove('hidden');
-    document.getElementById('headerRight').innerHTML='<div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>';
-  }
-});
-
-function hideAllPages(){
-  ['auth','verifyEmail','home','organizer','customer','admin','profilePage','vendor'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.classList.add('hidden');
-  });
-}
-
-function showVerifyScreen(user){
-  hideAllPages();
-  document.getElementById('verifyEmail').classList.remove('hidden');
-  document.getElementById('verifyEmailBadge').textContent=user.email;
-  updateHeaderUser(user.email, false);
-}
-
-let resendCooldown=null;
-async function resendVerification(){
-  const btn=document.getElementById('resendBtn');
-  const timer=document.getElementById('resendTimer');
-  try{
-    await auth.currentUser.sendEmailVerification();
-    showToast('📧 Verification email resent!');
-    btn.disabled=true;
-    let secs=60;
-    timer.textContent=`Resend available in ${secs}s`;
-    resendCooldown=setInterval(()=>{
-      secs--;
-      timer.textContent=`Resend available in ${secs}s`;
-      if(secs<=0){ clearInterval(resendCooldown); btn.disabled=false; timer.textContent=''; }
-    },1000);
-  }catch(err){ showToast('Could not resend: '+err.message,'error'); }
-}
-
-async function checkVerified(){
-  const btn=document.querySelector('#verifyEmail .btn-primary');
-  btn.textContent='Checking...'; btn.disabled=true;
-  await auth.currentUser.reload();
-  if(auth.currentUser.emailVerified){
-    currentUser=auth.currentUser;
-    showToast('✦ Email verified! Welcome aboard.');
-    hideAllPages();
-    document.getElementById('home').classList.remove('hidden');
-    updateHeaderUser(currentUser.email, currentUser.email===ADMIN_EMAIL);
-    const adminBtn=document.getElementById('adminHomeBtn');
-    if(adminBtn) adminBtn.classList.add('hidden');
-  } else {
-    showToast('⚠ Not verified yet. Check your inbox.','error');
-  }
-  btn.textContent="✓ I've verified my email"; btn.disabled=false;
-}
-
-function updateHeaderUser(email, isAdmin){
-  const adminBadge = isAdmin ? `<span class="badge-red badge" style="margin:0;font-size:10px;padding:3px 8px;">👑 ADMIN</span>` : '';
-  document.getElementById('headerRight').innerHTML=`
-    <div class="user-chip"><div class="dot"></div>${email.split('@')[0]} ${adminBadge}</div>
-    <div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>`;
-}
-
-function logout(){ auth.signOut(); }
-function handleLogoClick(){ if(currentUser) showSection('home'); }
-
-/* ===== NAVIGATION ===== */
-function showSection(id){
-  if(id==='admin' && currentUser?.email!==ADMIN_EMAIL){
-    showToast('Access denied.','error'); return;
-  }
-  if(id==='vendor'){
-    hideAllPages();
-    document.getElementById('vendor').classList.remove('hidden');
-    window.scrollTo(0,0);
-    loadMyVendorListings();
-    return;
-  }
-  hideAllPages();
-  document.getElementById(id).classList.remove('hidden');
-  window.scrollTo(0,0);
-
-  if(id==='organizer'){ loadOrgStats(); loadMyEvents(); }
-  if(id==='customer'){ seedOrganizers().then(()=>loadOrganizers()); }
-  if(id==='admin'){ loadAdminStats(); loadAdminOrganizers(); }
-}
-
-/* ===== ORG TABS ===== */
-function switchOrgTab(name, btn){
-  btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  ['orgTabProfile','orgTabEvents','orgTabInbox'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
-  document.getElementById('orgTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
-  if(name==='inbox') loadInbox();
-  if(name==='events') loadMyEvents();
-}
-
-/* ===== CUST TABS ===== */
-function switchCustTab(name, btn){
-  btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  ['custTabBrowse','custTabEvents','custTabVendors','custTabMyenquiries'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
-  document.getElementById('custTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
-  if(name==='events') loadAllEvents();
-  if(name==='myenquiries') loadMyEnquiries();
-  if(name==='vendors') loadVendors('all');
-}
-
-/* ===== ADMIN TABS ===== */
-function switchAdminTab(name, btn){
-  btn.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  ['adminTabOrganizers','adminTabVendors','adminTabEvents','adminTabEnquiries','adminTabAddlisting'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
-  document.getElementById('adminTab'+name.charAt(0).toUpperCase()+name.slice(1))?.classList.remove('hidden');
-  if(name==='organizers') loadAdminOrganizers();
-  if(name==='vendors') loadAdminVendors();
-  if(name==='events') loadAdminEvents();
-  if(name==='enquiries') loadAdminEnquiries();
-}
-
-/* ===== ADMIN STATS ===== */
-async function loadAdminStats(){
-  try{
-    const [orgs,vendors,events,enq,reviews]=await Promise.all([
+// ===== ADMIN STATS =====
+async function loadAdminStats() {
+  try {
+    const [orgs, vendors, events, enq, reviews] = await Promise.all([
       db.collection('organizers').get(),
       db.collection('vendors').get(),
       db.collection('events').get(),
       db.collection('enquiries').get(),
       db.collection('reviews').get()
     ]);
-    document.getElementById('adStatOrg').textContent=orgs.size;
-    document.getElementById('adStatVendors').textContent=vendors.size;
-    document.getElementById('adStatEvents').textContent=events.size;
-    document.getElementById('adStatEnq').textContent=enq.size;
-    document.getElementById('adStatReviews').textContent=reviews.size;
-  }catch(e){console.error(e);}
+    document.getElementById('adStatOrg').textContent     = orgs.size;
+    document.getElementById('adStatVendors').textContent = vendors.size;
+    document.getElementById('adStatEvents').textContent  = events.size;
+    document.getElementById('adStatEnq').textContent     = enq.size;
+    document.getElementById('adStatReviews').textContent = reviews.size;
+  } catch(e) { console.error(e); }
 }
 
-/* ===== ADMIN: ALL ORGANIZERS ===== */
-async function loadAdminOrganizers(){
-  const el=document.getElementById('adminOrgList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('organizers').orderBy('createdAt','desc').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">🎭</span><p>No organizers yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const o={id:doc.id,...doc.data()};
-    const div=document.createElement('div');
-    div.className='admin-item';
-    div.innerHTML=`
+// ===== ADMIN: ALL ORGANIZERS =====
+async function loadAdminOrganizers() {
+  const el = document.getElementById('adminOrgList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('organizers').orderBy('createdAt','desc').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">🎭</span><p>No organizers yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const o = {id: doc.id, ...doc.data()};
+    const div = document.createElement('div');
+    div.className = 'admin-item';
+    div.innerHTML = `
       <div style="display:flex;gap:12px;align-items:center;flex:1;min-width:200px;">
-        ${o.photo?`<img src="${o.photo}" style="width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;">`:'<div style="width:60px;height:60px;background:var(--surface3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">🎭</div>'}
+        ${o.photo ? `<img src="${o.photo}" style="width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;">` : '<div style="width:60px;height:60px;background:var(--surface3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">🎭</div>'}
         <div class="admin-item-info">
           <div class="admin-item-name">${o.name} ${o.owner==='seed@utsaav.com'?'<span style="font-size:11px;color:var(--muted);">[sample]</span>':''}</div>
           <div class="admin-item-meta">
             📍 ${o.location||'—'} &nbsp;|&nbsp; 📁 ${o.category||'—'}<br>
             📞 ${o.phone} &nbsp;|&nbsp; ✉ ${o.email}<br>
-            ⭐ ${o.rating?o.rating.toFixed(1):0} (${o.reviewCount||0} reviews) &nbsp;|&nbsp; Added by: ${o.owner}
+            ⭐ ${o.rating?o.rating.toFixed(1):0} (${o.reviewCount||0} reviews) &nbsp;|&nbsp; Owner: ${o.owner}
           </div>
         </div>
       </div>
@@ -1591,27 +1668,27 @@ async function loadAdminOrganizers(){
   });
 }
 
-/* ===== ADMIN: ALL VENDORS ===== */
-async function loadAdminVendors(){
-  const el=document.getElementById('adminVendorList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('vendors').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📸</span><p>No vendors yet.</p></div>'; return;}
-  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
-  snap.forEach(doc=>{
-    const v={id:doc.id,...doc.data()};
-    const div=document.createElement('div');
-    div.className='admin-item';
-    div.innerHTML=`
+// ===== ADMIN: ALL VENDORS =====
+async function loadAdminVendors() {
+  const el = document.getElementById('adminVendorList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('vendors').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">📸</span><p>No vendors yet.</p></div>'; return; }
+  const typeIcon = {photographer:'📸', makeup:'💄', gifts:'🎁'};
+  snap.forEach(doc => {
+    const v = {id: doc.id, ...doc.data()};
+    const div = document.createElement('div');
+    div.className = 'admin-item';
+    div.innerHTML = `
       <div style="display:flex;gap:12px;align-items:center;flex:1;min-width:200px;">
-        ${v.photo?`<img src="${v.photo}" style="width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;">`:`<div style="width:60px;height:60px;background:var(--surface3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${typeIcon[v.type]||'✨'}</div>`}
+        ${v.photo ? `<img src="${v.photo}" style="width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;">` : `<div style="width:60px;height:60px;background:var(--surface3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${typeIcon[v.type]||'✨'}</div>`}
         <div class="admin-item-info">
           <div class="admin-item-name">${typeIcon[v.type]||''} ${v.name}${v.company?' — '+v.company:''}</div>
           <div class="admin-item-meta">
             📍 ${v.location||'—'} &nbsp;|&nbsp; Type: ${v.type}<br>
             📞 ${v.phone} &nbsp;|&nbsp; ✉ ${v.email}<br>
-            Specialty: ${v.specialty||'—'} &nbsp;|&nbsp; Added by: ${v.owner}
+            Specialty: ${v.specialty||'—'} &nbsp;|&nbsp; Owner: ${v.owner}
           </div>
         </div>
       </div>
@@ -1622,19 +1699,19 @@ async function loadAdminVendors(){
   });
 }
 
-/* ===== ADMIN: ALL EVENTS ===== */
-async function loadAdminEvents(){
-  const el=document.getElementById('adminEventList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('events').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const ev={id:doc.id,...doc.data()};
-    const d=new Date(ev.date);
-    const div=document.createElement('div');
-    div.className='admin-item';
-    div.innerHTML=`
+// ===== ADMIN: ALL EVENTS =====
+async function loadAdminEvents() {
+  const el = document.getElementById('adminEventList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('events').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const ev = {id: doc.id, ...doc.data()};
+    const d  = new Date(ev.date);
+    const div = document.createElement('div');
+    div.className = 'admin-item';
+    div.innerHTML = `
       <div class="admin-item-info">
         <div class="admin-item-name">🎪 ${ev.name}</div>
         <div class="admin-item-meta">
@@ -1649,19 +1726,19 @@ async function loadAdminEvents(){
   });
 }
 
-/* ===== ADMIN: ALL ENQUIRIES ===== */
-async function loadAdminEnquiries(){
-  const el=document.getElementById('adminEnquiryList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('enquiries').orderBy('createdAt','desc').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const q={id:doc.id,...doc.data()};
-    const d=q.createdAt?.toDate?.()?.toLocaleDateString()||'';
-    const div=document.createElement('div');
-    div.className='admin-item';
-    div.innerHTML=`
+// ===== ADMIN: ALL ENQUIRIES =====
+async function loadAdminEnquiries() {
+  const el = document.getElementById('adminEnquiryList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('enquiries').orderBy('createdAt','desc').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const q = {id: doc.id, ...doc.data()};
+    const d = q.createdAt?.toDate?.()?.toLocaleDateString() || '';
+    const div = document.createElement('div');
+    div.className = 'admin-item';
+    div.innerHTML = `
       <div class="admin-item-info">
         <div class="admin-item-name">📬 To: ${q.toName}</div>
         <div class="admin-item-meta">
@@ -1676,44 +1753,40 @@ async function loadAdminEnquiries(){
   });
 }
 
-/* ===== ADMIN DELETE FUNCTIONS ===== */
-async function adminDeleteOrg(id, name){
-  if(!confirm(`Delete organizer "${name}"? This cannot be undone.`)) return;
+// ===== ADMIN DELETE FUNCTIONS =====
+async function adminDeleteOrg(id, name) {
+  if (!confirm(`Delete organizer "${name}"? This cannot be undone.`)) return;
   await db.collection('organizers').doc(id).delete();
   showToast('🗑 Organizer deleted.');
-  loadAdminOrganizers();
-  loadAdminStats();
+  loadAdminOrganizers(); loadAdminStats();
 }
 
-async function adminDeleteVendor(id, name){
-  if(!confirm(`Delete vendor "${name}"?`)) return;
+async function adminDeleteVendor(id, name) {
+  if (!confirm(`Delete vendor "${name}"?`)) return;
   await db.collection('vendors').doc(id).delete();
   showToast('🗑 Vendor deleted.');
-  loadAdminVendors();
-  loadAdminStats();
+  loadAdminVendors(); loadAdminStats();
 }
 
-async function adminDeleteEvent(id, name){
-  if(!confirm(`Delete event "${name}"?`)) return;
+async function adminDeleteEvent(id, name) {
+  if (!confirm(`Delete event "${name}"?`)) return;
   await db.collection('events').doc(id).delete();
   showToast('🗑 Event deleted.');
-  loadAdminEvents();
-  loadAdminStats();
+  loadAdminEvents(); loadAdminStats();
 }
 
-async function adminDeleteEnquiry(id){
-  if(!confirm('Delete this enquiry?')) return;
+async function adminDeleteEnquiry(id) {
+  if (!confirm('Delete this enquiry?')) return;
   await db.collection('enquiries').doc(id).delete();
   showToast('🗑 Enquiry deleted.');
-  loadAdminEnquiries();
-  loadAdminStats();
+  loadAdminEnquiries(); loadAdminStats();
 }
 
-/* ===== ADMIN EDIT ORGANIZER ===== */
-async function adminEditOrg(id){
-  const doc=await db.collection('organizers').doc(id).get();
-  const o=doc.data();
-  document.getElementById('modalContainer').innerHTML=`
+// ===== ADMIN EDIT ORGANIZER =====
+async function adminEditOrg(id) {
+  const doc = await db.collection('organizers').doc(id).get();
+  const o = doc.data();
+  document.getElementById('modalContainer').innerHTML = `
   <div class="modal-overlay" onclick="closeModal(event)">
     <div class="modal" style="max-width:640px;">
       <div class="modal-body">
@@ -1750,240 +1823,234 @@ async function adminEditOrg(id){
       </div>
     </div>
   </div>`;
-  const sel=document.getElementById('editOrgCat');
-  if(sel && o.category) sel.value=o.category;
+  const sel = document.getElementById('editOrgCat');
+  if (sel && o.category) sel.value = o.category;
 }
 
-async function saveEditOrg(id){
-  try{
+async function saveEditOrg(id) {
+  try {
     await db.collection('organizers').doc(id).update({
-      name: document.getElementById('editOrgName').value,
-      category: document.getElementById('editOrgCat').value,
-      phone: document.getElementById('editOrgPhone').value,
-      whatsapp: document.getElementById('editOrgWhatsapp').value,
-      email: document.getElementById('editOrgEmail').value,
-      location: document.getElementById('editOrgLocation').value,
-      bio: document.getElementById('editOrgBio').value,
-      priceMin: Number(document.getElementById('editOrgPriceMin').value)||0,
-      priceMax: Number(document.getElementById('editOrgPriceMax').value)||0,
+      name:       document.getElementById('editOrgName').value,
+      category:   document.getElementById('editOrgCat').value,
+      phone:      document.getElementById('editOrgPhone').value,
+      whatsapp:   document.getElementById('editOrgWhatsapp').value,
+      email:      document.getElementById('editOrgEmail').value,
+      location:   document.getElementById('editOrgLocation').value,
+      bio:        document.getElementById('editOrgBio').value,
+      priceMin:   Number(document.getElementById('editOrgPriceMin').value) || 0,
+      priceMax:   Number(document.getElementById('editOrgPriceMax').value) || 0,
       experience: document.getElementById('editOrgExp').value
     });
     showToast('✅ Organizer updated!');
     closeModalDirect();
     loadAdminOrganizers();
-  }catch(e){ showToast('Error: '+e.message,'error'); }
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
 }
 
-/* ===== ADMIN VENDOR TYPE SELECTOR ===== */
+// ===== ADMIN VENDOR TYPE SELECTOR =====
 let adminVendorType = 'photographer';
-function adminSelectVendorType(type, btn){
+function adminSelectVendorType(type, btn) {
   adminVendorType = type;
-  document.querySelectorAll('#adminVendorTypeBtns .vendor-type-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#adminVendorTypeBtns .vendor-type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const labels = {
-    photographer: { title:'📸 Adding: Photographer', specialty:'Specialty', sp:'e.g. Wedding, Portrait' },
-    makeup:       { title:'💄 Adding: Makeup Artist', specialty:'Makeup Specialty', sp:'e.g. Bridal, HD Makeup' },
-    gifts:        { title:'🎁 Adding: Return Gifts Seller', specialty:'Products Offered', sp:'e.g. Gift hampers, Dry fruits' }
+    photographer: { title:'📸 Adding: Photographer',        specialty:'Specialty',        sp:'e.g. Wedding, Portrait' },
+    makeup:       { title:'💄 Adding: Makeup Artist',        specialty:'Makeup Specialty', sp:'e.g. Bridal, HD Makeup' },
+    gifts:        { title:'🎁 Adding: Return Gifts Seller',  specialty:'Products Offered', sp:'e.g. Gift hampers, Dry fruits' }
   };
-  const l=labels[type];
-  document.getElementById('adminVendorTypeLabel').textContent=l.title;
-  document.getElementById('avSpecialtyLabel').textContent=l.specialty;
-  document.getElementById('avSpecialty').placeholder=l.sp;
-  const pg=document.getElementById('avPhotoGroup');
-  if(pg) pg.style.display=type==='gifts'?'none':'block';
+  const l = labels[type];
+  document.getElementById('adminVendorTypeLabel').textContent = l.title;
+  document.getElementById('avSpecialtyLabel').textContent = l.specialty;
+  document.getElementById('avSpecialty').placeholder = l.sp;
+  const pg = document.getElementById('avPhotoGroup');
+  if (pg) pg.style.display = type === 'gifts' ? 'none' : 'block';
 }
 
-/* ===== ADMIN: ADD VENDOR FORM ===== */
-document.getElementById('adminVendorForm').addEventListener('submit', async e=>{
+// ===== ADMIN: ADD VENDOR FORM (Cloudinary) =====
+document.getElementById('adminVendorForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const btn=e.target.querySelector('button[type=submit]');
-  btn.disabled=true; btn.textContent='Compressing...';
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true; btn.textContent = '☁️ Uploading photos...';
 
-  const compressPhoto=(file)=>new Promise(res=>{
-    const img=new Image(); const url=URL.createObjectURL(file);
-    img.onload=()=>{
-      const MAX=600; let w=img.width,h=img.height;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url); res(canvas.toDataURL('image/jpeg',0.5));
-    }; img.src=url;
-  });
-
-  let photos=[];
-  const files=document.getElementById('avPhotos').files;
-  if(files.length>0 && adminVendorType!=='gifts'){
-    photos=await Promise.all(Array.from(files).slice(0,5).map(compressPhoto));
+  let photos = [];
+  const files = document.getElementById('avPhotos').files;
+  if (files.length > 0 && adminVendorType !== 'gifts') {
+    try {
+      photos = await uploadMultipleToCloudinary(
+        Array.from(files), 'avUploadProgress', 'avUploadBar', 'avUploadStatusText', 'avUploadIcon'
+      );
+    } catch(err) {
+      showToast('Photo upload failed: ' + err.message, 'error');
+      btn.disabled = false; btn.textContent = '✦ Publish Listing';
+      return;
+    }
   }
 
-  btn.textContent='Saving...';
+  btn.textContent = '💾 Saving...';
   await db.collection('vendors').add({
-    type: adminVendorType,
-    name: document.getElementById('avName').value,
-    company: document.getElementById('avCompany').value||'',
-    phone: document.getElementById('avPhone').value,
-    whatsapp: document.getElementById('avWhatsapp').value||document.getElementById('avPhone').value,
-    email: document.getElementById('avEmail').value,
-    website: document.getElementById('avWebsite').value||'',
-    location: document.getElementById('avLocation').value,
-    bio: document.getElementById('avBio').value||'',
-    experience: document.getElementById('avExp').value||'',
-    specialty: document.getElementById('avSpecialty').value||'',
-    priceMin: document.getElementById('avPriceMin').value||0,
-    priceMax: document.getElementById('avPriceMax').value||0,
-    driveLink: document.getElementById('avDriveLink').value||'',
-    photos: photos, photo: photos[0]||'',
+    type:      adminVendorType,
+    name:      document.getElementById('avName').value,
+    company:   document.getElementById('avCompany').value || '',
+    phone:     document.getElementById('avPhone').value,
+    whatsapp:  document.getElementById('avWhatsapp').value || document.getElementById('avPhone').value,
+    email:     document.getElementById('avEmail').value,
+    website:   document.getElementById('avWebsite').value || '',
+    location:  document.getElementById('avLocation').value,
+    bio:       document.getElementById('avBio').value || '',
+    experience:document.getElementById('avExp').value || '',
+    specialty: document.getElementById('avSpecialty').value || '',
+    priceMin:  document.getElementById('avPriceMin').value || 0,
+    priceMax:  document.getElementById('avPriceMax').value || 0,
+    driveLink: document.getElementById('avDriveLink').value || '',
+    photos, photo: photos[0] || '',
     owner: ADMIN_EMAIL,
-    rating:0, reviewCount:0, createdAt:new Date()
+    rating: 0, reviewCount: 0, createdAt: new Date()
   });
 
   document.getElementById('adminVendorForm').reset();
-  document.getElementById('avPhotosPreview').innerHTML='';
-  btn.textContent='✦ Publish Listing'; btn.disabled=false;
+  document.getElementById('avPhotosPreview').innerHTML = '';
+  btn.textContent = '✦ Publish Listing'; btn.disabled = false;
   showToast('✅ Vendor listing published!');
   loadAdminStats();
 });
 
-/* ===== ADMIN: ADD ORGANIZER FORM ===== */
-document.getElementById('adminOrgForm').addEventListener('submit', async e=>{
+// ===== ADMIN: ADD ORGANIZER FORM (Cloudinary) =====
+document.getElementById('adminOrgForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const files=document.getElementById('aoPhotos').files;
-  if(!files.length){showToast('Please select at least one photo','error'); return;}
-  const btn=e.target.querySelector('button[type=submit]');
-  btn.disabled=true;
+  const files = document.getElementById('aoPhotos').files;
+  if (!files.length) { showToast('Please select at least one photo', 'error'); return; }
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  const checkedCats = [...document.querySelectorAll('#aoCatCheckboxes input:checked')].map(c => c.value);
+  if (!checkedCats.length) { showToast('Please select at least one category', 'error'); btn.disabled = false; return; }
 
-  const checkedCats=[...document.querySelectorAll('#aoCatCheckboxes input:checked')].map(c=>c.value);
-  if(!checkedCats.length){showToast('Please select at least one category','error'); btn.disabled=false; return;}
+  btn.textContent = '☁️ Uploading photos...';
+  let photos = [];
+  try {
+    photos = await uploadMultipleToCloudinary(
+      Array.from(files), 'aoUploadProgress', 'aoUploadBar', 'aoUploadStatusText', 'aoUploadIcon'
+    );
+  } catch(err) {
+    showToast('Photo upload failed: ' + err.message, 'error');
+    btn.disabled = false; btn.textContent = '✦ Publish Organizer Profile';
+    return;
+  }
 
-  const compressPhoto=(file)=>new Promise(res=>{
-    const img=new Image(); const url=URL.createObjectURL(file);
-    img.onload=()=>{
-      const MAX=600; let w=img.width,h=img.height;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url); res(canvas.toDataURL('image/jpeg',0.5));
-    }; img.src=url;
-  });
-
-  btn.textContent='Compressing...';
-  const photos=await Promise.all(Array.from(files).slice(0,5).map(compressPhoto));
-  btn.textContent='Saving...';
-
+  btn.textContent = '💾 Saving...';
   await db.collection('organizers').add({
-    name: document.getElementById('aoName').value,
-    company: document.getElementById('aoCompany').value||'',
-    phone: document.getElementById('aoPhone').value,
-    whatsapp: document.getElementById('aoWhatsapp').value||document.getElementById('aoPhone').value,
-    email: document.getElementById('aoEmail').value,
-    category: checkedCats[0], categories: checkedCats,
-    bio: document.getElementById('aoBio').value,
-    location: document.getElementById('aoLocation').value,
-    experience: document.getElementById('aoExp').value||'',
-    priceMin: document.getElementById('aoPriceMin').value||0,
-    priceMax: document.getElementById('aoPriceMax').value||0,
-    photo: photos[0], photos: photos,
+    name:       document.getElementById('aoName').value,
+    company:    document.getElementById('aoCompany').value || '',
+    phone:      document.getElementById('aoPhone').value,
+    whatsapp:   document.getElementById('aoWhatsapp').value || document.getElementById('aoPhone').value,
+    email:      document.getElementById('aoEmail').value,
+    category:   checkedCats[0], categories: checkedCats,
+    bio:        document.getElementById('aoBio').value,
+    location:   document.getElementById('aoLocation').value,
+    experience: document.getElementById('aoExp').value || '',
+    priceMin:   document.getElementById('aoPriceMin').value || 0,
+    priceMax:   document.getElementById('aoPriceMax').value || 0,
+    photo: photos[0], photos,
     owner: ADMIN_EMAIL,
-    rating:0, reviewCount:0, createdAt:new Date()
+    rating: 0, reviewCount: 0, createdAt: new Date()
   });
 
   document.getElementById('adminOrgForm').reset();
-  document.getElementById('aoImgsPreview').innerHTML='';
-  document.querySelectorAll('#aoCatCheckboxes .cat-chip').forEach(c=>c.classList.remove('selected'));
-  document.querySelectorAll('#aoCatCheckboxes input').forEach(c=>c.checked=false);
-  btn.textContent='✦ Publish Organizer Profile'; btn.disabled=false;
+  document.getElementById('aoImgsPreview').innerHTML = '';
+  document.querySelectorAll('#aoCatCheckboxes .cat-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#aoCatCheckboxes input').forEach(c => c.checked = false);
+  btn.textContent = '✦ Publish Organizer Profile'; btn.disabled = false;
   showToast('✅ Organizer profile published!');
   loadAdminStats();
 });
 
-/* ===== ORGANIZER PROFILE FORM ===== */
-document.getElementById('orgForm').addEventListener('submit',async e=>{
+// ===== ORGANIZER PROFILE FORM (Cloudinary) =====
+document.getElementById('orgForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const files=document.getElementById('orgPhoto').files;
-  if(!files.length){showToast('Please select at least one photo','error'); return;}
-  const btn=e.target.querySelector('button[type=submit]');
-  btn.disabled=true;
-  const checkedCats=[...document.querySelectorAll('#catCheckboxes input:checked')].map(c=>c.value);
-  if(!checkedCats.length){showToast('Please select at least one category','error'); btn.disabled=false; return;}
+  const files = document.getElementById('orgPhoto').files;
+  if (!files.length) { showToast('Please select at least one photo', 'error'); return; }
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  const checkedCats = [...document.querySelectorAll('#catCheckboxes input:checked')].map(c => c.value);
+  if (!checkedCats.length) { showToast('Please select at least one category', 'error'); btn.disabled = false; return; }
 
-  const compressPhoto=(file)=>new Promise(res=>{
-    const img=new Image(); const url=URL.createObjectURL(file);
-    img.onload=()=>{
-      const MAX=600; let w=img.width,h=img.height;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url); res(canvas.toDataURL('image/jpeg',0.5));
-    }; img.src=url;
-  });
+  btn.textContent = '☁️ Uploading photos...';
+  let photos = [];
+  try {
+    photos = await uploadMultipleToCloudinary(
+      Array.from(files), 'orgUploadProgress', 'orgUploadBar', 'orgUploadStatusText', 'orgUploadIcon'
+    );
+  } catch(err) {
+    showToast('Photo upload failed: ' + err.message, 'error');
+    btn.disabled = false; btn.textContent = '✦ Publish Profile';
+    return;
+  }
 
-  btn.textContent='Compressing...';
-  const photos=await Promise.all(Array.from(files).slice(0,5).map(compressPhoto));
-  btn.textContent='Saving...';
+  btn.textContent = '💾 Saving...';
   await db.collection('organizers').add({
-    name:document.getElementById('orgName').value,
-    company:document.getElementById('orgCompany').value||'',
-    phone:document.getElementById('orgPhone').value,
-    whatsapp:document.getElementById('orgWhatsapp').value||document.getElementById('orgPhone').value,
-    email:document.getElementById('orgEmail').value,
-    category:checkedCats[0], categories:checkedCats,
-    bio:document.getElementById('orgBio').value,
-    location:document.getElementById('orgLocation').value,
-    experience:document.getElementById('orgExp').value||'',
-    priceMin:document.getElementById('orgPriceMin').value||0,
-    priceMax:document.getElementById('orgPriceMax').value||0,
-    photo:photos[0], photos:photos,
-    owner:currentUser.email,
-    rating:0, reviewCount:0, createdAt:new Date()
+    name:       document.getElementById('orgName').value,
+    company:    document.getElementById('orgCompany').value || '',
+    phone:      document.getElementById('orgPhone').value,
+    whatsapp:   document.getElementById('orgWhatsapp').value || document.getElementById('orgPhone').value,
+    email:      document.getElementById('orgEmail').value,
+    category:   checkedCats[0], categories: checkedCats,
+    bio:        document.getElementById('orgBio').value,
+    location:   document.getElementById('orgLocation').value,
+    experience: document.getElementById('orgExp').value || '',
+    priceMin:   document.getElementById('orgPriceMin').value || 0,
+    priceMax:   document.getElementById('orgPriceMax').value || 0,
+    photo: photos[0], photos,
+    owner: currentUser.email,
+    rating: 0, reviewCount: 0, createdAt: new Date()
   });
+
   document.getElementById('orgForm').reset();
-  document.getElementById('orgImgsPreview').innerHTML='';
-  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('selected'));
-  document.querySelectorAll('#catCheckboxes input').forEach(c=>c.checked=false);
-  btn.textContent='✦ Publish Profile'; btn.disabled=false;
+  document.getElementById('orgImgsPreview').innerHTML = '';
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#catCheckboxes input').forEach(c => c.checked = false);
+  btn.textContent = '✦ Publish Profile'; btn.disabled = false;
   showToast('✦ Profile published!');
   loadOrgStats();
 });
 
-/* ===== ORG STATS ===== */
-async function loadOrgStats(){
-  const [profSnap,evtSnap,enqSnap]=await Promise.all([
+// ===== ORG STATS =====
+async function loadOrgStats() {
+  const [profSnap, evtSnap, enqSnap] = await Promise.all([
     db.collection('organizers').where('owner','==',currentUser.email).get(),
     db.collection('events').where('owner','==',currentUser.email).get(),
     db.collection('enquiries').where('toEmail','==',currentUser.email).get()
   ]);
-  document.getElementById('statProfiles').textContent=profSnap.size;
-  document.getElementById('statEvents').textContent=evtSnap.size;
-  document.getElementById('statEnquiries').textContent=enqSnap.size;
+  document.getElementById('statProfiles').textContent  = profSnap.size;
+  document.getElementById('statEvents').textContent    = evtSnap.size;
+  document.getElementById('statEnquiries').textContent = enqSnap.size;
 }
 
-/* ===== EVENTS ===== */
-document.getElementById('eventForm').addEventListener('submit',async e=>{
+// ===== EVENTS =====
+document.getElementById('eventForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const price=parseInt(document.getElementById('evtPrice').value)||0;
+  const price = parseInt(document.getElementById('evtPrice').value) || 0;
   await db.collection('events').add({
-    name:document.getElementById('evtName').value,
-    category:document.getElementById('evtCategory').value,
-    date:document.getElementById('evtDate').value,
+    name:        document.getElementById('evtName').value,
+    category:    document.getElementById('evtCategory').value,
+    date:        document.getElementById('evtDate').value,
     price, venue:document.getElementById('evtVenue').value,
-    description:document.getElementById('evtDesc').value,
-    owner:currentUser.email, createdAt:new Date()
+    description: document.getElementById('evtDesc').value,
+    owner: currentUser.email, createdAt: new Date()
   });
   document.getElementById('eventForm').reset();
   showToast('🎪 Event posted!');
   loadMyEvents(); loadOrgStats();
 });
 
-async function loadMyEvents(){
-  const el=document.getElementById('myEventsList');
-  if(!el) return;
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('events').where('owner','==',currentUser.email).orderBy('createdAt','desc').get();
-  if(snap.empty){el.innerHTML='<p style="color:var(--muted);font-size:14px;">No events posted yet.</p>'; return;}
-  el.innerHTML='';
-  snap.forEach(doc=>{
-    const ev=doc.data(); const d=new Date(ev.date);
-    el.innerHTML+=`
+async function loadMyEvents() {
+  const el = document.getElementById('myEventsList');
+  if (!el) return;
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('events').where('owner','==',currentUser.email).orderBy('createdAt','desc').get();
+  if (snap.empty) { el.innerHTML = '<p style="color:var(--muted);font-size:14px;">No events posted yet.</p>'; return; }
+  el.innerHTML = '';
+  snap.forEach(doc => {
+    const ev = doc.data(); const d = new Date(ev.date);
+    el.innerHTML += `
     <div class="enquiry-item" style="display:flex;align-items:flex-start;gap:14px;">
       <div style="flex-shrink:0;text-align:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;">
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:600;">${d.toLocaleString('default',{month:'short'})}</div>
@@ -1999,24 +2066,24 @@ async function loadMyEvents(){
   });
 }
 
-async function deleteEvent(id){
-  if(!confirm('Delete this event?')) return;
+async function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return;
   await db.collection('events').doc(id).delete();
-  showToast('Event deleted.','error');
+  showToast('Event deleted.', 'error');
   loadMyEvents(); loadOrgStats();
 }
 
-async function loadAllEvents(){
-  const el=document.getElementById('eventsGrid');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('events').orderBy('date','asc').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const ev=doc.data(); const d=new Date(ev.date);
-    const card=document.createElement('div');
-    card.className='event-card';
-    card.innerHTML=`
+async function loadAllEvents() {
+  const el = document.getElementById('eventsGrid');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('events').orderBy('date','asc').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">🎪</span><p>No events yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const ev = doc.data(); const d = new Date(ev.date);
+    const card = document.createElement('div');
+    card.className = 'event-card';
+    card.innerHTML = `
       <div class="event-date-badge">
         <div class="month">${d.toLocaleString('default',{month:'short'})}</div>
         <div class="day">${d.getDate()}</div>
@@ -2031,16 +2098,16 @@ async function loadAllEvents(){
   });
 }
 
-/* ===== INBOX ===== */
-async function loadInbox(){
-  const el=document.getElementById('inboxList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('enquiries').where('toEmail','==',currentUser.email).orderBy('createdAt','desc').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const q=doc.data(); const d=q.createdAt?.toDate?.()?.toLocaleDateString()||'';
-    el.innerHTML+=`
+// ===== INBOX =====
+async function loadInbox() {
+  const el = document.getElementById('inboxList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('enquiries').where('toEmail','==',currentUser.email).orderBy('createdAt','desc').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">📬</span><p>No enquiries yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const q = doc.data(); const d = q.createdAt?.toDate?.()?.toLocaleDateString() || '';
+    el.innerHTML += `
     <div class="enquiry-item">
       <div class="enquiry-to" style="display:flex;justify-content:space-between;">
         <span>From: <strong>${q.fromEmail||q.fromName}</strong></span>
@@ -2053,16 +2120,16 @@ async function loadInbox(){
   });
 }
 
-/* ===== MY ENQUIRIES ===== */
-async function loadMyEnquiries(){
-  const el=document.getElementById('myEnquiriesList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('enquiries').where('fromEmail','==',currentUser.email).orderBy('createdAt','desc').get();
-  el.innerHTML='';
-  if(snap.empty){el.innerHTML='<div class="empty-state"><span class="empty-icon">📋</span><p>You haven\'t sent any enquiries yet.</p></div>'; return;}
-  snap.forEach(doc=>{
-    const q=doc.data(); const d=q.createdAt?.toDate?.()?.toLocaleDateString()||'';
-    el.innerHTML+=`
+// ===== MY ENQUIRIES =====
+async function loadMyEnquiries() {
+  const el = document.getElementById('myEnquiriesList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('enquiries').where('fromEmail','==',currentUser.email).orderBy('createdAt','desc').get();
+  el.innerHTML = '';
+  if (snap.empty) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">📋</span><p>You haven\'t sent any enquiries yet.</p></div>'; return; }
+  snap.forEach(doc => {
+    const q = doc.data(); const d = q.createdAt?.toDate?.()?.toLocaleDateString() || '';
+    el.innerHTML += `
     <div class="enquiry-item">
       <div class="enquiry-to" style="display:flex;justify-content:space-between;">
         <span>To: <strong>${q.toName}</strong></span>
@@ -2074,111 +2141,112 @@ async function loadMyEnquiries(){
   });
 }
 
-/* ===== ORGANIZERS LOAD ===== */
-async function loadOrganizers(){
-  const el=document.getElementById('list');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  try{
-    const snap=await db.collection('organizers').get();
-    allOrganizers=[];
-    snap.forEach(doc=>allOrganizers.push({id:doc.id,...doc.data()}));
-    allOrganizers.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
-    const banner=document.getElementById('seedBanner');
-    if(banner) banner.style.display=allOrganizers.length>0?'none':'flex';
+// ===== ORGANIZERS LOAD & FILTER =====
+async function loadOrganizers() {
+  const el = document.getElementById('list');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  try {
+    const snap = await db.collection('organizers').get();
+    allOrganizers = [];
+    snap.forEach(doc => allOrganizers.push({id: doc.id, ...doc.data()}));
+    allOrganizers.sort((a,b) => (b.createdAt?.toDate?.()?.getTime()||0) - (a.createdAt?.toDate?.()?.getTime()||0));
+    const banner = document.getElementById('seedBanner');
+    if (banner) banner.style.display = allOrganizers.length > 0 ? 'none' : 'flex';
     buildCatPills();
     renderOrganizers(allOrganizers);
-  }catch(err){
-    el.innerHTML=`<p style="color:var(--muted);font-size:14px;">⚠️ Error: ${err.message}</p>`;
+  } catch(err) {
+    el.innerHTML = `<p style="color:var(--muted);font-size:14px;">⚠️ Error: ${err.message}</p>`;
   }
 }
 
-function buildCatPills(){
-  const cats=['All',...new Set(allOrganizers.map(o=>o.category).filter(Boolean))];
-  document.getElementById('catPills').innerHTML=cats.map(c=>`
-    <div class="cat-pill${c==='All'?' active':''}" onclick="setCat('${c}',this)">${c}</div>`).join('');
+function buildCatPills() {
+  const cats = ['All', ...new Set(allOrganizers.map(o => o.category).filter(Boolean))];
+  document.getElementById('catPills').innerHTML = cats.map(c =>
+    `<div class="cat-pill${c==='All'?' active':''}" onclick="setCat('${c}',this)">${c}</div>`
+  ).join('');
 }
 
-function setCat(cat,el){
-  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+function setCat(cat, el) {
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
-  activeCategory=cat;
+  activeCategory = cat;
   filterOrganizers();
 }
 
-function filterOrganizers(){
-  const term=document.getElementById('search').value.toLowerCase();
-  const sort=document.getElementById('sortBy').value;
-  let filtered=allOrganizers.filter(o=>{
-    const matchCat=activeCategory==='All'||o.category===activeCategory;
-    const matchSearch=!term||[o.name,o.email,o.phone,o.location,o.bio].join(' ').toLowerCase().includes(term);
-    return matchCat&&matchSearch;
+function filterOrganizers() {
+  const term = document.getElementById('search').value.toLowerCase();
+  const sort = document.getElementById('sortBy').value;
+  let filtered = allOrganizers.filter(o => {
+    const matchCat    = activeCategory === 'All' || o.category === activeCategory;
+    const matchSearch = !term || [o.name,o.email,o.phone,o.location,o.bio].join(' ').toLowerCase().includes(term);
+    return matchCat && matchSearch;
   });
-  if(sort==='rating') filtered.sort((a,b)=>(b.rating||0)-(a.rating||0));
-  else if(sort==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  if (sort === 'rating') filtered.sort((a,b) => (b.rating||0) - (a.rating||0));
+  else if (sort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
   renderOrganizers(filtered);
 }
 
-function renderOrganizers(list){
-  const el=document.getElementById('list');
-  const banner=document.getElementById('seedBanner');
-  el.innerHTML='';
-  if(!list.length){
-    el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No organizers found.</p></div>';
-    if(allOrganizers.length===0 && banner) banner.style.display='flex';
+function renderOrganizers(list) {
+  const el = document.getElementById('list');
+  const banner = document.getElementById('seedBanner');
+  el.innerHTML = '';
+  if (!list.length) {
+    el.innerHTML = '<div class="empty-state"><span class="empty-icon">🔍</span><p>No organizers found.</p></div>';
+    if (allOrganizers.length === 0 && banner) banner.style.display = 'flex';
     return;
   }
-  if(banner) banner.style.display='none';
-  list.forEach(o=>{
-    const isOwner=o.owner===currentUser?.email;
-    const stars=renderStars(o.rating||0);
-    const card=document.createElement('div');
-    card.className='org-card';
-    card.onclick=()=>openProfilePage(o);
-    card.innerHTML=`
+  if (banner) banner.style.display = 'none';
+  list.forEach(o => {
+    const isOwner = o.owner === currentUser?.email;
+    const stars   = renderStars(o.rating || 0);
+    const card    = document.createElement('div');
+    card.className = 'org-card';
+    card.onclick = () => openProfilePage(o);
+    card.innerHTML = `
       <div class="org-img-wrap">
         <img src="${o.photo}" alt="${o.name}" loading="lazy">
-        ${o.category?`<div class="cat-tag">${o.category}</div>`:''}
+        ${o.category ? `<div class="cat-tag">${o.category}</div>` : ''}
       </div>
       <div class="org-body">
-        ${isOwner?'<div class="badge" style="margin-bottom:8px;">✦ Your listing</div>':''}
+        ${isOwner ? '<div class="badge" style="margin-bottom:8px;">✦ Your listing</div>' : ''}
         <div class="org-name">${o.name}</div>
-        ${o.location?`<div class="org-meta">📍 ${o.location}</div>`:''}
+        ${o.location  ? `<div class="org-meta">📍 ${o.location}</div>` : ''}
         <div class="org-meta">📞 ${o.phone}</div>
-        ${o.whatsapp?`<div class="org-meta" style="color:#25d366;">💬 ${o.whatsapp}</div>`:''}
+        ${o.whatsapp  ? `<div class="org-meta" style="color:#25d366;">💬 ${o.whatsapp}</div>` : ''}
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
           <span class="stars">${stars}</span>
-          <span class="stars-count">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+')':'No reviews'}</span>
+          <span class="stars-count">${o.rating ? o.rating.toFixed(1)+' ('+o.reviewCount+')' : 'No reviews'}</span>
         </div>
       </div>
       <div class="org-footer" style="cursor:pointer;">
         <span style="font-size:12px;color:var(--muted);">${o.email.split('@')[0]}@…</span>
-        <span style="font-size:12px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:4px;">View →</span>
+        <span style="font-size:12px;color:var(--accent);font-weight:600;">View →</span>
       </div>`;
     el.appendChild(card);
   });
 }
 
-function renderStars(r){
-  const full=Math.round(r);
-  return Array.from({length:5},(_,i)=>i<full?'★':'☆').join('');
+function renderStars(r) {
+  const full = Math.round(r);
+  return Array.from({length:5}, (_,i) => i < full ? '★' : '☆').join('');
 }
 
-/* ===== MODAL ===== */
-async function openOrgModal(o){
-  const isOwner=o.owner===currentUser?.email;
-  const snap=await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
-  const reviews=[]; snap.forEach(d=>reviews.push(d.data()));
-  const stars=renderStars(o.rating||0);
-  let reviewsHtml=reviews.length?reviews.map(rv=>`
+// ===== MODAL =====
+async function openOrgModal(o) {
+  const isOwner = o.owner === currentUser?.email;
+  const snap    = await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
+  const reviews = []; snap.forEach(d => reviews.push(d.data()));
+  const stars   = renderStars(o.rating || 0);
+  let reviewsHtml = reviews.length ? reviews.map(rv => `
     <div class="review-card">
       <div class="review-top">
         <span class="review-author">${rv.authorName||rv.authorEmail.split('@')[0]}</span>
         <span>${renderStars(rv.rating)} <span class="review-date">${rv.createdAt?.toDate?.()?.toLocaleDateString()||''}</span></span>
       </div>
       <div class="review-text">${rv.text}</div>
-    </div>`).join(''):'<p style="font-size:13px;color:var(--muted);">No reviews yet.</p>';
+    </div>`).join('') : '<p style="font-size:13px;color:var(--muted);">No reviews yet.</p>';
 
-  document.getElementById('modalContainer').innerHTML=`
+  document.getElementById('modalContainer').innerHTML = `
   <div class="modal-overlay" onclick="closeModal(event)">
     <div class="modal" id="mainModal">
       <div class="modal-img-wrap">
@@ -2230,48 +2298,45 @@ async function openOrgModal(o){
       </div>
     </div>
   </div>`;
-  selectedStar=0;
+  selectedStar = 0;
 }
 
-let selectedStar=0;
-function setStar(n){ selectedStar=n; document.querySelectorAll('#starPicker span').forEach((s,i)=>s.classList.toggle('lit',i<n)); }
-function scrollToEnquiry(){ document.getElementById('enquiryFormSection')?.scrollIntoView({behavior:'smooth',block:'start'}); }
-function closeModal(e){ if(e.target.classList.contains('modal-overlay')) closeModalDirect(); }
-function closeModalDirect(){ document.getElementById('modalContainer').innerHTML=''; }
+let selectedStar = 0;
+function setStar(n) { selectedStar = n; document.querySelectorAll('#starPicker span').forEach((s,i) => s.classList.toggle('lit', i < n)); }
+function scrollToEnquiry() { document.getElementById('enquiryFormSection')?.scrollIntoView({behavior:'smooth', block:'start'}); }
+function closeModal(e) { if (e.target.classList.contains('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalContainer').innerHTML = ''; }
 
-/* ===== SUBMIT REVIEW ===== */
-async function submitReview(orgId,orgOwner,orgName){
-  if(!selectedStar){showToast('Please select a star rating','error'); return;}
-  const text=document.getElementById('reviewText').value.trim();
-  if(!text){showToast('Please write a review','error'); return;}
-  await db.collection('reviews').add({orgId,orgOwner,orgName,rating:selectedStar,text,authorEmail:currentUser.email,authorName:currentUser.email.split('@')[0],createdAt:new Date()});
-  const allRev=await db.collection('reviews').where('orgId','==',orgId).get();
-  let total=0; allRev.forEach(d=>total+=d.data().rating);
-  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size,reviewCount:allRev.size});
+async function submitReview(orgId, orgOwner, orgName) {
+  if (!selectedStar) { showToast('Please select a star rating', 'error'); return; }
+  const text = document.getElementById('reviewText').value.trim();
+  if (!text) { showToast('Please write a review', 'error'); return; }
+  await db.collection('reviews').add({orgId, orgOwner, orgName, rating: selectedStar, text, authorEmail: currentUser.email, authorName: currentUser.email.split('@')[0], createdAt: new Date()});
+  const allRev = await db.collection('reviews').where('orgId','==',orgId).get();
+  let total = 0; allRev.forEach(d => total += d.data().rating);
+  await db.collection('organizers').doc(orgId).update({rating: total/allRev.size, reviewCount: allRev.size});
   showToast('⭐ Review submitted!');
   closeModalDirect(); loadOrganizers();
 }
 
-/* ===== SEND ENQUIRY ===== */
-async function sendEnquiry(orgId,toEmail,toName){
-  const msg=document.getElementById('enqMsg').value.trim();
-  if(!msg){showToast('Please write a message','error'); return;}
-  await db.collection('enquiries').add({orgId,toEmail,toName,fromEmail:currentUser.email,fromName:document.getElementById('enqName').value.trim(),fromPhone:document.getElementById('enqPhone').value.trim(),message:msg,createdAt:new Date()});
+async function sendEnquiry(orgId, toEmail, toName) {
+  const msg = document.getElementById('enqMsg').value.trim();
+  if (!msg) { showToast('Please write a message', 'error'); return; }
+  await db.collection('enquiries').add({orgId, toEmail, toName, fromEmail: currentUser.email, fromName: document.getElementById('enqName').value.trim(), fromPhone: document.getElementById('enqPhone').value.trim(), message: msg, createdAt: new Date()});
   showToast('📩 Enquiry sent!');
   closeModalDirect();
 }
 
-/* ===== DELETE ORG ===== */
-async function deleteOrg(id){
-  if(!confirm('Delete this organizer profile?')) return;
+async function deleteOrg(id) {
+  if (!confirm('Delete this organizer profile?')) return;
   await db.collection('organizers').doc(id).delete();
-  showToast('Listing removed.','error');
+  showToast('Listing removed.', 'error');
   closeModalDirect(); loadOrganizers(); loadOrgStats();
 }
 
-function getCatColor(cat){
-  const map={Wedding:'',Corporate:'blue',Birthday:'purple',Concert:'green',Sports:'blue',Conference:'blue',Social:'purple'};
-  return map[cat]||'';
+function getCatColor(cat) {
+  const map = {Wedding:'', Corporate:'blue', Birthday:'purple', Concert:'green', Sports:'blue', Conference:'blue', Social:'purple'};
+  return map[cat] || '';
 }
 </script>
 
@@ -2368,65 +2433,69 @@ function getCatColor(cat){
 </div>
 
 <script>
-let currentProfileOrg=null;
-function openProfilePage(o){
-  currentProfileOrg=o;
+let currentProfileOrg = null;
+function openProfilePage(o) {
+  currentProfileOrg = o;
   hideAllPages();
   document.getElementById('profilePage').classList.remove('hidden');
   window.scrollTo(0,0);
-  document.getElementById('profileHeroImg').src=o.photo||'';
-  const thumbs=document.getElementById('profileThumbs');
-  thumbs.innerHTML='';
-  if(o.photos&&o.photos.length>1){
-    o.photos.forEach((p,i)=>{
-      const img=document.createElement('img');
-      img.src=p;
-      img.style.cssText=`width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'rgba(255,255,255,0.3)'};`;
-      img.onclick=()=>{ document.getElementById('profileHeroImg').src=p; thumbs.querySelectorAll('img').forEach(t=>t.style.borderColor='rgba(255,255,255,0.3)'); img.style.borderColor='var(--accent)'; };
+  document.getElementById('profileHeroImg').src = o.photo || '';
+  const thumbs = document.getElementById('profileThumbs');
+  thumbs.innerHTML = '';
+  if (o.photos && o.photos.length > 1) {
+    o.photos.forEach((p,i) => {
+      const img = document.createElement('img');
+      img.src = p;
+      img.style.cssText = `width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--accent)':'rgba(255,255,255,0.3)'};`;
+      img.onclick = () => {
+        document.getElementById('profileHeroImg').src = p;
+        thumbs.querySelectorAll('img').forEach(t => t.style.borderColor = 'rgba(255,255,255,0.3)');
+        img.style.borderColor = 'var(--accent)';
+      };
       thumbs.appendChild(img);
     });
   }
-  document.getElementById('profileCategory').innerHTML=o.category?`<span class="badge">${o.category}</span>`:'';
-  document.getElementById('profileName').textContent=o.name;
-  document.getElementById('profileLocation').innerHTML=o.location?`📍 ${o.location}`:'';
-  document.getElementById('profileExp').innerHTML=o.experience?`🏆 ${o.experience} yrs experience`:'';
-  const stars=renderStars(o.rating||0);
-  document.getElementById('profileStars').innerHTML=`<span style="color:var(--accent);font-size:15px;letter-spacing:2px;">${stars}</span> <span style="font-size:12px;color:var(--muted);">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+' reviews)':'No reviews yet'}</span>`;
-  const p=document.getElementById('profilePriceText');
-  if(o.priceMin||o.priceMax){ p.textContent=`₹${Number(o.priceMin||0).toLocaleString()} – ₹${Number(o.priceMax||0).toLocaleString()}`; }
-  else { p.textContent='Contact for pricing'; p.style.fontSize='14px'; }
+  document.getElementById('profileCategory').innerHTML = o.category ? `<span class="badge">${o.category}</span>` : '';
+  document.getElementById('profileName').textContent = o.name;
+  document.getElementById('profileLocation').innerHTML = o.location ? `📍 ${o.location}` : '';
+  document.getElementById('profileExp').innerHTML = o.experience ? `🏆 ${o.experience} yrs experience` : '';
+  const stars = renderStars(o.rating || 0);
+  document.getElementById('profileStars').innerHTML = `<span style="color:var(--accent);font-size:15px;letter-spacing:2px;">${stars}</span> <span style="font-size:12px;color:var(--muted);">${o.rating?o.rating.toFixed(1)+' ('+o.reviewCount+' reviews)':'No reviews yet'}</span>`;
+  const p = document.getElementById('profilePriceText');
+  if (o.priceMin || o.priceMax) { p.textContent = `₹${Number(o.priceMin||0).toLocaleString()} – ₹${Number(o.priceMax||0).toLocaleString()}`; }
+  else { p.textContent = 'Contact for pricing'; p.style.fontSize = '14px'; }
 
-  const isOwner=o.owner===currentUser?.email;
-  const isAdmin=currentUser?.email===ADMIN_EMAIL;
-  document.getElementById('profileActions').innerHTML=`
+  const isOwner = o.owner === currentUser?.email;
+  const isAdmin = currentUser?.email === ADMIN_EMAIL;
+  document.getElementById('profileActions').innerHTML = `
     ${!isOwner?`<button class="btn-primary btn-sm" onclick="document.getElementById('profileEnquiryForm').scrollIntoView({behavior:'smooth'})">📩 Send Enquiry</button>`:''}
     <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;">📞 Call Now</a>
     <a href="https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;">💬 WhatsApp</a>
     ${isOwner||isAdmin?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
     ${isAdmin&&!isOwner?`<button class="btn-admin btn-sm" onclick="adminEditOrg('${o.id}')">✏️ Edit (Admin)</button>`:''}`;
 
-  document.getElementById('profileBio').textContent=o.bio||'No description provided.';
-  const allCats=['Wedding','Corporate','Birthday','Concert','Sports','Conference','Social'];
-  document.getElementById('profileServices').innerHTML=allCats.map(c=>`
+  document.getElementById('profileBio').textContent = o.bio || 'No description provided.';
+  const allCats = ['Wedding','Corporate','Birthday','Concert','Sports','Conference','Social'];
+  document.getElementById('profileServices').innerHTML = allCats.map(c => `
     <span style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;
       background:${c===o.category?'var(--accent)':'var(--surface2)'};
       color:${c===o.category?'#0a0a0f':'var(--muted)'};
       border:1px solid ${c===o.category?'var(--accent)':'var(--border)'};">${c}</span>`).join('');
 
-  const gallery=document.getElementById('profileGallery');
-  const noGallery=document.getElementById('profileNoGallery');
-  gallery.innerHTML='';
-  if(o.photos&&o.photos.length>0){
-    noGallery.style.display='none';
-    o.photos.forEach(p=>{
-      const div=document.createElement('div');
-      div.style.cssText='aspect-ratio:1;overflow:hidden;border-radius:10px;cursor:pointer;';
-      div.innerHTML=`<img src="${p}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('profileHeroImg').src='${p}';window.scrollTo(0,0);">`;
+  const gallery  = document.getElementById('profileGallery');
+  const noGallery= document.getElementById('profileNoGallery');
+  gallery.innerHTML = '';
+  if (o.photos && o.photos.length > 0) {
+    noGallery.style.display = 'none';
+    o.photos.forEach(p => {
+      const div = document.createElement('div');
+      div.style.cssText = 'aspect-ratio:1;overflow:hidden;border-radius:10px;cursor:pointer;';
+      div.innerHTML = `<img src="${p}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('profileHeroImg').src='${p}';window.scrollTo(0,0);">`;
       gallery.appendChild(div);
     });
-  } else { noGallery.style.display='block'; }
+  } else { noGallery.style.display = 'block'; }
 
-  document.getElementById('profileContactInfo').innerHTML=`
+  document.getElementById('profileContactInfo').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;"><span style="font-size:18px;">📞</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Phone</div><div style="font-size:14px;font-weight:600;">${o.phone}</div></div></div>
       <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;"><span style="font-size:18px;">💬</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">WhatsApp</div><div style="font-size:14px;font-weight:600;color:#25d366;">${o.whatsapp||o.phone}</div></div></div>
@@ -2436,24 +2505,24 @@ function openProfilePage(o){
 
   loadProfileReviews(o);
 
-  if(!isOwner){
-    document.getElementById('profileEnquiryForm').innerHTML=`
+  if (!isOwner) {
+    document.getElementById('profileEnquiryForm').innerHTML = `
       <div class="form-group"><input type="text" id="penqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
       <div class="form-group" style="margin-top:10px;"><input type="tel" id="penqPhone" placeholder="Your phone / WhatsApp" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
       <div class="form-group" style="margin-top:10px;"><textarea id="penqMsg" rows="4" placeholder="Describe your event — date, type, guests..." style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;"></textarea></div>
       <button class="btn-primary" style="margin-top:12px;" onclick="sendProfileEnquiry('${o.id}','${o.owner}','${o.name}')">Send Message →</button>`;
   } else {
-    document.getElementById('profileEnquiryForm').innerHTML=`<p style="font-size:13px;color:var(--muted);">This is your own listing.</p>`;
+    document.getElementById('profileEnquiryForm').innerHTML = `<p style="font-size:13px;color:var(--muted);">This is your own listing.</p>`;
   }
 }
 
-async function loadProfileReviews(o){
-  const isOwner=o.owner===currentUser?.email;
-  const snap=await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
-  const reviews=[]; snap.forEach(d=>reviews.push(d.data()));
-  document.getElementById('profileRatingBig').textContent=o.rating?o.rating.toFixed(1)+' ★':'—';
-  const rv=document.getElementById('profileReviews');
-  rv.innerHTML=reviews.length?reviews.map(r=>`
+async function loadProfileReviews(o) {
+  const isOwner = o.owner === currentUser?.email;
+  const snap    = await db.collection('reviews').where('orgId','==',o.id).orderBy('createdAt','desc').limit(10).get();
+  const reviews = []; snap.forEach(d => reviews.push(d.data()));
+  document.getElementById('profileRatingBig').textContent = o.rating ? o.rating.toFixed(1) + ' ★' : '—';
+  const rv = document.getElementById('profileReviews');
+  rv.innerHTML = reviews.length ? reviews.map(r => `
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
         <span style="font-size:13px;font-weight:600;">${r.authorName||r.authorEmail.split('@')[0]}</span>
@@ -2461,10 +2530,10 @@ async function loadProfileReviews(o){
       </div>
       <div style="font-size:13px;color:var(--muted);line-height:1.6;">${r.text}</div>
     </div>`).join('')
-  :'<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">No reviews yet.</p>';
+  : '<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">No reviews yet.</p>';
 
-  if(!isOwner){
-    document.getElementById('profileReviewForm').innerHTML=`
+  if (!isOwner) {
+    document.getElementById('profileReviewForm').innerHTML = `
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Leave a Review</div>
         <div style="display:flex;gap:6px;margin-bottom:10px;font-size:24px;cursor:pointer;" id="pStarPicker">
@@ -2478,36 +2547,36 @@ async function loadProfileReviews(o){
   }
 }
 
-let pSelectedStar=0;
-function setPStar(n){
-  pSelectedStar=n;
-  document.querySelectorAll('#pStarPicker span').forEach((s,i)=>{ s.style.opacity=i<n?'1':'0.3'; s.style.color=i<n?'var(--accent)':'var(--text)'; });
+let pSelectedStar = 0;
+function setPStar(n) {
+  pSelectedStar = n;
+  document.querySelectorAll('#pStarPicker span').forEach((s,i) => { s.style.opacity = i<n?'1':'0.3'; s.style.color = i<n?'var(--accent)':'var(--text)'; });
 }
 
-async function submitProfileReview(orgId,orgOwner,orgName){
-  if(!pSelectedStar){showToast('Please select a star rating','error'); return;}
-  const text=document.getElementById('pReviewText').value.trim();
-  if(!text){showToast('Please write something','error'); return;}
-  await db.collection('reviews').add({orgId,orgOwner,orgName,rating:pSelectedStar,text,authorEmail:currentUser.email,authorName:currentUser.email.split('@')[0],createdAt:new Date()});
-  const allRev=await db.collection('reviews').where('orgId','==',orgId).get();
-  let total=0; allRev.forEach(d=>total+=d.data().rating);
-  await db.collection('organizers').doc(orgId).update({rating:total/allRev.size,reviewCount:allRev.size});
+async function submitProfileReview(orgId, orgOwner, orgName) {
+  if (!pSelectedStar) { showToast('Please select a star rating', 'error'); return; }
+  const text = document.getElementById('pReviewText').value.trim();
+  if (!text) { showToast('Please write something', 'error'); return; }
+  await db.collection('reviews').add({orgId, orgOwner, orgName, rating: pSelectedStar, text, authorEmail: currentUser.email, authorName: currentUser.email.split('@')[0], createdAt: new Date()});
+  const allRev = await db.collection('reviews').where('orgId','==',orgId).get();
+  let total = 0; allRev.forEach(d => total += d.data().rating);
+  await db.collection('organizers').doc(orgId).update({rating: total/allRev.size, reviewCount: allRev.size});
   showToast('⭐ Review submitted!');
-  const updated={...currentProfileOrg,rating:total/allRev.size,reviewCount:allRev.size};
-  currentProfileOrg=updated;
+  const updated = {...currentProfileOrg, rating: total/allRev.size, reviewCount: allRev.size};
+  currentProfileOrg = updated;
   loadProfileReviews(updated); loadOrganizers();
 }
 
-async function sendProfileEnquiry(orgId,toEmail,toName){
-  const msg=document.getElementById('penqMsg').value.trim();
-  if(!msg){showToast('Please write a message','error'); return;}
-  await db.collection('enquiries').add({orgId,toEmail,toName,fromEmail:currentUser.email,fromName:document.getElementById('penqName').value.trim(),fromPhone:document.getElementById('penqPhone').value.trim(),message:msg,createdAt:new Date()});
+async function sendProfileEnquiry(orgId, toEmail, toName) {
+  const msg = document.getElementById('penqMsg').value.trim();
+  if (!msg) { showToast('Please write a message', 'error'); return; }
+  await db.collection('enquiries').add({orgId, toEmail, toName, fromEmail: currentUser.email, fromName: document.getElementById('penqName').value.trim(), fromPhone: document.getElementById('penqPhone').value.trim(), message: msg, createdAt: new Date()});
   showToast('📩 Enquiry sent!');
-  document.getElementById('penqMsg').value='';
-  document.getElementById('penqPhone').value='';
+  document.getElementById('penqMsg').value = '';
+  document.getElementById('penqPhone').value = '';
 }
 
-function closeProfilePage(){
+function closeProfilePage() {
   document.getElementById('profilePage').classList.add('hidden');
   document.getElementById('customer').classList.remove('hidden');
   window.scrollTo(0,0);
@@ -2527,6 +2596,7 @@ function closeProfilePage(){
       <button class="vendor-type-btn" onclick="selectVendorType('gifts',this)">🎁 Return Gifts</button>
     </div>
     <div class="glass-card">
+      <div class="cloudinary-info">☁️ Photos stored on Cloudinary — unlimited, fast CDN delivery worldwide</div>
       <div id="vendorTypeLabel" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:18px;color:var(--accent);">📸 Photographer Registration</div>
       <form id="vendorForm">
         <div class="form-row">
@@ -2553,15 +2623,24 @@ function closeProfilePage(){
         </div>
         <div class="form-group"><label>Work Portfolio — Google Drive Link</label><input type="url" id="vDriveLink" placeholder="https://drive.google.com/drive/folders/..."></div>
         <div class="form-group" id="vPhotoGroup">
-          <label>Work Photos (max 5)</label>
+          <label>Work Photos <span style="font-size:11px;color:var(--muted);">(multiple allowed — Cloudinary)</span></label>
           <div id="vPhotoDropzone" onclick="document.getElementById('vPhotos').click()" style="border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;background:var(--surface2);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
             <div style="font-size:32px;margin-bottom:8px;">📷</div>
             <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Click to select photos</div>
-            <div style="font-size:12px;color:var(--muted);">JPG, PNG — max 5 photos</div>
+            <div style="font-size:12px;color:var(--muted);">JPG, PNG — unlimited photos via Cloudinary</div>
             <input type="file" id="vPhotos" accept="image/*" multiple style="display:none;" onchange="previewVendorPhotos(this)">
           </div>
           <div id="vPhotosPreview" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;"></div>
           <div id="vPhotoCount" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+          <div class="upload-progress-wrap" id="vUploadProgress">
+            <div class="upload-progress-text">
+              <span id="vUploadStatusText">☁️ Uploading to Cloudinary...</span>
+              <span class="upload-status-icon" id="vUploadIcon">⏳</span>
+            </div>
+            <div class="upload-progress-bar-bg">
+              <div class="upload-progress-bar" id="vUploadBar"></div>
+            </div>
+          </div>
         </div>
         <button type="submit" class="btn-primary" style="margin-top:8px;">✦ Publish Profile</button>
       </form>
@@ -2600,109 +2679,111 @@ function closeProfilePage(){
 </style>
 
 <script>
-let currentVendorType='photographer';
+let currentVendorType = 'photographer';
 
-function selectVendorType(type, btn){
-  currentVendorType=type;
-  document.querySelectorAll('#vendor .vendor-type-btn').forEach(b=>b.classList.remove('active'));
+function selectVendorType(type, btn) {
+  currentVendorType = type;
+  document.querySelectorAll('#vendor .vendor-type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const labels={
-    photographer:{title:'📸 Photographer Registration',specialty:'Specialty',sp:'e.g. Wedding, Portrait'},
-    makeup:{title:'💄 Makeup Artist Registration',specialty:'Makeup Specialty',sp:'e.g. Bridal, HD Makeup'},
-    gifts:{title:'🎁 Return Gifts / Wedding Favors Registration',specialty:'Products Offered',sp:'e.g. Gift hampers, Dry fruits'}
+  const labels = {
+    photographer: {title:'📸 Photographer Registration',    specialty:'Specialty',       sp:'e.g. Wedding, Portrait'},
+    makeup:       {title:'💄 Makeup Artist Registration',    specialty:'Makeup Specialty',sp:'e.g. Bridal, HD Makeup'},
+    gifts:        {title:'🎁 Return Gifts / Wedding Favors', specialty:'Products Offered',sp:'e.g. Gift hampers, Dry fruits'}
   };
-  const l=labels[type];
-  document.getElementById('vendorTypeLabel').textContent=l.title;
-  document.getElementById('vSpecialtyLabel').textContent=l.specialty;
-  document.getElementById('vSpecialty').placeholder=l.sp;
-  const pg=document.getElementById('vPhotoGroup');
-  if(pg) pg.style.display=type==='gifts'?'none':'block';
+  const l = labels[type];
+  document.getElementById('vendorTypeLabel').textContent = l.title;
+  document.getElementById('vSpecialtyLabel').textContent = l.specialty;
+  document.getElementById('vSpecialty').placeholder = l.sp;
+  const pg = document.getElementById('vPhotoGroup');
+  if (pg) pg.style.display = type === 'gifts' ? 'none' : 'block';
   loadMyVendorListings();
 }
 
-function previewVendorPhotos(input){
-  const files=Array.from(input.files);
-  if(files.length>5){showToast('Max 5 photos allowed!','error');input.value='';return;}
-  const preview=document.getElementById('vPhotosPreview');
-  const count=document.getElementById('vPhotoCount');
-  preview.innerHTML='';
-  count.textContent=`${files.length} photo${files.length>1?'s':''} selected`;
-  files.forEach((file,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const wrap=document.createElement('div');
-      wrap.style.cssText='position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;border:2px solid var(--border);';
-      wrap.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">COVER</div>':''}`;
+function previewVendorPhotos(input) {
+  const files   = Array.from(input.files);
+  const preview = document.getElementById('vPhotosPreview');
+  const count   = document.getElementById('vPhotoCount');
+  preview.innerHTML = '';
+  count.textContent = `${files.length} photo${files.length>1?'s':''} selected — will be uploaded to Cloudinary`;
+  files.forEach((file, i) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;border:2px solid var(--border);';
+      wrap.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">${i===0?'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;">COVER</div>':''}`;
       preview.appendChild(wrap);
     };
     r.readAsDataURL(file);
   });
 }
 
-document.getElementById('vendorForm').addEventListener('submit',async e=>{
+// ===== VENDOR FORM (Cloudinary) =====
+document.getElementById('vendorForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const btn=e.target.querySelector('button[type=submit]');
-  btn.disabled=true; btn.textContent='Compressing...';
-  const compressPhoto=(file)=>new Promise(res=>{
-    const img=new Image(); const url=URL.createObjectURL(file);
-    img.onload=()=>{
-      const MAX=600; let w=img.width,h=img.height;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url); res(canvas.toDataURL('image/jpeg',0.5));
-    }; img.src=url;
-  });
-  let photos=[];
-  const photoFiles=document.getElementById('vPhotos').files;
-  if(photoFiles.length>0&&currentVendorType!=='gifts'){
-    photos=await Promise.all(Array.from(photoFiles).slice(0,5).map(compressPhoto));
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true; btn.textContent = '☁️ Uploading photos...';
+
+  let photos = [];
+  const photoFiles = document.getElementById('vPhotos').files;
+  if (photoFiles.length > 0 && currentVendorType !== 'gifts') {
+    try {
+      photos = await uploadMultipleToCloudinary(
+        Array.from(photoFiles), 'vUploadProgress', 'vUploadBar', 'vUploadStatusText', 'vUploadIcon'
+      );
+    } catch(err) {
+      showToast('Photo upload failed: ' + err.message, 'error');
+      btn.disabled = false; btn.textContent = '✦ Publish Profile';
+      return;
+    }
   }
-  btn.textContent='Saving...';
+
+  btn.textContent = '💾 Saving...';
   await db.collection('vendors').add({
-    type:currentVendorType,
-    name:document.getElementById('vName').value,
-    company:document.getElementById('vCompany').value||'',
-    phone:document.getElementById('vPhone').value,
-    whatsapp:document.getElementById('vWhatsapp').value||document.getElementById('vPhone').value,
-    email:document.getElementById('vEmail').value,
-    website:document.getElementById('vWebsite').value||'',
-    location:document.getElementById('vLocation').value,
-    bio:document.getElementById('vBio').value||'',
-    experience:document.getElementById('vExp').value||'',
-    specialty:document.getElementById('vSpecialty').value||'',
-    priceMin:document.getElementById('vPriceMin').value||0,
-    priceMax:document.getElementById('vPriceMax').value||0,
-    driveLink:document.getElementById('vDriveLink').value||'',
-    photos, photo:photos[0]||'',
-    owner:currentUser.email,
-    rating:0, reviewCount:0, createdAt:new Date()
+    type:       currentVendorType,
+    name:       document.getElementById('vName').value,
+    company:    document.getElementById('vCompany').value || '',
+    phone:      document.getElementById('vPhone').value,
+    whatsapp:   document.getElementById('vWhatsapp').value || document.getElementById('vPhone').value,
+    email:      document.getElementById('vEmail').value,
+    website:    document.getElementById('vWebsite').value || '',
+    location:   document.getElementById('vLocation').value,
+    bio:        document.getElementById('vBio').value || '',
+    experience: document.getElementById('vExp').value || '',
+    specialty:  document.getElementById('vSpecialty').value || '',
+    priceMin:   document.getElementById('vPriceMin').value || 0,
+    priceMax:   document.getElementById('vPriceMax').value || 0,
+    driveLink:  document.getElementById('vDriveLink').value || '',
+    photos, photo: photos[0] || '',
+    owner: currentUser.email,
+    rating: 0, reviewCount: 0, createdAt: new Date()
   });
+
   document.getElementById('vendorForm').reset();
-  document.getElementById('vPhotosPreview').innerHTML='';
-  document.getElementById('vPhotoCount').textContent='';
-  btn.textContent='✦ Publish Profile'; btn.disabled=false;
+  document.getElementById('vPhotosPreview').innerHTML = '';
+  document.getElementById('vPhotoCount').textContent  = '';
+  btn.textContent = '✦ Publish Profile'; btn.disabled = false;
   showToast('✦ Profile published!');
   loadMyVendorListings();
 });
 
-async function loadMyVendorListings(){
-  const el=document.getElementById('myVendorList');
-  if(!el) return;
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('vendors').where('owner','==',currentUser.email).get();
-  if(snap.empty){el.innerHTML='<p style="color:var(--muted);font-size:14px;">No listings yet.</p>'; return;}
-  el.innerHTML='';
-  snap.forEach(doc=>{
-    const v={id:doc.id,...doc.data()};
-    const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'}[v.type]||'✨';
-    const div=document.createElement('div');
-    div.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
-    div.innerHTML=`
+async function loadMyVendorListings() {
+  const el = document.getElementById('myVendorList');
+  if (!el) return;
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('vendors').where('owner','==',currentUser.email).get();
+  if (snap.empty) { el.innerHTML = '<p style="color:var(--muted);font-size:14px;">No listings yet.</p>'; return; }
+  el.innerHTML = '';
+  snap.forEach(doc => {
+    const v = {id: doc.id, ...doc.data()};
+    const typeIcon = {photographer:'📸', makeup:'💄', gifts:'🎁'}[v.type] || '✨';
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+    div.innerHTML = `
       <div>
         <div style="font-size:13px;color:var(--accent);font-weight:600;margin-bottom:4px;">${typeIcon} ${v.type.charAt(0).toUpperCase()+v.type.slice(1)}</div>
         <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;">${v.name}${v.company?' — '+v.company:''}</div>
         <div style="font-size:13px;color:var(--muted);margin-top:3px;">📍 ${v.location} &nbsp;|&nbsp; 📞 ${v.phone}</div>
+        ${v.photos&&v.photos.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">${v.photos.slice(0,5).map(p=>`<img src="${p}" style="width:36px;height:36px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">`).join('')}</div>`:''}
         ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="font-size:12px;color:var(--accent3);text-decoration:none;margin-top:4px;display:inline-block;">📂 View Portfolio →</a>`:''}
       </div>
       <button onclick="deleteVendor('${v.id}')" class="btn-danger btn-sm">Delete</button>`;
@@ -2710,45 +2791,45 @@ async function loadMyVendorListings(){
   });
 }
 
-async function deleteVendor(id){
-  if(!confirm('Delete this listing?')) return;
+async function deleteVendor(id) {
+  if (!confirm('Delete this listing?')) return;
   await db.collection('vendors').doc(id).delete();
   showToast('Deleted!');
   loadMyVendorListings();
 }
 
-/* VENDOR BROWSING */
-let allVendors=[];
-function filterVendors(type,btn){
-  document.querySelectorAll('#vendorFilterBtns .vendor-type-btn').forEach(b=>b.classList.remove('active'));
+// ===== VENDOR BROWSING =====
+let allVendors = [];
+function filterVendors(type, btn) {
+  document.querySelectorAll('#vendorFilterBtns .vendor-type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   loadVendors(type);
 }
 
-async function loadVendors(type){
-  const el=document.getElementById('vendorList');
-  el.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const snap=await db.collection('vendors').get();
-  allVendors=[];
-  snap.forEach(doc=>allVendors.push({id:doc.id,...doc.data()}));
-  const filtered=type==='all'?allVendors:allVendors.filter(v=>v.type===type);
+async function loadVendors(type) {
+  const el = document.getElementById('vendorList');
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  const snap = await db.collection('vendors').get();
+  allVendors = [];
+  snap.forEach(doc => allVendors.push({id: doc.id, ...doc.data()}));
+  const filtered = type === 'all' ? allVendors : allVendors.filter(v => v.type === type);
   renderVendors(filtered);
 }
 
-function renderVendors(list){
-  const el=document.getElementById('vendorList');
-  el.innerHTML='';
-  if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><p>No listings found.</p></div>'; return;}
-  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
-  const typeColor={photographer:'rgba(201,168,76,0.1)',makeup:'rgba(232,101,74,0.1)',gifts:'rgba(78,203,113,0.1)'};
-  list.forEach(v=>{
-    const card=document.createElement('div');
-    card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;transition:all 0.2s;cursor:pointer;';
-    card.onmouseover=()=>card.style.borderColor='rgba(201,168,76,0.3)';
-    card.onmouseout=()=>card.style.borderColor='rgba(255,255,255,0.07)';
-    card.onclick=(e)=>{ if(e.target.tagName==='A'||e.target.closest('a')) return; openVendorProfile(v); };
-    const stars='★'.repeat(Math.round(v.rating||0))+'☆'.repeat(5-Math.round(v.rating||0));
-    card.innerHTML=`
+function renderVendors(list) {
+  const el = document.getElementById('vendorList');
+  el.innerHTML = '';
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><span class="empty-icon">🔍</span><p>No listings found.</p></div>'; return; }
+  const typeIcon  = {photographer:'📸', makeup:'💄', gifts:'🎁'};
+  const typeColor = {photographer:'rgba(201,168,76,0.1)', makeup:'rgba(232,101,74,0.1)', gifts:'rgba(78,203,113,0.1)'};
+  list.forEach(v => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;transition:all 0.2s;cursor:pointer;';
+    card.onmouseover = () => card.style.borderColor = 'rgba(201,168,76,0.3)';
+    card.onmouseout  = () => card.style.borderColor = 'rgba(255,255,255,0.07)';
+    card.onclick = (e) => { if (e.target.tagName === 'A' || e.target.closest('a')) return; openVendorProfile(v); };
+    const stars = '★'.repeat(Math.round(v.rating||0)) + '☆'.repeat(5-Math.round(v.rating||0));
+    card.innerHTML = `
       <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div style="flex:1;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
@@ -2778,26 +2859,26 @@ function renderVendors(list){
   });
 }
 
-let currentVendorProfile=null;
-function openVendorProfile(v){
-  currentVendorProfile=v;
+let currentVendorProfile = null;
+function openVendorProfile(v) {
+  currentVendorProfile = v;
   hideAllPages();
-  const typeIcon={photographer:'📸',makeup:'💄',gifts:'🎁'};
-  const stars='★'.repeat(Math.round(v.rating||0))+'☆'.repeat(5-Math.round(v.rating||0));
-  let page=document.getElementById('vendorProfilePage');
-  if(!page){
-    page=document.createElement('div');
-    page.id='vendorProfilePage';
-    page.style.cssText='position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;min-height:100vh;';
+  const typeIcon = {photographer:'📸', makeup:'💄', gifts:'🎁'};
+  const stars    = '★'.repeat(Math.round(v.rating||0)) + '☆'.repeat(5-Math.round(v.rating||0));
+  let page = document.getElementById('vendorProfilePage');
+  if (!page) {
+    page = document.createElement('div');
+    page.id = 'vendorProfilePage';
+    page.style.cssText = 'position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;min-height:100vh;';
     document.body.appendChild(page);
   }
-  page.style.display='flex';
-  const photosHtml=v.photos&&v.photos.length>0?`
+  page.style.display = 'flex';
+  const photosHtml = v.photos && v.photos.length > 0 ? `
     <div style="margin-bottom:24px;">
       <img id="vpMainPhoto" src="${v.photos[0]}" style="width:100%;max-height:360px;object-fit:cover;border-radius:16px;margin-bottom:10px;">
       <div style="display:flex;gap:8px;flex-wrap:wrap;">${v.photos.map((p,i)=>`<img src="${p}" onclick="document.getElementById('vpMainPhoto').src='${p}'" style="width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid ${i===0?'var(--accent)':'var(--border)'};cursor:pointer;">`).join('')}</div>
-    </div>`:'';
-  page.innerHTML=`
+    </div>` : '';
+  page.innerHTML = `
   <div style="width:100%;max-width:780px;">
     <div class="panel-header">
       <div class="panel-back" onclick="closeVendorProfile()">←</div>
@@ -2832,23 +2913,16 @@ function openVendorProfile(v){
   window.scrollTo(0,0);
 }
 
-function closeVendorProfile(){
-  const page=document.getElementById('vendorProfilePage');
-  if(page) page.style.display='none';
+function closeVendorProfile() {
+  const page = document.getElementById('vendorProfilePage');
+  if (page) page.style.display = 'none';
   showSection('customer');
-  setTimeout(()=>{
-    const tabs=document.querySelectorAll('#customer .tab');
-    tabs.forEach(t=>{ if(t.textContent.includes('Photographers')) t.click(); });
-  },100);
+  setTimeout(() => {
+    const tabs = document.querySelectorAll('#customer .tab');
+    tabs.forEach(t => { if (t.textContent.includes('Photographers')) t.click(); });
+  }, 100);
 }
 </script>
-
-<!-- ✅ FIRESTORE RULES REMINDER: Add this to your rules -->
-<!--
-match /users/{userId} {
-  allow read, write: if request.auth != null && request.auth.uid == userId;
-}
--->
 
 </body>
 </html>
