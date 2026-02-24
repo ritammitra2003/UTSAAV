@@ -6,6 +6,25 @@
 <title>Utsaav — Event Organizer Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZNP5DN2WM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FZNP5DN2WM');
+
+  // Helper to track events easily
+  function trackEvent(action, category, label) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', action, {
+        event_category: category,
+        event_label: label
+      });
+    }
+  }
+</script>
+
 <style>
 :root {
   --bg: #0a0a0f;
@@ -60,13 +79,6 @@ header {
   background: rgba(10,10,15,0.8);
 }
 .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.logo-icon {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-}
 .logo-text {
   font-family: 'Playfair Display', serif;
   font-size: 20px; font-weight: 700;
@@ -621,6 +633,30 @@ body.light {
 body.light::before { opacity: 0.5; }
 body.light header { background: rgba(240,236,228,0.85); }
 
+.vendor-type-btn {
+  padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.vendor-type-btn.active, .vendor-type-btn:hover {
+  background: rgba(201,168,76,0.12); border-color: var(--accent); color: var(--accent);
+}
+.event-card { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;transition:all 0.2s;cursor:pointer; }
+.event-card:hover { transform:translateY(-3px);border-color:var(--border2);box-shadow:0 12px 32px rgba(0,0,0,0.3); }
+.event-date-badge { display:inline-flex;flex-direction:column;align-items:center;width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;margin-bottom:14px; }
+.event-date-badge .month { font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:600; }
+.event-date-badge .day { font-size:22px;font-weight:900;font-family:'Playfair Display',serif;line-height:1; }
+.event-title { font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:6px; }
+.event-meta { font-size:12px;color:var(--muted);margin-bottom:3px;display:flex;align-items:center;gap:5px; }
+.event-price { font-size:18px;font-weight:700;color:var(--accent);margin-top:12px; }
+.event-price span { font-size:12px;color:var(--muted);font-weight:400; }
+.events-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px; }
+.enquiry-item { background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px; }
+.enquiry-to { font-size:13px;color:var(--muted);margin-bottom:5px; }
+.enquiry-msg { font-size:14px;line-height:1.5; }
+.enquiry-status { display:inline-block;margin-top:10px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(201,168,76,0.1);color:var(--accent);border:1px solid rgba(201,168,76,0.2); }
+
 @media(max-width:640px){
   header { padding: 14px 18px; }
   .home-title { font-size: 32px; }
@@ -701,6 +737,10 @@ body.light header { background: rgba(240,236,228,0.85); }
           <label>Email Address</label>
           <input type="email" id="authEmail" placeholder="you@example.com" required>
         </div>
+        <div class="form-group hidden" id="nameGroup">
+          <label>Full Name</label>
+          <input type="text" id="authName" placeholder="Apna poora naam likhein">
+        </div>
         <div class="form-group hidden" id="phoneGroup">
           <label>Phone Number</label>
           <input type="tel" id="authPhone" placeholder="+91 00000 00000">
@@ -760,7 +800,7 @@ body.light header { background: rgba(240,236,228,0.85); }
 <div class="page hidden" id="home">
   <div class="home-wrap fade-in">
     <div class="badge">✦ Welcome back</div>
-    <h1 class="home-title">Welcome to <em>Utsaav.</em></h1>
+    <h1 class="home-title" id="homeTitle">Welcome to <em>Utsaav.</em></h1>
     <p class="home-sub">India's event organizer discovery platform. What would you like to do?</p>
     <div class="option-cards" style="grid-template-columns:1fr 1fr;">
       <div class="option-card o-opt" onclick="showSection('organizer')">
@@ -798,7 +838,7 @@ body.light header { background: rgba(240,236,228,0.85); }
         <div class="opt-desc">Manage all listings, delete content, add on behalf of others</div>
       </div>
     </div>
-    <button class="btn-secondary" onclick="logout()">← Sign out</button>
+    <button class="btn-secondary" onclick="logout()" style="margin-top:4px;">← Sign out</button>
   </div>
 </div>
 
@@ -961,7 +1001,6 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div id="inboxList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
 
-    <!-- MY PROFILES TAB — edit existing listings -->
     <div id="orgTabMyprofiles" class="hidden">
       <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Apne published organizer profiles ko yahan edit karo.</div>
       <div id="myProfilesList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
@@ -997,7 +1036,6 @@ body.light header { background: rgba(240,236,228,0.85); }
         </select>
       </div>
       <div class="cat-pills" id="catPills"></div>
-
       <div class="org-grid" id="list">
         <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
@@ -1032,7 +1070,7 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="panel-back" onclick="showSection('home')">←</div>
       <div>
         <div class="panel-title">🛡️ Admin <span>Panel</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px;">Logged in as mrritammitra@gmail.com</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="adminEmailDisplay">Logged in as mrritammitra@gmail.com</div>
       </div>
     </div>
 
@@ -1056,17 +1094,14 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All organizer profiles on the platform.</div>
       <div id="adminOrgList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
-
     <div id="adminTabVendors" class="hidden">
       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All vendor profiles.</div>
       <div id="adminVendorList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
-
     <div id="adminTabEvents" class="hidden">
       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All events on the platform.</div>
       <div id="adminEventList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
     </div>
-
     <div id="adminTabEnquiries" class="hidden">
       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">All enquiries sent by customers.</div>
       <div id="adminEnquiryList"><div class="loading-dots"><span></span><span></span><span></span></div></div>
@@ -1086,79 +1121,35 @@ body.light header { background: rgba(240,236,228,0.85); }
           <form id="adminVendorForm">
             <div id="adminVendorTypeLabel" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:16px;color:var(--accent);">📸 Adding: Photographer</div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="avName" placeholder="Full name" required>
-              </div>
-              <div class="form-group">
-                <label>Company / Brand <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
-                <input type="text" id="avCompany" placeholder="Studio / brand name">
-              </div>
+              <div class="form-group"><label>Name</label><input type="text" id="avName" placeholder="Full name" required></div>
+              <div class="form-group"><label>Company / Brand <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="text" id="avCompany" placeholder="Studio / brand name"></div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" id="avPhone" placeholder="+91 00000 00000" required>
-              </div>
-              <div class="form-group">
-                <label>WhatsApp</label>
-                <input type="tel" id="avWhatsapp" placeholder="+91 WhatsApp">
-              </div>
+              <div class="form-group"><label>Phone</label><input type="tel" id="avPhone" placeholder="+91 00000 00000" required></div>
+              <div class="form-group"><label>WhatsApp</label><input type="tel" id="avWhatsapp" placeholder="+91 WhatsApp"></div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="avEmail" placeholder="their@email.com" required>
-              </div>
-              <div class="form-group">
-                <label>Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
-                <input type="url" id="avWebsite" placeholder="https://...">
-              </div>
+              <div class="form-group"><label>Email</label><input type="email" id="avEmail" placeholder="their@email.com" required></div>
+              <div class="form-group"><label>Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="url" id="avWebsite" placeholder="https://..."></div>
             </div>
-            <div class="form-group">
-              <label>Location / City</label>
-              <input type="text" id="avLocation" placeholder="e.g. Midnapore, Kolkata..." required>
-            </div>
-            <div class="form-group">
-              <label>Bio / Description</label>
-              <textarea id="avBio" rows="3" placeholder="About their work..."></textarea>
+            <div class="form-group"><label>Location / City</label><input type="text" id="avLocation" placeholder="e.g. Midnapore, Kolkata..." required></div>
+            <div class="form-group"><label>Bio / Description</label><textarea id="avBio" rows="3" placeholder="About their work..."></textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>Years of Experience</label><input type="number" id="avExp" placeholder="e.g. 5" min="0"></div>
+              <div class="form-group"><label id="avSpecialtyLabel">Specialty</label><input type="text" id="avSpecialty" placeholder="e.g. Bridal Makeup"></div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Years of Experience</label>
-                <input type="number" id="avExp" placeholder="e.g. 5" min="0">
-              </div>
-              <div class="form-group">
-                <label id="avSpecialtyLabel">Specialty</label>
-                <input type="text" id="avSpecialty" placeholder="e.g. Bridal Makeup">
-              </div>
+              <div class="form-group"><label>Min Price (₹)</label><input type="number" id="avPriceMin" placeholder="e.g. 2000" min="0"></div>
+              <div class="form-group"><label>Max Price (₹)</label><input type="number" id="avPriceMax" placeholder="e.g. 20000" min="0"></div>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Min Price (₹)</label>
-                <input type="number" id="avPriceMin" placeholder="e.g. 2000" min="0">
-              </div>
-              <div class="form-group">
-                <label>Max Price (₹)</label>
-                <input type="number" id="avPriceMax" placeholder="e.g. 20000" min="0">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Google Drive Portfolio Link <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
-              <input type="url" id="avDriveLink" placeholder="https://drive.google.com/...">
-            </div>
+            <div class="form-group"><label>Google Drive Portfolio Link <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="url" id="avDriveLink" placeholder="https://drive.google.com/..."></div>
             <div class="form-group" id="avPhotoGroup">
               <label>Work Photos <span style="font-size:11px;color:var(--muted);">(multiple allowed — Cloudinary)</span></label>
               <input type="file" id="avPhotos" accept="image/*" multiple onchange="previewMultipleImgs(this,'avPhotosPreview')">
               <div id="avPhotosPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
               <div class="upload-progress-wrap" id="avUploadProgress">
-                <div class="upload-progress-text">
-                  <span id="avUploadStatusText">☁️ Uploading to Cloudinary...</span>
-                  <span class="upload-status-icon" id="avUploadIcon">⏳</span>
-                </div>
-                <div class="upload-progress-bar-bg">
-                  <div class="upload-progress-bar" id="avUploadBar"></div>
-                </div>
+                <div class="upload-progress-text"><span id="avUploadStatusText">☁️ Uploading to Cloudinary...</span><span class="upload-status-icon" id="avUploadIcon">⏳</span></div>
+                <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="avUploadBar"></div></div>
               </div>
             </div>
             <button type="submit" class="btn-primary" style="margin-top:8px;">✦ Publish Listing</button>
@@ -1173,14 +1164,8 @@ body.light header { background: rgba(240,236,228,0.85); }
           <div class="cloudinary-info">☁️ Photos will be uploaded to Cloudinary — no Firebase storage used</div>
           <form id="adminOrgForm">
             <div class="form-row">
-              <div class="form-group">
-                <label>Organizer Name</label>
-                <input type="text" id="aoName" placeholder="Name or company" required>
-              </div>
-              <div class="form-group">
-                <label>Company Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
-                <input type="text" id="aoCompany" placeholder="Brand name">
-              </div>
+              <div class="form-group"><label>Organizer Name</label><input type="text" id="aoName" placeholder="Name or company" required></div>
+              <div class="form-group"><label>Company Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="text" id="aoCompany" placeholder="Brand name"></div>
             </div>
             <div class="form-group">
               <label>Categories</label>
@@ -1196,55 +1181,26 @@ body.light header { background: rgba(240,236,228,0.85); }
               </div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" id="aoPhone" placeholder="+91 00000 00000" required>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="aoEmail" placeholder="contact@email.com" required>
-              </div>
+              <div class="form-group"><label>Phone</label><input type="tel" id="aoPhone" placeholder="+91 00000 00000" required></div>
+              <div class="form-group"><label>Email</label><input type="email" id="aoEmail" placeholder="contact@email.com" required></div>
             </div>
-            <div class="form-group">
-              <label>Bio / Description</label>
-              <textarea id="aoBio" rows="3" placeholder="Tell clients about this organizer..."></textarea>
+            <div class="form-group"><label>Bio / Description</label><textarea id="aoBio" rows="3" placeholder="Tell clients about this organizer..."></textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>Location / City</label><input type="text" id="aoLocation" placeholder="e.g. Midnapore..." required></div>
+              <div class="form-group"><label>Years of Experience</label><input type="number" id="aoExp" placeholder="e.g. 5" min="0"></div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Location / City</label>
-                <input type="text" id="aoLocation" placeholder="e.g. Midnapore..." required>
-              </div>
-              <div class="form-group">
-                <label>Years of Experience</label>
-                <input type="number" id="aoExp" placeholder="e.g. 5" min="0">
-              </div>
+              <div class="form-group"><label>Min Price (₹)</label><input type="number" id="aoPriceMin" placeholder="e.g. 10000" min="0"></div>
+              <div class="form-group"><label>Max Price (₹)</label><input type="number" id="aoPriceMax" placeholder="e.g. 100000" min="0"></div>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Min Price (₹)</label>
-                <input type="number" id="aoPriceMin" placeholder="e.g. 10000" min="0">
-              </div>
-              <div class="form-group">
-                <label>Max Price (₹)</label>
-                <input type="number" id="aoPriceMax" placeholder="e.g. 100000" min="0">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>WhatsApp Number</label>
-              <input type="tel" id="aoWhatsapp" placeholder="+91 WhatsApp number">
-            </div>
+            <div class="form-group"><label>WhatsApp Number</label><input type="tel" id="aoWhatsapp" placeholder="+91 WhatsApp number"></div>
             <div class="form-group">
               <label>Photos <span style="font-size:11px;color:var(--muted);">(multiple allowed — Cloudinary)</span></label>
               <input type="file" id="aoPhotos" accept="image/*" multiple onchange="previewMultipleImgs(this,'aoImgsPreview')">
               <div id="aoImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
               <div class="upload-progress-wrap" id="aoUploadProgress">
-                <div class="upload-progress-text">
-                  <span id="aoUploadStatusText">☁️ Uploading to Cloudinary...</span>
-                  <span class="upload-status-icon" id="aoUploadIcon">⏳</span>
-                </div>
-                <div class="upload-progress-bar-bg">
-                  <div class="upload-progress-bar" id="aoUploadBar"></div>
-                </div>
+                <div class="upload-progress-text"><span id="aoUploadStatusText">☁️ Uploading to Cloudinary...</span><span class="upload-status-icon" id="aoUploadIcon">⏳</span></div>
+                <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="aoUploadBar"></div></div>
               </div>
             </div>
             <button type="submit" class="btn-primary">✦ Publish Organizer Profile</button>
@@ -1274,17 +1230,20 @@ const auth = firebase.auth();
 const db   = firebase.firestore();
 
 // ===== CLOUDINARY CONFIG =====
-const CLOUDINARY_CLOUD_NAME = 'dkmygobzq';
+const CLOUDINARY_CLOUD_NAME   = 'dkmygobzq';
 const CLOUDINARY_UPLOAD_PRESET = 'utsaav_uploads';
-const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+const CLOUDINARY_UPLOAD_URL   = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 const ADMIN_EMAIL = 'mrritammitra@gmail.com';
 
-// ===================================================================
-// CLOUDINARY UPLOAD FUNCTION
-// Upload a single File to Cloudinary, returns secure_url string
-// progressBarId & statusTextId are optional — for showing progress UI
-// ===================================================================
+// ===== WHATSAPP HELPER — strips country code to avoid double 91 =====
+// Usage: waNumber(o.whatsapp || o.phone) → "9876543210" (10 digits, no country code)
+function waNumber(raw) {
+  // Remove all non-digit chars, then strip leading 91 if present
+  return (raw || '').replace(/\D/g, '').replace(/^91/, '');
+}
+
+// ===== CLOUDINARY UPLOAD =====
 async function uploadToCloudinary(file, progressBarId, statusTextId, iconId) {
   const formData = new FormData();
   formData.append('file', file);
@@ -1294,7 +1253,6 @@ async function uploadToCloudinary(file, progressBarId, statusTextId, iconId) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', CLOUDINARY_UPLOAD_URL);
 
-    // Track upload progress
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable && progressBarId) {
         const pct = Math.round((e.loaded / e.total) * 100);
@@ -1319,11 +1277,6 @@ async function uploadToCloudinary(file, progressBarId, statusTextId, iconId) {
   });
 }
 
-// ===================================================================
-// UPLOAD MULTIPLE FILES TO CLOUDINARY
-// Returns array of secure_url strings
-// progressWrapId, barId, statusTextId, iconId for showing progress
-// ===================================================================
 async function uploadMultipleToCloudinary(files, progressWrapId, barId, statusTextId, iconId) {
   const wrap = document.getElementById(progressWrapId);
   const bar  = document.getElementById(barId);
@@ -1380,7 +1333,7 @@ function showToast(msg, type='success') {
   setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-// ===== IMAGE LOCAL PREVIEW (before upload) =====
+// ===== IMAGE LOCAL PREVIEW =====
 function previewMultipleImgs(input, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
@@ -1412,12 +1365,18 @@ function toggleAuth() {
   document.getElementById('errorMsg').textContent = '';
   const phoneGroup = document.getElementById('phoneGroup');
   const phoneInput = document.getElementById('authPhone');
+  const nameGroup  = document.getElementById('nameGroup');
+  const nameInput  = document.getElementById('authName');
   if (isLogin) {
     phoneGroup.classList.add('hidden');
+    nameGroup.classList.add('hidden');
     phoneInput.removeAttribute('required');
+    nameInput.removeAttribute('required');
   } else {
     phoneGroup.classList.remove('hidden');
+    nameGroup.classList.remove('hidden');
     phoneInput.setAttribute('required','true');
+    nameInput.setAttribute('required','true');
   }
 }
 
@@ -1426,10 +1385,12 @@ document.getElementById('authForm').addEventListener('submit', async e => {
   const email = document.getElementById('authEmail').value;
   const pass  = document.getElementById('authPass').value;
   const phone = document.getElementById('authPhone')?.value?.trim() || '';
+  const name  = document.getElementById('authName')?.value?.trim() || '';
   const errEl = document.getElementById('errorMsg');
   const btn   = document.getElementById('authBtn');
   if (pass.length < 6) { errEl.textContent = '⚠ Password must be at least 6 characters'; return; }
   if (!isLogin) {
+    if (!name)  { errEl.textContent = '⚠ Apna naam likhein'; return; }
     if (!phone) { errEl.textContent = '⚠ Phone number required hai'; return; }
     if (phone.replace(/\D/g,'').length < 10) { errEl.textContent = '⚠ Valid phone number dalo (minimum 10 digits)'; return; }
   }
@@ -1437,6 +1398,7 @@ document.getElementById('authForm').addEventListener('submit', async e => {
   try {
     if (isLogin) {
       const cred = await auth.signInWithEmailAndPassword(email, pass);
+      trackEvent('login', 'auth', 'email_login');
       if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) {
         showVerifyScreen(cred.user);
         btn.textContent = 'Login →'; btn.disabled = false;
@@ -1444,7 +1406,12 @@ document.getElementById('authForm').addEventListener('submit', async e => {
       }
     } else {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      await db.collection('users').doc(cred.user.uid).set({ email, phone, createdAt: new Date() });
+      // Save display name to Firebase Auth profile
+      await cred.user.updateProfile({ displayName: name });
+      await db.collection('users').doc(cred.user.uid).set({
+        email, phone, name, createdAt: new Date()
+      });
+      trackEvent('sign_up', 'auth', 'email_signup');
       await cred.user.sendEmailVerification();
       showVerifyScreen(cred.user);
       btn.textContent = 'Register →'; btn.disabled = false;
@@ -1461,9 +1428,18 @@ auth.onAuthStateChanged(user => {
     if (!user.emailVerified && !isAdmin) { showVerifyScreen(user); return; }
     hideAllPages();
     document.getElementById('home').classList.remove('hidden');
-    updateHeaderUser(user.email, isAdmin);
+    // Show name if available, else show email prefix
+    const displayName = user.displayName || user.email.split('@')[0];
+    updateHeaderUser(displayName, user.email, isAdmin);
+    // Personalize home title
+    const homeTitle = document.getElementById('homeTitle');
+    if (homeTitle) {
+      homeTitle.innerHTML = `Namaste, <em>${displayName}!</em>`;
+    }
     const adminBtn = document.getElementById('adminHomeBtn');
     if (adminBtn) adminBtn.classList.toggle('hidden', !isAdmin);
+    // Track page view
+    trackEvent('page_view', 'navigation', 'home_dashboard');
   } else {
     hideAllPages();
     document.getElementById('auth').classList.remove('hidden');
@@ -1482,7 +1458,8 @@ function showVerifyScreen(user) {
   hideAllPages();
   document.getElementById('verifyEmail').classList.remove('hidden');
   document.getElementById('verifyEmailBadge').textContent = user.email;
-  updateHeaderUser(user.email, false);
+  const displayName = user.displayName || user.email.split('@')[0];
+  updateHeaderUser(displayName, user.email, false);
 }
 
 let resendCooldown = null;
@@ -1512,19 +1489,21 @@ async function checkVerified() {
     showToast('✦ Email verified! Welcome aboard.');
     hideAllPages();
     document.getElementById('home').classList.remove('hidden');
-    updateHeaderUser(currentUser.email, currentUser.email === ADMIN_EMAIL);
+    const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+    updateHeaderUser(displayName, currentUser.email, currentUser.email === ADMIN_EMAIL);
     const adminBtn = document.getElementById('adminHomeBtn');
     if (adminBtn) adminBtn.classList.add('hidden');
+    trackEvent('email_verified', 'auth', 'verification_complete');
   } else {
     showToast('⚠ Not verified yet. Check your inbox.', 'error');
   }
   btn.textContent = "✓ I've verified my email"; btn.disabled = false;
 }
 
-function updateHeaderUser(email, isAdmin) {
+function updateHeaderUser(displayName, email, isAdmin) {
   const adminBadge = isAdmin ? `<span class="badge-red badge" style="margin:0;font-size:10px;padding:3px 8px;">👑 ADMIN</span>` : '';
   document.getElementById('headerRight').innerHTML = `
-    <div class="user-chip"><div class="dot"></div>${email.split('@')[0]} ${adminBadge}</div>
+    <div class="user-chip"><div class="dot"></div>${displayName} ${adminBadge}</div>
     <div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>`;
 }
 
@@ -1534,6 +1513,7 @@ function handleLogoClick() { if (currentUser) showSection('home'); }
 // ===== NAVIGATION =====
 function showSection(id) {
   if (id === 'admin' && currentUser?.email !== ADMIN_EMAIL) { showToast('Access denied.', 'error'); return; }
+  trackEvent('navigate', 'section', id);
   if (id === 'vendor') {
     hideAllPages();
     document.getElementById('vendor').classList.remove('hidden');
@@ -1546,7 +1526,11 @@ function showSection(id) {
   window.scrollTo(0, 0);
   if (id === 'organizer') { loadOrgStats(); loadMyEvents(); }
   if (id === 'customer')  { loadOrganizers(); }
-  if (id === 'admin')     { loadAdminStats(); loadAdminOrganizers(); }
+  if (id === 'admin')     {
+    loadAdminStats(); loadAdminOrganizers();
+    const el = document.getElementById('adminEmailDisplay');
+    if (el && currentUser) el.textContent = `Logged in as ${currentUser.email}`;
+  }
 }
 
 // ===== TAB SWITCHERS =====
@@ -1582,30 +1566,23 @@ function switchAdminTab(name, btn) {
 }
 
 // ===== CLOUDINARY DELETE HELPER =====
-// Extracts public_id from a Cloudinary URL
 function getCloudinaryPublicId(url) {
   if (!url || !url.includes('cloudinary.com')) return null;
   try {
-    // URL format: https://res.cloudinary.com/CLOUD/image/upload/vXXXX/public_id.ext
     const parts = url.split('/upload/');
     if (parts.length < 2) return null;
     const afterUpload = parts[1];
-    // Remove version prefix (v1234567/) if present
     const withoutVersion = afterUpload.replace(/^v\d+\//, '');
-    // Remove file extension
     return withoutVersion.replace(/\.[^/.]+$/, '');
   } catch(e) { return null; }
 }
 
-// NOTE: Cloudinary unsigned preset cannot delete images from browser (security restriction).
-// Deletion requires a signed request from a backend/server.
-// We log the public_ids here — if you add a backend later, use these to clean up.
 function logCloudinaryDeletion(photos) {
   const ids = (photos || []).map(getCloudinaryPublicId).filter(Boolean);
   if (ids.length) console.log('🗑 Cloudinary images to clean up (requires backend):', ids);
 }
 
-// ===== PAGINATION CONFIG =====
+// ===== PAGINATION =====
 const PAGE_SIZE = 9;
 let currentPage = 1;
 let filteredOrgList = [];
@@ -1627,6 +1604,7 @@ async function loadOrganizers() {
     el.innerHTML = `<p style="color:var(--muted);font-size:14px;">⚠️ Error: ${err.message}</p>`;
   }
 }
+
 async function loadAdminStats() {
   try {
     const [orgs, vendors, events, enq, reviews] = await Promise.all([
@@ -1644,7 +1622,6 @@ async function loadAdminStats() {
   } catch(e) { console.error(e); }
 }
 
-// ===== ADMIN: ALL ORGANIZERS =====
 async function loadAdminOrganizers() {
   const el = document.getElementById('adminOrgList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -1675,7 +1652,6 @@ async function loadAdminOrganizers() {
   });
 }
 
-// ===== ADMIN: ALL VENDORS =====
 async function loadAdminVendors() {
   const el = document.getElementById('adminVendorList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -1706,7 +1682,6 @@ async function loadAdminVendors() {
   });
 }
 
-// ===== ADMIN: ALL EVENTS =====
 async function loadAdminEvents() {
   const el = document.getElementById('adminEventList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -1733,7 +1708,6 @@ async function loadAdminEvents() {
   });
 }
 
-// ===== ADMIN: ALL ENQUIRIES =====
 async function loadAdminEnquiries() {
   const el = document.getElementById('adminEnquiryList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -1760,7 +1734,6 @@ async function loadAdminEnquiries() {
   });
 }
 
-// ===== ADMIN DELETE FUNCTIONS =====
 async function adminDeleteOrg(id, name) {
   if (!confirm(`Delete organizer "${name}"? This cannot be undone.`)) return;
   const doc = await db.collection('organizers').doc(id).get();
@@ -1793,7 +1766,6 @@ async function adminDeleteEnquiry(id) {
   loadAdminEnquiries(); loadAdminStats();
 }
 
-// ===== ADMIN EDIT ORGANIZER =====
 async function adminEditOrg(id) {
   const doc = await db.collection('organizers').doc(id).get();
   const o = doc.data();
@@ -1858,7 +1830,6 @@ async function saveEditOrg(id) {
   } catch(e) { showToast('Error: ' + e.message, 'error'); }
 }
 
-// ===== ADMIN VENDOR TYPE SELECTOR =====
 let adminVendorType = 'photographer';
 function adminSelectVendorType(type, btn) {
   adminVendorType = type;
@@ -1877,7 +1848,6 @@ function adminSelectVendorType(type, btn) {
   if (pg) pg.style.display = type === 'gifts' ? 'none' : 'block';
 }
 
-// ===== ADMIN: ADD VENDOR FORM (Cloudinary) =====
 document.getElementById('adminVendorForm').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = e.target.querySelector('button[type=submit]');
@@ -1925,7 +1895,6 @@ document.getElementById('adminVendorForm').addEventListener('submit', async e =>
   loadAdminStats();
 });
 
-// ===== ADMIN: ADD ORGANIZER FORM (Cloudinary) =====
 document.getElementById('adminOrgForm').addEventListener('submit', async e => {
   e.preventDefault();
   const files = document.getElementById('aoPhotos').files;
@@ -1974,7 +1943,6 @@ document.getElementById('adminOrgForm').addEventListener('submit', async e => {
   loadAdminStats();
 });
 
-// ===== ORGANIZER PROFILE FORM (Cloudinary) =====
 document.getElementById('orgForm').addEventListener('submit', async e => {
   e.preventDefault();
   const files = document.getElementById('orgPhoto').files;
@@ -2023,7 +1991,6 @@ document.getElementById('orgForm').addEventListener('submit', async e => {
   loadOrgStats();
 });
 
-// ===== ORG STATS =====
 async function loadOrgStats() {
   const [profSnap, evtSnap, enqSnap] = await Promise.all([
     db.collection('organizers').where('owner','==',currentUser.email).get(),
@@ -2035,7 +2002,6 @@ async function loadOrgStats() {
   document.getElementById('statEnquiries').textContent = enqSnap.size;
 }
 
-// ===== EVENTS =====
 document.getElementById('eventForm').addEventListener('submit', async e => {
   e.preventDefault();
   const price = parseInt(document.getElementById('evtPrice').value) || 0;
@@ -2109,7 +2075,6 @@ async function loadAllEvents() {
   });
 }
 
-// ===== INBOX =====
 async function loadInbox() {
   const el = document.getElementById('inboxList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -2131,7 +2096,6 @@ async function loadInbox() {
   });
 }
 
-// ===== MY ENQUIRIES =====
 async function loadMyEnquiries() {
   const el = document.getElementById('myEnquiriesList');
   el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -2150,24 +2114,6 @@ async function loadMyEnquiries() {
       <div class="enquiry-status">Sent</div>
     </div>`;
   });
-}
-
-// ===== ORGANIZERS LOAD & FILTER =====
-async function loadOrganizers() {
-  const el = document.getElementById('list');
-  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-  try {
-    const snap = await db.collection('organizers').get();
-    allOrganizers = [];
-    snap.forEach(doc => allOrganizers.push({id: doc.id, ...doc.data()}));
-    allOrganizers.sort((a,b) => (b.createdAt?.toDate?.()?.getTime()||0) - (a.createdAt?.toDate?.()?.getTime()||0));
-    const banner = document.getElementById('seedBanner');
-    if (banner) banner.style.display = allOrganizers.length > 0 ? 'none' : 'flex';
-    buildCatPills();
-    renderOrganizers(allOrganizers);
-  } catch(err) {
-    el.innerHTML = `<p style="color:var(--muted);font-size:14px;">⚠️ Error: ${err.message}</p>`;
-  }
 }
 
 function buildCatPills() {
@@ -2235,7 +2181,6 @@ function renderOrganizers(list) {
     el.appendChild(card);
   });
 
-  // Load More button
   if (pageItems.length < list.length) {
     const remaining = list.length - pageItems.length;
     const loadMoreDiv = document.createElement('div');
@@ -2247,7 +2192,6 @@ function renderOrganizers(list) {
       <div style="font-size:11px;color:var(--muted);margin-top:6px;">Showing ${pageItems.length} of ${list.length} organizers</div>`;
     el.appendChild(loadMoreDiv);
   } else if (list.length > PAGE_SIZE) {
-    // Show count when all loaded
     const countDiv = document.createElement('div');
     countDiv.style.cssText = 'grid-column:1/-1;text-align:center;font-size:12px;color:var(--muted);padding:8px 0;';
     countDiv.textContent = `✓ All ${list.length} organizers loaded`;
@@ -2305,7 +2249,7 @@ async function openOrgModal(o) {
         <div class="modal-actions">
           ${!isOwner?`<button class="btn-primary btn-sm" onclick="scrollToEnquiry()">📩 Send Enquiry</button>`:''}
           <button class="btn-secondary btn-sm" onclick="window.open('tel:${o.phone}')">📞 Call</button>
-          ${!isOwner?`<button class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;" onclick="window.open('https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}','_blank')">💬 WhatsApp</button>`:''}
+          ${!isOwner?`<button class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;" onclick="window.open('https://wa.me/91${waNumber(o.whatsapp||o.phone)}','_blank')">💬 WhatsApp</button>`:''}
           ${isOwner||currentUser?.email===ADMIN_EMAIL?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">Delete</button>`:''}
         </div>
         <div class="reviews-section">
@@ -2324,7 +2268,7 @@ async function openOrgModal(o) {
         </div>
         ${!isOwner?`<div class="enquiry-form" id="enquiryFormSection">
           <h4>📩 Send Enquiry</h4>
-          <div class="form-group"><input type="text" id="enqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}"></div>
+          <div class="form-group"><input type="text" id="enqName" placeholder="Your name" value="${currentUser.displayName || currentUser.email.split('@')[0]}"></div>
           <div class="form-group"><input type="tel" id="enqPhone" placeholder="Your phone number"></div>
           <div class="form-group"><textarea id="enqMsg" rows="3" placeholder="Describe your event requirements..."></textarea></div>
           <button class="btn-primary btn-sm" onclick="sendEnquiry('${o.id}','${o.owner}','${o.name}')">Send Message</button>
@@ -2357,19 +2301,18 @@ async function sendEnquiry(orgId, toEmail, toName) {
   const msg = document.getElementById('enqMsg').value.trim();
   if (!msg) { showToast('Please write a message', 'error'); return; }
   await db.collection('enquiries').add({orgId, toEmail, toName, fromEmail: currentUser.email, fromName: document.getElementById('enqName').value.trim(), fromPhone: document.getElementById('enqPhone').value.trim(), message: msg, createdAt: new Date()});
+  trackEvent('enquiry_sent', 'engagement', toName);
   showToast('📩 Enquiry sent!');
   closeModalDirect();
 }
 
 async function deleteOrg(id) {
   if (!confirm('Delete this organizer profile?')) return;
-  // Log Cloudinary photos for manual cleanup if needed
   const doc = await db.collection('organizers').doc(id).get();
   if (doc.exists) logCloudinaryDeletion(doc.data().photos);
   await db.collection('organizers').doc(id).delete();
   showToast('Listing removed.', 'error');
   closeModalDirect();
-  // Refresh profile page back to customer if open
   if (!document.getElementById('profilePage').classList.contains('hidden')) {
     document.getElementById('profilePage').classList.add('hidden');
     document.getElementById('customer').classList.remove('hidden');
@@ -2377,7 +2320,6 @@ async function deleteOrg(id) {
   loadOrganizers(); loadOrgStats();
 }
 
-// ===== MY PROFILES — organizer edit own listings =====
 async function loadMyProfiles() {
   const el = document.getElementById('myProfilesList');
   if (!el) return;
@@ -2412,7 +2354,6 @@ async function loadMyProfiles() {
 async function openEditMyProfile(id) {
   const docSnap = await db.collection('organizers').doc(id).get();
   const o = {id, ...docSnap.data()};
-  // Build categories checkboxes with pre-selected
   const allCatOptions = ['Wedding','Birthday','Corporate','Concert','Sports','Conference','Social','Other'];
   const catEmojis     = {Wedding:'💍',Birthday:'🎂',Corporate:'🏢',Concert:'🎵',Sports:'🏅',Conference:'🎤',Social:'🎊',Other:'✨'};
   const existingCats  = o.categories || (o.category ? [o.category] : []);
@@ -2463,7 +2404,7 @@ async function openEditMyProfile(id) {
             </div>
             <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="eoUploadBar"></div></div>
           </div>
-          ${o.photos&&o.photos.length?`<div style="margin-top:10px;"><div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Current Photos</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${o.photos.map((p,i)=>`<div style="position:relative;"><img src="${p}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:2px solid ${i===0?'var(--accent)':'var(--border)}'};">${i===0?'<div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap;">MAIN</div>':''}</div>`).join('')}</div></div>`:''}
+          ${o.photos&&o.photos.length?`<div style="margin-top:10px;"><div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Current Photos</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${o.photos.map((p,i)=>`<div style="position:relative;"><img src="${p}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:2px solid ${i===0?'var(--accent)':'var(--border)'};">${i===0?'<div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap;">MAIN</div>':''}</div>`).join('')}</div></div>`:''}
         </div>
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
           <button class="btn-primary btn-sm" onclick="saveMyProfile('${id}')">💾 Save Changes</button>
@@ -2473,7 +2414,6 @@ async function openEditMyProfile(id) {
     </div>
   </div>`;
 
-  // Wire up category chip clicks inside modal
   document.querySelectorAll('#eoCatCheckboxes .cat-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       const cb = chip.querySelector('input[type=checkbox]');
@@ -2490,7 +2430,6 @@ async function saveMyProfile(id) {
   const checkedCats = [...document.querySelectorAll('#eoCatCheckboxes input:checked')].map(c => c.value);
   if (!checkedCats.length) { showToast('Please select at least one category', 'error'); btn.disabled=false; btn.textContent='💾 Save Changes'; return; }
 
-  // Upload new photos if any
   const newFiles = document.getElementById('eoPhotos').files;
   let newPhotoUrls = [];
   if (newFiles.length > 0) {
@@ -2506,7 +2445,6 @@ async function saveMyProfile(id) {
     }
   }
 
-  // Get existing photos from Firestore to append new ones
   const existing = await db.collection('organizers').doc(id).get();
   const existingPhotos = existing.data().photos || [];
   const allPhotos = [...existingPhotos, ...newPhotoUrls];
@@ -2640,6 +2578,7 @@ function getCatColor(cat) {
 let currentProfileOrg = null;
 function openProfilePage(o) {
   currentProfileOrg = o;
+  trackEvent('view_profile', 'engagement', o.name);
   hideAllPages();
   document.getElementById('profilePage').classList.remove('hidden');
   window.scrollTo(0,0);
@@ -2673,8 +2612,8 @@ function openProfilePage(o) {
   const isAdmin = currentUser?.email === ADMIN_EMAIL;
   document.getElementById('profileActions').innerHTML = `
     ${!isOwner?`<button class="btn-primary btn-sm" onclick="document.getElementById('profileEnquiryForm').scrollIntoView({behavior:'smooth'})">📩 Send Enquiry</button>`:''}
-    <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;">📞 Call Now</a>
-    <a href="https://wa.me/91${(o.whatsapp||o.phone).replace(/\D/g,'')}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;">💬 WhatsApp</a>
+    <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;" onclick="trackEvent('call_click','engagement','${o.name}')">📞 Call Now</a>
+    <a href="https://wa.me/91${waNumber(o.whatsapp||o.phone)}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;" onclick="trackEvent('whatsapp_click','engagement','${o.name}')">💬 WhatsApp</a>
     ${isOwner||isAdmin?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
     ${isAdmin&&!isOwner?`<button class="btn-admin btn-sm" onclick="adminEditOrg('${o.id}')">✏️ Edit (Admin)</button>`:''}`;
 
@@ -2711,7 +2650,7 @@ function openProfilePage(o) {
 
   if (!isOwner) {
     document.getElementById('profileEnquiryForm').innerHTML = `
-      <div class="form-group"><input type="text" id="penqName" placeholder="Your name" value="${currentUser.email.split('@')[0]}" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
+      <div class="form-group"><input type="text" id="penqName" placeholder="Your name" value="${currentUser.displayName || currentUser.email.split('@')[0]}" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
       <div class="form-group" style="margin-top:10px;"><input type="tel" id="penqPhone" placeholder="Your phone / WhatsApp" style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"></div>
       <div class="form-group" style="margin-top:10px;"><textarea id="penqMsg" rows="4" placeholder="Describe your event — date, type, guests..." style="width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;"></textarea></div>
       <button class="btn-primary" style="margin-top:12px;" onclick="sendProfileEnquiry('${o.id}','${o.owner}','${o.name}')">Send Message →</button>`;
@@ -2775,6 +2714,7 @@ async function sendProfileEnquiry(orgId, toEmail, toName) {
   const msg = document.getElementById('penqMsg').value.trim();
   if (!msg) { showToast('Please write a message', 'error'); return; }
   await db.collection('enquiries').add({orgId, toEmail, toName, fromEmail: currentUser.email, fromName: document.getElementById('penqName').value.trim(), fromPhone: document.getElementById('penqPhone').value.trim(), message: msg, createdAt: new Date()});
+  trackEvent('enquiry_sent', 'engagement', toName);
   showToast('📩 Enquiry sent!');
   document.getElementById('penqMsg').value = '';
   document.getElementById('penqPhone').value = '';
@@ -2856,32 +2796,6 @@ function closeProfilePage() {
   </div>
 </div>
 
-<style>
-.vendor-type-btn {
-  padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--border);
-  background: var(--surface); color: var(--muted);
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
-}
-.vendor-type-btn.active, .vendor-type-btn:hover {
-  background: rgba(201,168,76,0.12); border-color: var(--accent); color: var(--accent);
-}
-.event-card { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;transition:all 0.2s;cursor:pointer; }
-.event-card:hover { transform:translateY(-3px);border-color:var(--border2);box-shadow:0 12px 32px rgba(0,0,0,0.3); }
-.event-date-badge { display:inline-flex;flex-direction:column;align-items:center;width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;margin-bottom:14px; }
-.event-date-badge .month { font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:600; }
-.event-date-badge .day { font-size:22px;font-weight:900;font-family:'Playfair Display',serif;line-height:1; }
-.event-title { font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:6px; }
-.event-meta { font-size:12px;color:var(--muted);margin-bottom:3px;display:flex;align-items:center;gap:5px; }
-.event-price { font-size:18px;font-weight:700;color:var(--accent);margin-top:12px; }
-.event-price span { font-size:12px;color:var(--muted);font-weight:400; }
-.events-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px; }
-.enquiry-item { background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px; }
-.enquiry-to { font-size:13px;color:var(--muted);margin-bottom:5px; }
-.enquiry-msg { font-size:14px;line-height:1.5; }
-.enquiry-status { display:inline-block;margin-top:10px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(201,168,76,0.1);color:var(--accent);border:1px solid rgba(201,168,76,0.2); }
-</style>
-
 <script>
 let currentVendorType = 'photographer';
 
@@ -2921,7 +2835,6 @@ function previewVendorPhotos(input) {
   });
 }
 
-// ===== VENDOR FORM (Cloudinary) =====
 document.getElementById('vendorForm').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = e.target.querySelector('button[type=submit]');
@@ -3002,7 +2915,6 @@ async function deleteVendor(id) {
   loadMyVendorListings();
 }
 
-// ===== VENDOR BROWSING =====
 let allVendors = [];
 function filterVendors(type, btn) {
   document.querySelectorAll('#vendorFilterBtns .vendor-type-btn').forEach(b => b.classList.remove('active'));
@@ -3055,7 +2967,7 @@ function renderVendors(list) {
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;min-width:120px;">
           <a href="tel:${v.phone}" onclick="event.stopPropagation()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">📞 Call</a>
-          <a href="https://wa.me/91${(v.whatsapp||v.phone).replace(/\D/g,'')}" target="_blank" onclick="event.stopPropagation()" style="padding:8px 16px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:#25d366;text-align:center;">💬 WhatsApp</a>
+          <a href="https://wa.me/91${waNumber(v.whatsapp||v.phone)}" target="_blank" onclick="event.stopPropagation()" style="padding:8px 16px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:#25d366;text-align:center;">💬 WhatsApp</a>
           ${v.email?`<a href="mailto:${v.email}" onclick="event.stopPropagation()" style="padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);text-align:center;">✉ Email</a>`:''}
         </div>
       </div>`;
@@ -3107,7 +3019,7 @@ function openVendorProfile(v) {
       <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;margin-bottom:16px;">Contact</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <a href="tel:${v.phone}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);"><span style="font-size:18px;">📞</span><div><div style="font-size:11px;color:var(--muted);">Phone</div><div style="font-weight:600;">${v.phone}</div></div></a>
-        <a href="https://wa.me/91${(v.whatsapp||v.phone).replace(/\D/g,'')}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.2);border-radius:10px;text-decoration:none;color:#25d366;"><span style="font-size:18px;">💬</span><div><div style="font-size:11px;color:var(--muted);">WhatsApp</div><div style="font-weight:600;">${v.whatsapp||v.phone}</div></div></a>
+        <a href="https://wa.me/91${waNumber(v.whatsapp||v.phone)}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.2);border-radius:10px;text-decoration:none;color:#25d366;"><span style="font-size:18px;">💬</span><div><div style="font-size:11px;color:var(--muted);">WhatsApp</div><div style="font-weight:600;">${v.whatsapp||v.phone}</div></div></a>
         ${v.email?`<a href="mailto:${v.email}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);"><span style="font-size:18px;">✉</span><div><div style="font-size:11px;color:var(--muted);">Email</div><div style="font-weight:600;">${v.email}</div></div></a>`:''}
         ${v.driveLink?`<a href="${v.driveLink}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(78,203,113,0.08);border:1px solid rgba(78,203,113,0.25);border-radius:10px;text-decoration:none;color:#4ecb71;"><span style="font-size:18px;">📂</span><div><div style="font-size:11px;color:var(--muted);">Portfolio</div><div style="font-weight:600;">View on Google Drive →</div></div></a>`:''}
         ${v.website?`<a href="${v.website}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);"><span style="font-size:18px;">🌐</span><div><div style="font-size:11px;color:var(--muted);">Website</div><div style="font-weight:600;">${v.website}</div></div></a>`:''}
