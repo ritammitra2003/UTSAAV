@@ -1842,34 +1842,60 @@ async function adminEditOrg(id) {
   const o = doc.data();
   document.getElementById('modalContainer').innerHTML = `
   <div class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal" style="max-width:640px;">
+    <div class="modal" style="max-width:660px;">
       <div class="modal-body">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;">✏️ Edit: ${o.name}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:900;">✏️ Edit: ${o.name}</div>
           <div class="modal-close" style="position:static;width:32px;height:32px;" onclick="closeModalDirect()">✕</div>
         </div>
+        <div class="cloudinary-info">☁️ Photos are stored on Cloudinary — unlimited storage, fast loading worldwide</div>
         <div class="form-row">
-          <div class="form-group"><label>Name</label><input type="text" id="editOrgName" value="${o.name||''}"></div>
-          <div class="form-group"><label>Category</label>
-            <select id="editOrgCat">
-              <option>Wedding</option><option>Corporate</option><option>Birthday</option>
-              <option>Concert</option><option>Sports</option><option>Conference</option>
-              <option>Social</option><option>Other</option>
-            </select>
-          </div>
+          <div class="form-group"><label>Organizer Name</label><input type="text" id="editOrgName" value="${o.name||''}"></div>
+          <div class="form-group"><label>Company Name <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="text" id="editOrgCompany" value="${o.company||''}"></div>
+        </div>
+        <div class="form-group"><label>Category</label>
+          <select id="editOrgCat" style="width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:14px;">
+            <option>Wedding</option><option>Corporate</option><option>Birthday</option>
+            <option>Concert</option><option>Sports</option><option>Conference</option>
+            <option>Social</option><option>Other</option>
+          </select>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Phone</label><input type="text" id="editOrgPhone" value="${o.phone||''}"></div>
+          <div class="form-group"><label>Phone Number</label><input type="text" id="editOrgPhone" value="${o.phone||''}"></div>
           <div class="form-group"><label>WhatsApp</label><input type="text" id="editOrgWhatsapp" value="${o.whatsapp||''}"></div>
         </div>
-        <div class="form-group"><label>Email</label><input type="email" id="editOrgEmail" value="${o.email||''}"></div>
-        <div class="form-group"><label>Location</label><input type="text" id="editOrgLocation" value="${o.location||''}"></div>
-        <div class="form-group"><label>Bio</label><textarea id="editOrgBio" rows="3">${o.bio||''}</textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" id="editOrgEmail" value="${o.email||''}"></div>
+          <div class="form-group"><label>Location / City</label><input type="text" id="editOrgLocation" value="${o.location||''}"></div>
+        </div>
+        <div class="form-group"><label>Bio / Description</label><textarea id="editOrgBio" rows="3">${o.bio||''}</textarea></div>
         <div class="form-row">
           <div class="form-group"><label>Min Price (₹)</label><input type="number" id="editOrgPriceMin" value="${o.priceMin||0}"></div>
           <div class="form-group"><label>Max Price (₹)</label><input type="number" id="editOrgPriceMax" value="${o.priceMax||0}"></div>
         </div>
-        <div class="form-group"><label>Experience (years)</label><input type="number" id="editOrgExp" value="${o.experience||''}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Years of Experience</label><input type="number" id="editOrgExp" value="${o.experience||''}"></div>
+          <div class="form-group"><label>Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label><input type="url" id="editOrgWebsite" value="${o.website||''}" placeholder="https://yourwebsite.com"></div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:12px;">🔗 Social & Portfolio Links <span style="font-size:11px;color:var(--muted);font-weight:400;">(optional)</span></div>
+          <div class="form-row">
+            <div class="form-group" style="margin:0;"><label style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">📂</span> Google Drive</label><input type="url" id="editOrgDrive" value="${o.driveLink||''}" placeholder="https://drive.google.com/..."></div>
+            <div class="form-group" style="margin:0;"><label style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">📸</span> Instagram</label><input type="url" id="editOrgInsta" value="${o.instagram||''}" placeholder="https://instagram.com/..."></div>
+          </div>
+          <div class="form-group" style="margin-top:12px;margin-bottom:0;"><label style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">📘</span> Facebook Page</label><input type="url" id="editOrgFb" value="${o.facebook||''}" placeholder="https://facebook.com/..."></div>
+        </div>
+        <div class="form-group">
+          <label>Photos <span style="font-size:11px;color:var(--muted);">(select new photos to add/replace — Cloudinary)</span></label>
+          <input type="file" id="editOrgPhotos" accept="image/*" multiple onchange="previewMultipleImgs(this,'editOrgPhotosPreview')">
+          <div id="editOrgPhotosPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+            ${(o.photos&&o.photos.length)?o.photos.map(p=>`<img src="${p}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--border);">`).join(''):''}
+          </div>
+          <div class="upload-progress-wrap" id="editOrgUploadProgress">
+            <div class="upload-progress-text"><span id="editOrgUploadStatusText">☁️ Uploading to Cloudinary...</span><span class="upload-status-icon" id="editOrgUploadIcon">⏳</span></div>
+            <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="editOrgUploadBar"></div></div>
+          </div>
+        </div>
         <div style="display:flex;gap:10px;margin-top:8px;">
           <button class="btn-primary btn-sm" onclick="saveEditOrg('${id}')">💾 Save Changes</button>
           <button class="btn-secondary btn-sm" onclick="closeModalDirect()">Cancel</button>
@@ -1882,9 +1908,21 @@ async function adminEditOrg(id) {
 }
 
 async function saveEditOrg(id) {
+  const btn = document.querySelector('#modalContainer .btn-primary');
+  btn.disabled = true; btn.textContent = '⏳ Saving...';
   try {
-    await db.collection('organizers').doc(id).update({
+    // Upload new photos if selected
+    let photos = null;
+    const files = document.getElementById('editOrgPhotos').files;
+    if (files && files.length > 0) {
+      btn.textContent = '☁️ Uploading photos...';
+      photos = await uploadMultipleToCloudinary(
+        Array.from(files), 'editOrgUploadProgress', 'editOrgUploadBar', 'editOrgUploadStatusText', 'editOrgUploadIcon'
+      );
+    }
+    const update = {
       name:       document.getElementById('editOrgName').value,
+      company:    document.getElementById('editOrgCompany').value || '',
       category:   document.getElementById('editOrgCat').value,
       phone:      document.getElementById('editOrgPhone').value,
       whatsapp:   document.getElementById('editOrgWhatsapp').value,
@@ -1893,12 +1931,24 @@ async function saveEditOrg(id) {
       bio:        document.getElementById('editOrgBio').value,
       priceMin:   Number(document.getElementById('editOrgPriceMin').value) || 0,
       priceMax:   Number(document.getElementById('editOrgPriceMax').value) || 0,
-      experience: document.getElementById('editOrgExp').value
-    });
+      experience: document.getElementById('editOrgExp').value,
+      website:    document.getElementById('editOrgWebsite').value || '',
+      driveLink:  document.getElementById('editOrgDrive').value || '',
+      instagram:  document.getElementById('editOrgInsta').value || '',
+      facebook:   document.getElementById('editOrgFb').value || '',
+    };
+    if (photos && photos.length > 0) {
+      update.photos = photos;
+      update.photo  = photos[0];
+    }
+    await db.collection('organizers').doc(id).update(update);
     showToast('✅ Organizer updated!');
     closeModalDirect();
     loadAdminOrganizers();
-  } catch(e) { showToast('Error: ' + e.message, 'error'); }
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+    btn.disabled = false; btn.textContent = '💾 Save Changes';
+  }
 }
 
 let adminVendorType = 'photographer';
