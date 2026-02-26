@@ -793,7 +793,7 @@ body.light header { background: rgba(240,236,228,0.85); }
     <span class="verify-icon">📧</span>
     <h1 class="verify-title">Check your <em>inbox.</em></h1>
     <p class="verify-sub">We've sent a verification link to:</p>
-    <div class="verify-email-badge" id="verifyEmailBadge">mrritammitra@gmail.com</div>
+    <div class="verify-email-badge" id="verifyEmailBadge"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="78150a0a110c191515110c0a19381f15191114561b1715">[email&#160;protected]</a></div>
     <div class="glass-card" style="margin-bottom:20px;">
       <div class="verify-steps">
         <div class="verify-step">
@@ -954,6 +954,10 @@ body.light header { background: rgba(240,236,228,0.85); }
             <input type="tel" id="orgWhatsapp" placeholder="+91 WhatsApp number">
           </div>
           <div class="form-group">
+            <label>Website <span style="font-size:11px;color:var(--muted);">(optional)</span></label>
+            <input type="url" id="orgWebsite" placeholder="https://yourwebsite.com">
+          </div>
+          <div class="form-group">
             <label>Photos <span style="font-size:11px;color:var(--muted);">(select multiple — uploaded to Cloudinary)</span></label>
             <input type="file" id="orgPhoto" accept="image/*" multiple onchange="previewMultipleImgs(this,'orgImgsPreview')">
             <div id="orgImgsPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
@@ -1093,7 +1097,7 @@ body.light header { background: rgba(240,236,228,0.85); }
       <div class="panel-back" onclick="showSection('home')">←</div>
       <div>
         <div class="panel-title">🛡️ Admin <span>Panel</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="adminEmailDisplay">Logged in as mrritammitra@gmail.com</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="adminEmailDisplay">Logged in as <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb6a9a9b2afbab6b6b2afa9ba9bbcb6bab2b7f5b8b4b6">[email&#160;protected]</a></div>
       </div>
     </div>
 
@@ -1274,7 +1278,7 @@ body.light header { background: rgba(240,236,228,0.85); }
 </div>
 
 <!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -2039,6 +2043,7 @@ document.getElementById('orgForm').addEventListener('submit', async e => {
     company:    document.getElementById('orgCompany').value || '',
     phone:      document.getElementById('orgPhone').value,
     whatsapp:   document.getElementById('orgWhatsapp').value || document.getElementById('orgPhone').value,
+    website:    document.getElementById('orgWebsite').value || '',
     email:      document.getElementById('orgEmail').value,
     category:   checkedCats[0], categories: checkedCats,
     bio:        document.getElementById('orgBio').value,
@@ -2238,6 +2243,7 @@ function renderOrganizers(list) {
         ${o.location  ? `<div class="org-meta">📍 ${o.location}</div>` : ''}
         <div class="org-meta">📞 ${o.phone}</div>
         ${o.whatsapp  ? `<div class="org-meta" style="color:#25d366;">💬 ${o.whatsapp}</div>` : ''}
+        ${o.website   ? `<div class="org-meta"><a href="${o.website}" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;">🌐 Website</a></div>` : ''}
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
           <span class="stars">${stars}</span>
           <span class="stars-count">${o.rating ? o.rating.toFixed(1)+' ('+o.reviewCount+')' : 'No reviews'}</span>
@@ -2314,6 +2320,7 @@ async function openOrgModal(o) {
           <div class="info-item"><div class="info-item-label">WhatsApp</div><div class="info-item-value">💬 ${o.whatsapp||o.phone}</div></div>
           <div class="info-item"><div class="info-item-label">Email</div><div class="info-item-value">✉ ${o.email}</div></div>
           ${o.location?`<div class="info-item"><div class="info-item-label">Location</div><div class="info-item-value">📍 ${o.location}</div></div>`:''}
+          ${o.website?`<div class="info-item" style="grid-column:1/-1;"><div class="info-item-label">Website</div><div class="info-item-value"><a href="${o.website}" target="_blank" style="color:var(--accent);text-decoration:none;">🌐 ${o.website}</a></div></div>`:''}
         </div>
         <div class="modal-actions">
           ${!isOwner?`<button class="btn-primary btn-sm" onclick="scrollToEnquiry()">📩 Send Enquiry</button>`:''}
@@ -2864,7 +2871,7 @@ function getCatColor(cat) {
     <div style="margin-top:4px;">
       CEO &amp; Founder — <strong style="color:var(--text);">Ritam Mitra</strong> &nbsp;|&nbsp;
       <a href="tel:7384949090" style="color:var(--accent);text-decoration:none;">📞 7384949090</a> &nbsp;|&nbsp;
-      <a href="mailto:mrritammitra@gmail.com" style="color:var(--accent);text-decoration:none;">✉ mrritammitra@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#0f627d7d667b6e6262667b7d6e4f68626e6663216c6062" style="color:var(--accent);text-decoration:none;">✉ <span class="__cf_email__" data-cfemail="e8859a9a819c898585819c9a89a88f85898184c68b8785">[email&#160;protected]</span></a>
     </div>
   </div>
 </footer>
@@ -2932,7 +2939,7 @@ function getCatColor(cat) {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 let currentProfileOrg = null;
 function openProfilePage(o) {
   currentProfileOrg = o;
@@ -2972,6 +2979,7 @@ function openProfilePage(o) {
     ${!isOwner?`<button class="btn-primary btn-sm" onclick="document.getElementById('profileEnquiryForm').scrollIntoView({behavior:'smooth'})">📩 Send Enquiry</button>`:''}
     <a href="tel:${o.phone}" class="btn-secondary btn-sm" style="text-decoration:none;" onclick="trackEvent('call_click','engagement','${o.name}')">📞 Call Now</a>
     <a href="https://wa.me/91${waNumber(o.whatsapp||o.phone)}" target="_blank" class="btn-secondary btn-sm" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366;text-decoration:none;" onclick="trackEvent('whatsapp_click','engagement','${o.name}')">💬 WhatsApp</a>
+    ${o.website?`<a href="${o.website}" target="_blank" class="btn-secondary btn-sm" style="text-decoration:none;">🌐 Website</a>`:''}
     ${isOwner||isAdmin?`<button class="btn-danger btn-sm" onclick="deleteOrg('${o.id}')">🗑 Delete</button>`:''}
     ${isAdmin&&!isOwner?`<button class="btn-admin btn-sm" onclick="adminEditOrg('${o.id}')">✏️ Edit (Admin)</button>`:''}`;
 
@@ -3002,6 +3010,7 @@ function openProfilePage(o) {
       <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;"><span style="font-size:18px;">💬</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">WhatsApp</div><div style="font-size:14px;font-weight:600;color:#25d366;">${o.whatsapp||o.phone}</div></div></div>
       <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;"><span style="font-size:18px;">✉</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:13px;font-weight:600;word-break:break-all;">${o.email}</div></div></div>
       ${o.location?`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;"><span style="font-size:18px;">📍</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Location</div><div style="font-size:14px;font-weight:600;">${o.location}</div></div></div>`:''}
+      ${o.website?`<a href="${o.website}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:10px;text-decoration:none;color:var(--text);border:1px solid rgba(201,168,76,0.2);"><span style="font-size:18px;">🌐</span><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Website</div><div style="font-size:13px;font-weight:600;color:var(--accent);word-break:break-all;">${o.website}</div></div></a>`:''}
     </div>`;
 
   loadProfileReviews(o);
