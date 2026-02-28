@@ -764,9 +764,8 @@ body.light header { background: rgba(240,236,228,0.85); }
           <label>Full Name</label>
           <input type="text" id="authName" placeholder="Apna poora naam likhein">
         </div>
-        <div class="form-group hidden" id="phoneGroup">
-          <label>Phone Number</label>
-          <input type="tel" id="authPhone" placeholder="+91 00000 00000">
+        <div class="form-group hidden" id="phoneGroup" style="display:none!important;">
+          <input type="tel" id="authPhone">
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -1442,9 +1441,9 @@ function toggleAuth() {
     phoneInput.removeAttribute('required');
     nameInput.removeAttribute('required');
   } else {
-    phoneGroup.classList.remove('hidden');
+    phoneGroup.classList.add('hidden');
     nameGroup.classList.remove('hidden');
-    phoneInput.setAttribute('required','true');
+    phoneInput.removeAttribute('required');
     nameInput.setAttribute('required','true');
   }
 }
@@ -1460,8 +1459,6 @@ document.getElementById('authForm').addEventListener('submit', async e => {
   if (pass.length < 6) { errEl.textContent = '⚠ Password must be at least 6 characters'; return; }
   if (!isLogin) {
     if (!name)  { errEl.textContent = '⚠ Apna naam likhein'; return; }
-    if (!phone) { errEl.textContent = '⚠ Phone number required hai'; return; }
-    if (phone.replace(/\D/g,'').length < 10) { errEl.textContent = '⚠ Valid phone number dalo (minimum 10 digits)'; return; }
   }
   btn.textContent = 'Please wait...'; btn.disabled = true;
   try {
