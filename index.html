@@ -767,6 +767,35 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
 .admin-tab.active { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
 .verified-badge { background: rgba(212,67,122,0.08) !important; color: var(--accent) !important; border-color: rgba(212,67,122,0.2) !important; }
 
+
+/* ── ROLE SELECTION ── */
+.role-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.role-btn{
+  padding:8px 14px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:var(--surface2);
+  font-size:13px;font-weight:500;cursor:pointer;
+  transition:all 0.2s;color:var(--text);
+}
+.role-btn:hover{border-color:var(--accent);background:rgba(212,67,122,0.06);}
+.role-btn.selected{border-color:var(--accent);background:rgba(212,67,122,0.1);color:var(--accent);font-weight:700;}
+/* ── ROLE SELECT SCREEN (for existing users) ── */
+#roleSelectPage{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;}
+.role-select-wrap{max-width:420px;width:100%;text-align:center;}
+.role-select-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:800;margin-bottom:8px;}
+.role-select-title em{color:var(--accent);font-style:italic;}
+.role-select-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.role-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.role-select-card{
+  padding:20px 16px;text-align:center;
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:14px;cursor:pointer;transition:all 0.2s;
+}
+.role-select-card:hover,.role-select-card.selected{border-color:var(--accent);background:rgba(212,67,122,0.06);}
+.rsc-icon{font-size:32px;display:block;margin-bottom:8px;}
+.rsc-label{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;}
+.role-select-card.full-width{grid-column:1/-1;}
+
 </style>
 </head>
 <body>
@@ -847,7 +876,19 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
         </div>
         <div class="form-group hidden" id="nameGroup">
           <label>Full Name</label>
-          <input type="text" id="authName" placeholder="Apna poora naam likhein">
+          <input type="text" id="authName" placeholder="Your full name">
+        </div>
+        <!-- ROLE SELECTION — shown only on signup -->
+        <div class="form-group hidden" id="roleGroup">
+          <label>I am a</label>
+          <div class="role-btns" id="roleBtns">
+            <div class="role-btn" data-role="customer" onclick="selectRole('customer',this)">🎉 Customer</div>
+            <div class="role-btn" data-role="organizer" onclick="selectRole('organizer',this)">🎪 Organizer</div>
+            <div class="role-btn" data-role="photographer" onclick="selectRole('photographer',this)">📸 Photographer</div>
+            <div class="role-btn" data-role="makeup" onclick="selectRole('makeup',this)">💄 Makeup Artist</div>
+            <div class="role-btn" data-role="gifts" onclick="selectRole('gifts',this)">🎁 Return Gifts</div>
+          </div>
+          <input type="hidden" id="selectedRole" value="">
         </div>
         <div class="form-group hidden" id="phoneGroup" style="display:none!important;">
           <input type="tel" id="authPhone">
@@ -903,41 +944,73 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
   </div>
 </div>
 
+
+<!-- ROLE SELECT PAGE (existing users without role) -->
+<div class="page hidden" id="roleSelectPage">
+  <div class="role-select-wrap fade-in">
+    <div class="badge" style="margin-bottom:16px;">✦ One time setup</div>
+    <h1 class="role-select-title">Who are <em>you?</em></h1>
+    <p class="role-select-sub">Select your role — this helps us personalize your experience.</p>
+    <div class="role-select-grid">
+      <div class="role-select-card full-width" onclick="selectRolePage('customer',this)">
+        <span class="rsc-icon">🎉</span>
+        <div class="rsc-label">Customer</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">I want to book services</div>
+      </div>
+      <div class="role-select-card" onclick="selectRolePage('organizer',this)">
+        <span class="rsc-icon">🎪</span>
+        <div class="rsc-label">Organizer</div>
+      </div>
+      <div class="role-select-card" onclick="selectRolePage('photographer',this)">
+        <span class="rsc-icon">📸</span>
+        <div class="rsc-label">Photographer</div>
+      </div>
+      <div class="role-select-card" onclick="selectRolePage('makeup',this)">
+        <span class="rsc-icon">💄</span>
+        <div class="rsc-label">Makeup Artist</div>
+      </div>
+      <div class="role-select-card" onclick="selectRolePage('gifts',this)">
+        <span class="rsc-icon">🎁</span>
+        <div class="rsc-label">Return Gifts</div>
+      </div>
+    </div>
+    <button class="btn-primary hidden" id="roleConfirmBtn" onclick="confirmRolePage()">Continue →</button>
+  </div>
+</div>
+
 <!-- HOME -->
 <div class="page hidden" id="home">
   <div class="home-wrap fade-in">
     <div class="badge">✦ Welcome back</div>
     <h1 class="home-title" id="homeTitle">Welcome to <em>Utsaav.</em></h1>
-    <p class="home-sub">India's event organizer discovery platform. What would you like to do?</p>
-    <div class="option-cards" style="grid-template-columns:1fr;">
-      <div class="option-card o-opt" onclick="showRolePopup('organizer')">
-        <span class="opt-icon">🎭</span>
-        <div class="opt-title">Organizer</div>
-        <div class="opt-desc">List your event business, post events & get enquiries</div>
+    <div id="adminHomeBtn" class="hidden" style="width:100%;max-width:480px;">
+      <div class="option-cards" style="grid-template-columns:1fr;margin-bottom:12px;">
+        <div class="option-card a-opt" onclick="showSection('admin')">
+          <span class="opt-icon">🛡️</span>
+          <div class="opt-title" style="color:#e8a87c;">Admin Panel</div>
+          <div class="opt-desc">Manage all listings, delete content, add on behalf of others</div>
+        </div>
       </div>
-    </div>
-    <div class="option-cards" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:18px;">
-      <div class="option-card" onclick="showRolePopup('photographer')" style="padding:20px 14px;">
-        <span class="opt-icon" style="font-size:28px;">📸</span>
-        <div class="opt-title" style="font-size:14px;">Photographer</div>
-        <div class="opt-desc" style="font-size:12px;">Photography services</div>
+      <div class="option-cards" style="grid-template-columns:1fr;margin-bottom:12px;">
+        <div class="option-card o-opt" onclick="showSection('organizer');loadOrgData();">
+          <span class="opt-icon">🎪</span>
+          <div class="opt-title">Organizer Panel</div>
+          <div class="opt-desc">View &amp; manage organizer dashboard</div>
+        </div>
       </div>
-      <div class="option-card" onclick="showRolePopup('makeup')" style="padding:20px 14px;">
-        <span class="opt-icon" style="font-size:28px;">💄</span>
-        <div class="opt-title" style="font-size:14px;">Makeup Artist</div>
-        <div class="opt-desc" style="font-size:12px;">Makeup & beauty services</div>
+      <div class="option-cards" style="grid-template-columns:1fr;margin-bottom:12px;">
+        <div class="option-card" onclick="showSection('customer');loadOrganizers();loadEvents();loadVendors();loadMyEnquiries();">
+          <span class="opt-icon">🎉</span>
+          <div class="opt-title">Customer View</div>
+          <div class="opt-desc">Browse organizers, vendors &amp; events</div>
+        </div>
       </div>
-      <div class="option-card" onclick="showRolePopup('gifts')" style="padding:20px 14px;">
-        <span class="opt-icon" style="font-size:28px;">🎁</span>
-        <div class="opt-title" style="font-size:14px;">Return Gifts</div>
-        <div class="opt-desc" style="font-size:12px;">Wedding favors & hampers</div>
-      </div>
-    </div>
-    <div id="adminHomeBtn" class="hidden" style="margin-bottom:18px;">
-      <div class="option-card a-opt" onclick="showSection('admin')" style="grid-column:1/-1;">
-        <span class="opt-icon">🛡️</span>
-        <div class="opt-title" style="color:#e8a87c;">Admin Panel</div>
-        <div class="opt-desc">Manage all listings, delete content, add on behalf of others</div>
+      <div class="option-cards" style="grid-template-columns:1fr;margin-bottom:18px;">
+        <div class="option-card" onclick="showSection('vendor');loadVendorPanel('photographer');">
+          <span class="opt-icon">📸</span>
+          <div class="opt-title">Vendor Panel</div>
+          <div class="opt-desc">View photographer / makeup / gifts panel</div>
+        </div>
       </div>
     </div>
     <button class="btn-secondary" onclick="logout()" style="margin-top:4px;">← Sign out</button>
@@ -948,7 +1021,7 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
 <div class="page hidden" id="organizer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="panel-wrap fade-in" style="max-width:720px;width:100%;">
     <div class="panel-header">
-      <div class="panel-back" onclick="showSection('home')">←</div>
+      <div class="panel-back" onclick="goHome()">←</div>
       <div>
         <div class="panel-title">Organizer <span>Panel</span></div>
       </div>
@@ -961,8 +1034,8 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchOrgTab('profile',this)">👤 New Profile</button>
-      <button class="tab" onclick="switchOrgTab('myprofiles',this)">✏️ My Profiles</button>
+      <button class="tab active" onclick="switchOrgTab('myprofiles',this)">✏️ My Profiles</button>
+      <button class="tab" onclick="switchOrgTab('profile',this)">➕ New Profile</button>
       <button class="tab" onclick="switchOrgTab('events',this)">🎪 Post Event</button>
       <button class="tab" onclick="switchOrgTab('inbox',this)">📬 Inbox</button>
     </div>
@@ -1126,8 +1199,9 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
 <div class="page hidden" id="customer" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="customer-wrap fade-in">
     <div class="panel-header">
-      <div class="panel-back" onclick="showSection('home')">←</div>
-      <div><div class="panel-title">Explore <span>Organizers</span></div></div>
+      <div class="panel-back" onclick="goHome()">←</div>
+      <div style="flex:1;"><div class="panel-title">Explore <span>Organizers</span></div></div>
+      <button onclick="logout()" style="padding:8px 16px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:13px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Sign out</button>
     </div>
 
     <div class="tabs">
@@ -1181,7 +1255,7 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
 <div class="page hidden" id="admin" style="align-items:flex-start;padding-top:20px;padding-left:12px;padding-right:12px;">
   <div class="admin-wrap fade-in">
     <div class="panel-header">
-      <div class="panel-back" onclick="showSection('home')">←</div>
+      <div class="panel-back" onclick="goHome()">←</div>
       <div>
         <div class="panel-title">🛡️ Admin <span>Panel</span></div>
         <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="adminEmailDisplay">Logged in as <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb6a9a9b2afbab6b6b2afa9ba9bbcb6bab2b7f5b8b4b6">[email&#160;protected]</a></div>
@@ -1465,6 +1539,18 @@ const CLOUDINARY_UPLOAD_PRESET = 'utsaav_uploads';
 const CLOUDINARY_UPLOAD_URL   = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 const ADMIN_EMAIL = 'mrritammitra@gmail.com';
+let selectedSignupRole = '';
+// URL param — landing page passes ?section=xxx or ?role=xxx
+const _urlParams = new URLSearchParams(window.location.search);
+const _urlSection = _urlParams.get('section') || ''; // customer target section
+const _urlRole    = _urlParams.get('role') || '';    // provider role pre-select
+
+function selectRole(role, el) {
+  selectedSignupRole = role;
+  document.querySelectorAll('.role-btn').forEach(function(b){ b.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('selectedRole').value = role;
+}
 
 // ===== WHATSAPP HELPER — strips country code to avoid double 91 =====
 // Usage: waNumber(o.whatsapp || o.phone) → "9876543210" (10 digits, no country code)
@@ -1600,11 +1686,18 @@ function toggleAuth() {
   if (isLogin) {
     phoneGroup.classList.add('hidden');
     nameGroup.classList.add('hidden');
+    document.getElementById('roleGroup').classList.add('hidden');
     phoneInput.removeAttribute('required');
     nameInput.removeAttribute('required');
   } else {
     phoneGroup.classList.add('hidden');
     nameGroup.classList.remove('hidden');
+    document.getElementById('roleGroup').classList.remove('hidden');
+    // Pre-select role if coming from landing page
+    if (_urlRole) {
+      var btn = document.querySelector('.role-btn[data-role="'+_urlRole+'"]');
+      if (btn) selectRole(_urlRole, btn);
+    }
     phoneInput.removeAttribute('required');
     nameInput.setAttribute('required','true');
   }
@@ -1636,8 +1729,9 @@ document.getElementById('authForm').addEventListener('submit', async e => {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
       // Save display name to Firebase Auth profile
       await cred.user.updateProfile({ displayName: name });
+      const role = selectedSignupRole || 'customer';
       await db.collection('users').doc(cred.user.uid).set({
-        email, phone, name, createdAt: new Date()
+        email, phone, name, role, createdAt: new Date()
       });
       trackEvent('sign_up', 'auth', 'email_signup');
       await cred.user.sendEmailVerification();
@@ -1649,34 +1743,134 @@ document.getElementById('authForm').addEventListener('submit', async e => {
   btn.textContent = isLogin ? 'Login →' : 'Register →'; btn.disabled = false;
 });
 
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   currentUser = user;
   if (user) {
     const isAdmin = user.email === ADMIN_EMAIL;
     if (!user.emailVerified && !isAdmin) { showVerifyScreen(user); return; }
-    hideAllPages();
-    document.getElementById('home').classList.remove('hidden');
-    // Show name if available, else show email prefix
     const displayName = user.displayName || user.email.split('@')[0];
     updateHeaderUser(displayName, user.email, isAdmin);
-    // Personalize home title
-    const homeTitle = document.getElementById('homeTitle');
-    if (homeTitle) {
-      homeTitle.innerHTML = `Namaste, <em>${displayName}!</em>`;
+    if (isAdmin) {
+      hideAllPages();
+      document.getElementById('home').classList.remove('hidden');
+      const adminBtn = document.getElementById('adminHomeBtn');
+      if (adminBtn) adminBtn.classList.remove('hidden');
+      trackEvent('page_view','navigation','admin_home');
+      return;
     }
-    const adminBtn = document.getElementById('adminHomeBtn');
-    if (adminBtn) adminBtn.classList.toggle('hidden', !isAdmin);
-    // Track page view
-    trackEvent('page_view', 'navigation', 'home_dashboard');
+    // Fetch role from Firestore
+    let userRole = '';
+    try {
+      const doc = await db.collection('users').doc(user.uid).get();
+      if (doc.exists) userRole = doc.data().role || '';
+    } catch(e) {}
+    if (!userRole) {
+      // No role — show role select screen
+      hideAllPages();
+      document.getElementById('roleSelectPage').classList.remove('hidden');
+      return;
+    }
+    redirectByRole(userRole, displayName);
+    trackEvent('page_view','navigation', userRole + '_dashboard');
   } else {
     hideAllPages();
     document.getElementById('auth').classList.remove('hidden');
+    // Pre-fill role if coming from landing page
+    if (_urlRole) {
+      setTimeout(function(){
+        if (!isLogin) return;
+        // Switch to signup
+        isLogin = false;
+        document.getElementById('authTitle').innerHTML = 'Create <em>Account.</em>';
+        document.getElementById('authBtn').textContent = 'Register →';
+        document.getElementById('switchPre').textContent = 'Already have an account? ';
+        document.getElementById('switchLink').textContent = 'Login here';
+        document.getElementById('nameGroup').classList.remove('hidden');
+        document.getElementById('roleGroup').classList.remove('hidden');
+        var btn = document.querySelector('.role-btn[data-role="'+_urlRole+'"]');
+        if (btn) selectRole(_urlRole, btn);
+      }, 300);
+    }
     document.getElementById('headerRight').innerHTML = '<div class="icon-btn" onclick="toggleDark()" title="Toggle theme">🌙</div>';
   }
 });
 
+
+function goHome() {
+  // Instead of showing home cards, re-redirect by role
+  if (!currentUser) { showSection('auth'); return; }
+  db.collection('users').doc(currentUser.uid).get().then(function(doc){
+    var role = (doc.exists && doc.data().role) ? doc.data().role : '';
+    if (currentUser.email === ADMIN_EMAIL) {
+      hideAllPages();
+      document.getElementById('home').classList.remove('hidden');
+      document.getElementById('adminHomeBtn').classList.remove('hidden');
+    } else if (role) {
+      var dname = currentUser.displayName || currentUser.email.split('@')[0];
+      redirectByRole(role, dname);
+    } else {
+      hideAllPages();
+      document.getElementById('roleSelectPage').classList.remove('hidden');
+    }
+  });
+}
+
+function redirectByRole(role, displayName) {
+  hideAllPages();
+  const name = displayName || (currentUser && (currentUser.displayName || currentUser.email.split('@')[0])) || '';
+  if (role === 'customer') {
+    document.getElementById('customer').classList.remove('hidden');
+    // If came from landing page with specific section
+    if (_urlSection === 'photographers' || _urlSection === 'makeup' || _urlSection === 'gifts') {
+      switchCustTab('vendors', document.querySelector('[onclick*="vendors"]'));
+      // Auto-filter vendor type
+      var vtype = _urlSection === 'photographers' ? 'photographer' : _urlSection;
+      setTimeout(function(){
+        var fbtn = document.querySelector('.vendor-type-btn[onclick*="' + vtype + '"]');
+        if (fbtn) filterVendors(vtype, fbtn);
+      }, 300);
+    } else {
+      switchCustTab('browse', document.querySelector('[onclick*="browse"]'));
+    }
+    loadOrganizers();
+    loadEvents();
+    loadVendors();
+    loadMyEnquiries();
+  } else if (role === 'organizer') {
+    document.getElementById('organizer').classList.remove('hidden');
+    switchOrgTab('myprofiles', document.querySelector('[onclick*="myprofiles"]'));
+    loadOrgData();
+  } else if (role === 'photographer' || role === 'makeup' || role === 'gifts') {
+    document.getElementById('vendor').classList.remove('hidden');
+    loadVendorPanel(role);
+  }
+}
+
+// Role select page (existing users)
+let _pendingRole = '';
+function selectRolePage(role, el) {
+  _pendingRole = role;
+  document.querySelectorAll('.role-select-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('roleConfirmBtn').classList.remove('hidden');
+}
+async function confirmRolePage() {
+  if (!_pendingRole || !currentUser) return;
+  const btn = document.getElementById('roleConfirmBtn');
+  btn.textContent = 'Saving...'; btn.disabled = true;
+  try {
+    await db.collection('users').doc(currentUser.uid).set({ role: _pendingRole }, { merge: true });
+    const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+    showToast('✦ Welcome to Utsaav!');
+    redirectByRole(_pendingRole, displayName);
+  } catch(e) {
+    showToast('Error saving role. Try again.', 'error');
+    btn.textContent = 'Continue →'; btn.disabled = false;
+  }
+}
+
 function hideAllPages() {
-  ['auth','verifyEmail','home','organizer','customer','admin','profilePage','vendor'].forEach(id => {
+  ['auth','verifyEmail','home','organizer','customer','admin','profilePage','vendor','roleSelectPage'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -1715,13 +1909,21 @@ async function checkVerified() {
   if (auth.currentUser.emailVerified) {
     currentUser = auth.currentUser;
     showToast('✦ Email verified! Welcome aboard.');
-    hideAllPages();
-    document.getElementById('home').classList.remove('hidden');
-    const displayName = currentUser.displayName || currentUser.email.split('@')[0];
-    updateHeaderUser(displayName, currentUser.email, currentUser.email === ADMIN_EMAIL);
-    const adminBtn = document.getElementById('adminHomeBtn');
-    if (adminBtn) adminBtn.classList.add('hidden');
     trackEvent('email_verified', 'auth', 'verification_complete');
+    const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+    updateHeaderUser(displayName, currentUser.email, false);
+    // Fetch role and redirect
+    let userRole = '';
+    try {
+      const doc = await db.collection('users').doc(currentUser.uid).get();
+      if (doc.exists) userRole = doc.data().role || '';
+    } catch(e) {}
+    if (!userRole) {
+      hideAllPages();
+      document.getElementById('roleSelectPage').classList.remove('hidden');
+    } else {
+      redirectByRole(userRole, displayName);
+    }
   } else {
     showToast('⚠ Not verified yet. Check your inbox.', 'error');
   }
@@ -1736,7 +1938,7 @@ function updateHeaderUser(displayName, email, isAdmin) {
 }
 
 function logout() { auth.signOut(); }
-function handleLogoClick() { if (currentUser) showSection('home'); }
+function handleLogoClick() { if (currentUser) goHome(); }
 
 // ===== NAVIGATION =====
 function showSection(id) {
@@ -1770,6 +1972,15 @@ function switchOrgTab(name, btn) {
   if (name === 'inbox')      loadInbox();
   if (name === 'events')     loadMyEvents();
   if (name === 'myprofiles') loadMyProfiles();
+}
+
+function loadVendorPanel(role) {
+  // For service providers — load only their own vendor profile/dashboard
+  // The vendor section already shows own profiles via loadVendorProfiles()
+  // Just make sure we load vendor data
+  if (typeof loadVendorProfiles === 'function') loadVendorProfiles();
+  if (typeof loadVendorInbox === 'function') loadVendorInbox();
+  if (typeof loadVendorReviews === 'function') loadVendorReviews();
 }
 
 function switchCustTab(name, btn) {
@@ -3321,7 +3532,7 @@ function closeProfilePage() {
 <div class="hidden" id="vendor" style="position:relative;z-index:5;padding:20px 12px 80px;display:flex;justify-content:center;">
   <div style="width:100%;max-width:720px;">
     <div class="panel-header">
-      <div class="panel-back" onclick="showSection('home')">←</div>
+      <div class="panel-back" onclick="goHome()">←</div>
       <div><div class="panel-title">Creative <span>Professionals</span></div></div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
