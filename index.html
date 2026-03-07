@@ -796,6 +796,43 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
 .rsc-label{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;}
 .role-select-card.full-width{grid-column:1/-1;}
 
+
+/* ── ANALYTICS & USER ACTIVITY TAB ── */
+.analytics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.analytics-grid .admin-stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;}
+.activity-section{margin-bottom:28px;}
+.activity-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.activity-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.act-filter{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--text);}
+.act-filter.active{background:var(--accent);color:white;border-color:var(--accent);}
+.login-feed{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto;}
+.login-entry{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all 0.2s;}
+.login-entry:hover{border-color:rgba(212,67,122,0.2);}
+.le-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2,#e87090));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:white;flex-shrink:0;}
+.le-info{flex:1;min-width:0;}
+.le-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.le-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.le-badge{flex-shrink:0;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.le-badge.customer{background:rgba(78,203,113,0.12);color:#3ab06a;}
+.le-badge.organizer{background:rgba(240,192,64,0.12);color:#c8960a;}
+.le-badge.photographer{background:rgba(123,94,167,0.12);color:#7b5ea7;}
+.le-badge.makeup{background:rgba(232,101,74,0.12);color:#e8654a;}
+.le-badge.gifts{background:rgba(78,203,113,0.12);color:#3ab06a;}
+.le-badge.admin{background:rgba(232,74,74,0.12);color:#e84a4a;}
+.le-count{flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent);background:rgba(212,67,122,0.1);padding:3px 8px;border-radius:10px;}
+.user-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.user-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;transition:all 0.2s;}
+.user-card:hover{border-color:rgba(212,67,122,0.2);}
+.uc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.uc-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#e87090);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0;}
+.uc-name{font-weight:700;font-size:14px;}
+.uc-email{font-size:11px;color:var(--muted);}
+.uc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;}
+.uc-stat{text-align:center;background:var(--bg);border-radius:8px;padding:6px 4px;}
+.uc-stat-num{font-weight:800;font-size:15px;color:var(--accent);}
+.uc-stat-label{font-size:10px;color:var(--muted);}
+@media(max-width:600px){.analytics-grid{grid-template-columns:1fr 1fr;}}
+
 </style>
 </head>
 <body>
@@ -1278,6 +1315,7 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
       <button class="tab" onclick="switchAdminTab('reviews',this)">⭐ Reviews</button>
       <button class="tab" onclick="switchAdminTab('claims',this)" id="claimTabBtn">🔔 Claims</button>
       <button class="tab" onclick="switchAdminTab('addlisting',this)">➕ Add Listing</button>
+      <button class="tab" onclick="switchAdminTab('users',this)">👥 Users & Activity</button>
     </div>
 
     <div id="adminTabOrganizers">
@@ -1512,6 +1550,46 @@ header { border-bottom: 1px solid rgba(212,67,122,0.12) !important; }
         </div>
       </div>
     </div>
+
+    <!-- USERS & ACTIVITY TAB -->
+    <div id="adminTabUsers" class="hidden">
+
+      <div class="analytics-grid" id="analyticsStatsGrid">
+        <div class="admin-stat"><div class="admin-stat-num" id="aStatTotalUsers">–</div><div class="admin-stat-label">Total Users</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="aStatTodayLogins">–</div><div class="admin-stat-label">Logins Today</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="aStatTodaySignups">–</div><div class="admin-stat-label">Signups Today</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="aStatActiveWeek">–</div><div class="admin-stat-label">Active This Week</div></div>
+      </div>
+
+      <div class="activity-section">
+        <div class="activity-title">📋 Login History</div>
+        <div class="activity-filters">
+          <div class="act-filter active" onclick="filterLoginFeed('today',this)">Today</div>
+          <div class="act-filter" onclick="filterLoginFeed('week',this)">This Week</div>
+          <div class="act-filter" onclick="filterLoginFeed('all',this)">All Time</div>
+        </div>
+        <div class="login-feed" id="loginFeed">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="activity-section">
+        <div class="activity-title">👤 All Users</div>
+        <div class="activity-filters">
+          <div class="act-filter active" onclick="filterUsersTab('all',this)">All</div>
+          <div class="act-filter" onclick="filterUsersTab('customer',this)">Customers</div>
+          <div class="act-filter" onclick="filterUsersTab('organizer',this)">Organizers</div>
+          <div class="act-filter" onclick="filterUsersTab('photographer',this)">Photographers</div>
+          <div class="act-filter" onclick="filterUsersTab('makeup',this)">Makeup</div>
+          <div class="act-filter" onclick="filterUsersTab('gifts',this)">Gifts</div>
+        </div>
+        <div class="user-cards-grid" id="allUsersGrid">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
@@ -1725,6 +1803,22 @@ document.getElementById('authForm').addEventListener('submit', async e => {
         btn.textContent = 'Login →'; btn.disabled = false;
         return;
       }
+      // Log login to Firestore
+      try {
+        const userDoc = await db.collection('users').doc(cred.user.uid).get();
+        const userData = userDoc.exists ? userDoc.data() : {};
+        const loginCount = (userData.loginCount || 0) + 1;
+        await db.collection('users').doc(cred.user.uid).update({ loginCount, lastLogin: new Date() });
+        await db.collection('loginHistory').add({
+          uid: cred.user.uid,
+          email: cred.user.email,
+          name: cred.user.displayName || userData.name || cred.user.email.split('@')[0],
+          role: userData.role || 'customer',
+          loginAt: new Date(),
+          loginCount,
+          device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+        });
+      } catch(e) { console.log('Login log error:', e); }
     } else {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
       // Save display name to Firebase Auth profile
@@ -1750,6 +1844,24 @@ auth.onAuthStateChanged(async user => {
     if (!user.emailVerified && !isAdmin) { showVerifyScreen(user); return; }
     const displayName = user.displayName || user.email.split('@')[0];
     updateHeaderUser(displayName, user.email, isAdmin);
+
+    // Track login for ALL users (including admin)
+    try {
+      const userDocRef = db.collection('users').doc(user.uid);
+      const userDoc = await userDocRef.get();
+      const userData = userDoc.exists ? userDoc.data() : {};
+      const loginCount = (userData.loginCount || 0) + 1;
+      const role = isAdmin ? 'admin' : (userData.role || 'customer');
+      const updateData = { loginCount, lastLogin: new Date() };
+      if (userDoc.exists) { await userDocRef.update(updateData); }
+      else { await userDocRef.set({ email: user.email, name: displayName, role, loginCount, lastLogin: new Date(), createdAt: new Date() }); }
+      await db.collection('loginHistory').add({
+        uid: user.uid, email: user.email,
+        name: displayName, role, loginAt: new Date(), loginCount,
+        device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+      });
+    } catch(e) { console.log('Login track error:', e); }
+
     if (isAdmin) {
       hideAllPages();
       document.getElementById('home').classList.remove('hidden');
@@ -1765,7 +1877,6 @@ auth.onAuthStateChanged(async user => {
       if (doc.exists) userRole = doc.data().role || '';
     } catch(e) {}
     if (!userRole) {
-      // No role — show role select screen
       hideAllPages();
       document.getElementById('roleSelectPage').classList.remove('hidden');
       return;
@@ -2001,7 +2112,7 @@ function switchCustTab(name, btn) {
 function switchAdminTab(name, btn) {
   btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  ['adminTabOrganizers','adminTabVendors','adminTabEvents','adminTabEnquiries','adminTabReviews','adminTabClaims','adminTabAddlisting'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  ['adminTabOrganizers','adminTabVendors','adminTabEvents','adminTabEnquiries','adminTabReviews','adminTabClaims','adminTabAddlisting','adminTabUsers'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
   document.getElementById('adminTab' + name.charAt(0).toUpperCase() + name.slice(1))?.classList.remove('hidden');
   if (name === 'organizers') loadAdminOrganizers();
   if (name === 'vendors')    loadAdminVendors();
@@ -2009,6 +2120,167 @@ function switchAdminTab(name, btn) {
   if (name === 'claims')     loadAdminClaims('all');
   if (name === 'events')     loadAdminEvents();
   if (name === 'enquiries')  loadAdminEnquiries();
+  if (name === 'users')      loadUsersActivity();
+}
+
+
+// ══════════════════════════════════════════════
+// USERS & ACTIVITY
+// ══════════════════════════════════════════════
+let _allLoginHistory = [];
+let _allUsers = [];
+
+async function loadUsersActivity() {
+  loadLoginFeed('today');
+  loadAllUsers('all');
+  loadAnalyticsStats();
+}
+
+async function loadAnalyticsStats() {
+  try {
+    // Total users
+    const usersSnap = await db.collection('users').get();
+    document.getElementById('aStatTotalUsers').textContent = usersSnap.size;
+
+    // Today's logins
+    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+    const loginSnap = await db.collection('loginHistory')
+      .where('loginAt','>=',todayStart).get();
+    document.getElementById('aStatTodayLogins').textContent = loginSnap.size;
+
+    // Today's signups
+    const signupSnap = await db.collection('users')
+      .where('createdAt','>=',todayStart).get();
+    document.getElementById('aStatTodaySignups').textContent = signupSnap.size;
+
+    // Active this week
+    const weekStart = new Date(); weekStart.setDate(weekStart.getDate()-7); weekStart.setHours(0,0,0,0);
+    const weekSnap = await db.collection('loginHistory')
+      .where('loginAt','>=',weekStart).get();
+    const weekUids = new Set(weekSnap.docs.map(d=>d.data().uid));
+    document.getElementById('aStatActiveWeek').textContent = weekUids.size;
+  } catch(e) { console.log('Stats error',e); }
+}
+
+async function loadLoginFeed(filter) {
+  const feed = document.getElementById('loginFeed');
+  feed.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  try {
+    let query = db.collection('loginHistory').orderBy('loginAt','desc').limit(100);
+    const snap = await query.get();
+    _allLoginHistory = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderLoginFeed(filter);
+  } catch(e) {
+    feed.innerHTML = '<p style="color:var(--muted);font-size:13px;">No login history yet.</p>';
+  }
+}
+
+function renderLoginFeed(filter) {
+  const feed = document.getElementById('loginFeed');
+  const now = new Date();
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const weekStart = new Date(); weekStart.setDate(weekStart.getDate()-7); weekStart.setHours(0,0,0,0);
+
+  let entries = _allLoginHistory.filter(e => {
+    const t = e.loginAt?.toDate ? e.loginAt.toDate() : new Date(e.loginAt);
+    if (filter === 'today') return t >= todayStart;
+    if (filter === 'week')  return t >= weekStart;
+    return true;
+  });
+
+  if (!entries.length) {
+    feed.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:12px;">No logins in this period.</p>';
+    return;
+  }
+
+  feed.innerHTML = entries.map(e => {
+    const t = e.loginAt?.toDate ? e.loginAt.toDate() : new Date(e.loginAt);
+    const timeAgo = getTimeAgo(t);
+    const initials = (e.name||'?').charAt(0).toUpperCase();
+    const role = e.role || 'customer';
+    const ordinal = n => n===1?'1st':n===2?'2nd':n===3?'3rd':`${n}th`;
+    const countBadge = e.loginCount > 1 ? `<span class="le-count">${ordinal(e.loginCount)} login</span>` : '<span class="le-count">New user</span>';
+    return `<div class="login-entry">
+      <div class="le-avatar">${initials}</div>
+      <div class="le-info">
+        <div class="le-name">${e.name||e.email}</div>
+        <div class="le-meta">${e.email} &nbsp;·&nbsp; ${e.device||'Unknown'} &nbsp;·&nbsp; ${timeAgo}</div>
+      </div>
+      <span class="le-badge ${role}">${role}</span>
+      ${countBadge}
+    </div>`;
+  }).join('');
+}
+
+function filterLoginFeed(filter, btn) {
+  document.querySelectorAll('.activity-filters .act-filter').forEach(function(b){
+    if(b.closest('#adminTabUsers') && b.onclick && b.onclick.toString().includes('filterLoginFeed'))
+      b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  renderLoginFeed(filter);
+}
+
+async function loadAllUsers(roleFilter) {
+  const grid = document.getElementById('allUsersGrid');
+  if (!_allUsers.length) {
+    grid.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+    try {
+      const snap = await db.collection('users').orderBy('createdAt','desc').get();
+      _allUsers = snap.docs.map(d => ({uid:d.id,...d.data()}));
+    } catch(e) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:13px;">Could not load users.</p>';
+      return;
+    }
+  }
+  renderUsersGrid(roleFilter);
+}
+
+function renderUsersGrid(roleFilter) {
+  const grid = document.getElementById('allUsersGrid');
+  const users = roleFilter === 'all' ? _allUsers : _allUsers.filter(u => u.role === roleFilter);
+  if (!users.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:12px;">No users found.</p>';
+    return;
+  }
+  grid.innerHTML = users.map(u => {
+    const initials = (u.name||u.email||'?').charAt(0).toUpperCase();
+    const role = u.role || 'unknown';
+    const joined = u.createdAt?.toDate ? u.createdAt.toDate() : new Date(u.createdAt||Date.now());
+    const lastLogin = u.lastLogin?.toDate ? u.lastLogin.toDate() : null;
+    const loginCount = u.loginCount || 1;
+    const ordinal = n => n===1?'1st':n===2?'2nd':n===3?'3rd':`${n}th`;
+    return `<div class="user-card">
+      <div class="uc-header">
+        <div class="uc-avatar">${initials}</div>
+        <div>
+          <div class="uc-name">${u.name||'Unknown'}</div>
+          <div class="uc-email">${u.email||''}</div>
+        </div>
+        <span class="le-badge ${role}" style="margin-left:auto;">${role}</span>
+      </div>
+      <div class="uc-stats">
+        <div class="uc-stat"><div class="uc-stat-num">${loginCount}</div><div class="uc-stat-label">Logins</div></div>
+        <div class="uc-stat"><div class="uc-stat-num">${lastLogin ? getTimeAgo(lastLogin) : 'N/A'}</div><div class="uc-stat-label">Last seen</div></div>
+        <div class="uc-stat"><div class="uc-stat-num">${joined.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</div><div class="uc-stat-label">Joined</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterUsersTab(role, btn) {
+  btn.closest('.activity-section').querySelectorAll('.act-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderUsersGrid(role);
+}
+
+function getTimeAgo(date) {
+  const diff = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff/3600) + ' hr ago';
+  if (diff < 604800) return Math.floor(diff/86400) + ' days ago';
+  return date.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 }
 
 // ===== CLOUDINARY DELETE HELPER =====
